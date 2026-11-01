@@ -4,10 +4,10 @@
 // The AI proposes a complete text in a ```consigne block; you adopt it or not. Nothing changes without you.
 const writer = {open: false, target: null, assets: [], messages: [], proposals: [], mission: null, timer: null, live: '',
   undo: null, connector: '', model: '', sending: false};
-const WRITER_FIELDS = {preprompt: 'Prompt de base de la méthode', usage: 'Mode d’emploi de la méthode', description: 'Description de la méthode'};
-const WRITER_PROMPTS = ['Rends cette consigne plus précise, sans la rallonger inutilement.', 'Liste les ambiguïtés et ce qui manque pour bien exécuter la tâche.',
-  'Adapte cette consigne à un petit modèle local : phrases courtes, étapes numérotées, format de sortie explicite.',
-  'Propose un découpage en sous-tâches, avec pour chacune ses entrées et ses sorties.'];
+const WRITER_FIELDS = {preprompt: ui('Prompt de base de la méthode'), usage: ui('Mode d’emploi de la méthode'), description: ui('Description de la méthode')};
+const WRITER_PROMPTS = [ui('Rends cette consigne plus précise, sans la rallonger inutilement.'), ui('Liste les ambiguïtés et ce qui manque pour bien exécuter la tâche.'),
+  ui('Adapte cette consigne à un petit modèle local : phrases courtes, étapes numérotées, format de sortie explicite.'),
+  ui('Propose un découpage en sous-tâches, avec pour chacune ses entrées et ses sorties.')];
 
 function writerStep() { return writer.target?.step ? stepByKey(writer.target.step) : null; }
 function writerText() { const step = writerStep(); return step ? step.instruction : methodEditor.draft[writer.target.field] || ''; }
@@ -18,7 +18,7 @@ function setWriterText(value) {
 }
 function writerTitle() {
   const step = writerStep();
-  return step ? {kicker: 'Consigne de la tâche', title: step.name} : {kicker: methodEditor.draft.name, title: WRITER_FIELDS[writer.target.field]};
+  return step ? {kicker: ui('Consigne de la tâche'), title: step.name} : {kicker: methodEditor.draft.name, title: WRITER_FIELDS[writer.target.field]};
 }
 
 async function openWriter(target) {
@@ -47,18 +47,18 @@ function writerAttachmentsHTML() {
     const a = byId[id];
     if (!a) return '';
     const image = /^image\/(png|jpeg|webp|gif)$/.test(a.mime);
-    return `<div class="mw-file">${image ? `<img alt="" src="/method-asset/${esc(a.id)}">` : '<span class="mw-file-icon">📄</span>'}<span title="${esc(a.name)}">${esc(a.name)}</span><button type="button" class="text-button" data-mw-detach="${esc(a.id)}" aria-label="Retirer de la tâche">✕</button></div>`;
+    return ui`<div class="mw-file">${image ? `<img alt="" src="/method-asset/${esc(a.id)}">` : '<span class="mw-file-icon">📄</span>'}<span title="${esc(a.name)}">${esc(a.name)}</span><button type="button" class="text-button" data-mw-detach="${esc(a.id)}" aria-label="Retirer de la tâche">✕</button></div>`;
   }).join('');
-  return `<div class="mw-files"><b class="me-label">Fichiers et images de la consigne (${(step.attachments || []).length}/8) — transmis à cette tâche seulement</b>
-    <div class="mw-file-list">${chips || '<small class="muted">Aucun. Glissez un fichier ici ou joignez-le.</small>'}</div>
+  return ui`<div class="mw-files"><b class="me-label">Fichiers et images de la consigne (${(step.attachments || []).length}/8) — transmis à cette tâche seulement</b>
+    <div class="mw-file-list">${chips || ui('<small class="muted">Aucun. Glissez un fichier ici ou joignez-le.</small>')}</div>
     <div class="row-actions"><button type="button" class="secondary" data-mw-attach>＋ Joindre</button>
-      ${unused.length ? `<select data-mw-reuse><option value="">Réutiliser un fichier de la méthode…</option>${unused.map(a => `<option value="${esc(a.id)}">${esc(a.name)}</option>`).join('')}</select>` : ''}</div></div>`;
+      ${unused.length ? ui`<select data-mw-reuse><option value="">Réutiliser un fichier de la méthode…</option>${unused.map(a => `<option value="${esc(a.id)}">${esc(a.name)}</option>`).join('')}</select>` : ''}</div></div>`;
 }
 function writerInputsHint() {
   const step = writerStep();
   if (!step) return '';
-  const wired = step.inputs.map(p => `<span class="team-chip" title="${esc(p.source ? 'Reçoit : ' + sourceName(p.source) : 'Non branchée')}"><span class="me-kind k-${esc(p.kind)}"></span> ${esc(p.name)}</span>`).join('');
-  return `<div class="mw-hint">${wired ? 'Ajoutées après la consigne : ' + wired : 'Aucune entrée branchée.'} <button type="button" class="text-button" data-mw-insert="{objectif}">Insérer {objectif}</button></div>`;
+  const wired = step.inputs.map(p => `<span class="team-chip" title="${esc(p.source ? ui('Reçoit : ') + sourceName(p.source) : ui('Non branchée'))}"><span class="me-kind k-${esc(p.kind)}"></span> ${esc(p.name)}</span>`).join('');
+  return ui`<div class="mw-hint">${wired ? ui('Ajoutées après la consigne : ') + wired : ui('Aucune entrée branchée.')} <button type="button" class="text-button" data-mw-insert="{objectif}">Insérer {objectif}</button></div>`;
 }
 function writerMessagesHTML() {
   writer.proposals = [];
@@ -71,12 +71,12 @@ function writerMessagesHTML() {
     const html = parts.map((part, i) => {
       if (i % 2 === 0) return part.trim() ? `<div class="message-body">${richText(part.trim())}</div>` : '';
       const n = writer.proposals.push(part.replace(/\s+$/, '')) - 1;
-      return `<div class="mw-proposal"><pre>${esc(part.replace(/\s+$/, ''))}</pre><button type="button" class="primary" data-mw-adopt="${n}">Adopter ce texte</button></div>`;
+      return ui`<div class="mw-proposal"><pre>${esc(part.replace(/\s+$/, ''))}</pre><button type="button" class="primary" data-mw-adopt="${n}">Adopter ce texte</button></div>`;
     }).join('');
     return `<div class="mw-msg ai"><small>${esc(agentName(m.connector || ''))}${m.model ? ' · ' + esc(m.model) : ''}</small>${html}</div>`;
   }).join('');
-  const live = writer.mission ? `<div class="mw-msg ai live"><small>L’IA écrit…</small><div class="message-body">${writer.live ? richText(writer.live) : '<span class="loading">…</span>'}</div></div>` : '';
-  return rows + live || '<p class="mw-empty">Demandez à une IA de vous aider : elle voit la méthode telle qu’elle est dans l’éditeur, et le texte que vous écrivez. Elle propose un texte complet ; vous l’adoptez ou non.</p>';
+  const live = writer.mission ? ui`<div class="mw-msg ai live"><small>L’IA écrit…</small><div class="message-body">${writer.live ? richText(writer.live) : '<span class="loading">…</span>'}</div></div>` : '';
+  return rows + live || ui('<p class="mw-empty">Demandez à une IA de vous aider : elle voit la méthode telle qu’elle est dans l’éditeur, et le texte que vous écrivez. Elle propose un texte complet ; vous l’adoptez ou non.</p>');
 }
 function renderWriter() {
   const host = document.querySelector('.method-editor');
@@ -84,7 +84,7 @@ function renderWriter() {
   let panel = $('me-writer');
   if (!panel) { panel = document.createElement('div'); panel.id = 'me-writer'; panel.className = 'me-writer'; host.append(panel); }
   const {kicker, title} = writerTitle(), enabled = (state.data?.connectors || []).filter(c => c.enabled);
-  panel.innerHTML = `<header class="mw-head"><button type="button" class="secondary" data-mw-close>← Graphe</button>
+  panel.innerHTML = ui`<header class="mw-head"><button type="button" class="secondary" data-mw-close>← Graphe</button>
       <div class="mw-title"><small>${esc(kicker)}</small><h3>${esc(title)}</h3></div><span class="me-spacer"></span>
       <button type="button" class="secondary" data-mw-undo ${writer.undo === null ? 'hidden' : ''}>Revenir au texte d’avant</button>
       <button type="button" class="primary" data-mw-close>Terminé</button></header>
@@ -97,8 +97,8 @@ function renderWriter() {
       </section>
       <section class="mw-chat">
         <div class="mw-chat-head"><b>Assistant</b>
-          ${enabled.length ? `<select data-mw-connector aria-label="IA">${enabled.map(c => `<option value="${esc(c.id)}" ${c.id === writer.connector ? 'selected' : ''}>${esc(agentName(c.id))}</option>`).join('')}</select><input data-mw-model value="${esc(writer.model)}" placeholder="modèle par défaut" aria-label="Modèle">` : '<span class="me-warning">⚠ Aucun connecteur activé</span>'}
-          ${methodEditor.workshop ? '<button type="button" class="text-button" data-mw-conversation>Ouvrir la conversation ↗</button>' : ''}</div>
+          ${enabled.length ? ui`<select data-mw-connector aria-label="IA">${enabled.map(c => `<option value="${esc(c.id)}" ${c.id === writer.connector ? 'selected' : ''}>${esc(agentName(c.id))}</option>`).join('')}</select><input data-mw-model value="${esc(writer.model)}" placeholder="modèle par défaut" aria-label="Modèle">` : ui('<span class="me-warning">⚠ Aucun connecteur activé</span>')}
+          ${methodEditor.workshop ? ui('<button type="button" class="text-button" data-mw-conversation>Ouvrir la conversation ↗</button>') : ''}</div>
         <div class="mw-messages" id="mw-messages">${writerMessagesHTML()}</div>
         <div class="mw-quick">${WRITER_PROMPTS.map((p, i) => `<button type="button" class="text-button" data-mw-quick="${i}">${esc(p.split(/[,:.]/)[0])}</button>`).join('')}</div>
         <div class="mw-composer"><textarea id="mw-ask" rows="3" maxlength="8000" placeholder="Votre demande à l’IA (Ctrl+Entrée pour envoyer)"></textarea>
@@ -109,7 +109,7 @@ function renderWriter() {
   updateWriterCount();
   const box = $('mw-messages'); box.scrollTop = box.scrollHeight;
 }
-function updateWriterCount() { const t = $('mw-text'), c = $('mw-count'); if (t && c) c.textContent = t.value.length + ' / ' + t.maxLength + ' caractères'; }
+function updateWriterCount() { const t = $('mw-text'), c = $('mw-count'); if (t && c) c.textContent = t.value.length + ' / ' + t.maxLength + ui(' caractères'); }
 function renderWriterMessages() { const box = $('mw-messages'); if (!box) return; box.innerHTML = writerMessagesHTML(); box.scrollTop = box.scrollHeight; }
 
 async function loadWriterMessages() {
@@ -140,7 +140,7 @@ function watchWorkshop() {
       writer.live = m.events.filter(e => e.kind === 'delta').map(e => e.data.text).join('');
       if (['succeeded', 'failed', 'cancelled', 'interrupted'].includes(m.status)) {
         clearInterval(writer.timer); writer.mission = null;
-        if (m.status !== 'succeeded') toast('L’IA n’a pas répondu : ' + (m.steps.find(s => s.error)?.error || m.status));
+        if (m.status !== 'succeeded') toast(ui('L’IA n’a pas répondu : ') + (m.steps.find(s => s.error)?.error || m.status));
         await loadWriterMessages();
         const send = document.querySelector('[data-mw-send]'); if (send) send.disabled = false;
       } else renderWriterMessages();
@@ -151,12 +151,12 @@ function watchWorkshop() {
 // Files: uploaded to the method, then joined to this task.
 function uploadMethodAsset(file) {
   return new Promise((resolve, reject) => {
-    if (file.size > 50 * 1024 ** 2) { reject(Error('Fichier limité à 50 Mo : ' + file.name)); return; }
+    if (file.size > 50 * 1024 ** 2) { reject(Error(ui('Fichier limité à 50 Mo : ') + file.name)); return; }
     const xhr = new XMLHttpRequest();
     xhr.open('POST', '/api/upload?method_id=' + encodeURIComponent(methodEditor.id) + '&name=' + encodeURIComponent(file.name));
     xhr.setRequestHeader('X-CyAI', '1'); xhr.setRequestHeader('Content-Type', 'application/octet-stream');
-    xhr.onerror = () => reject(Error('Transfert interrompu.'));
-    xhr.onload = () => { let r; try { r = JSON.parse(xhr.responseText); } catch { reject(Error('Réponse de transfert invalide.')); return; } xhr.status === 200 ? resolve(r) : reject(Error(r.error || 'Échec du transfert')); };
+    xhr.onerror = () => reject(Error(ui('Transfert interrompu.')));
+    xhr.onload = () => { let r; try { r = JSON.parse(xhr.responseText); } catch { reject(Error(ui('Réponse de transfert invalide.'))); return; } xhr.status === 200 ? resolve(r) : reject(Error(r.error || ui('Échec du transfert'))); };
     xhr.send(file);
   });
 }
@@ -164,7 +164,7 @@ async function attachFiles(files) {
   const step = writerStep();
   if (!step) return;
   for (const file of files) {
-    if ((step.attachments || []).length >= 8) { toast('Huit fichiers au plus par tâche.'); break; }
+    if ((step.attachments || []).length >= 8) { toast(ui('Huit fichiers au plus par tâche.')); break; }
     try {
       const asset = await uploadMethodAsset(file);
       writer.assets.push(asset);
@@ -185,7 +185,7 @@ document.addEventListener('change', e => {
   if (e.target.matches?.('[data-mw-connector]')) writer.connector = e.target.value;
   if (e.target.matches?.('[data-mw-reuse]') && e.target.value) {
     const step = writerStep();
-    if ((step.attachments || []).length >= 8) { toast('Huit fichiers au plus par tâche.'); return; }
+    if ((step.attachments || []).length >= 8) { toast(ui('Huit fichiers au plus par tâche.')); return; }
     step.attachments = [...(step.attachments || []), e.target.value]; markDirty(); renderWriter();
   }
 });
@@ -213,7 +213,7 @@ document.addEventListener('click', async e => {
       const text = writer.proposals[Number(d.mwAdopt)];
       if (text === undefined) return;
       writer.undo = writerText(); setWriterText(text); renderWriter();
-      toast('Texte adopté dans l’éditeur. Enregistrez la méthode pour le garder.');
+      toast(ui('Texte adopté dans l’éditeur. Enregistrez la méthode pour le garder.'));
     }
     if (d.mwUndo !== undefined && writer.undo !== null) { setWriterText(writer.undo); writer.undo = null; renderWriter(); }
     if (d.mwInsert) {

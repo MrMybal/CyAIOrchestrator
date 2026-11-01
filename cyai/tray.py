@@ -1,5 +1,8 @@
 """Windows notification-area lifetime, using pywebview's WinForms thread."""
 
+from .i18n import language, translate
+
+
 class WindowsTray:
     def __init__(self, window, runtime):
         self.window, self.runtime = window, runtime
@@ -17,8 +20,10 @@ class WindowsTray:
         from pathlib import Path
         from System.Windows.Forms import NotifyIcon, ContextMenuStrip
         self.menu = ContextMenuStrip()
-        self.menu.Items.Add('Ouvrir CyAI Orchestrator', None, EventHandler(self.open))
-        self.menu.Items.Add('Quitter', None, EventHandler(self.quit))
+        self.open_item = self.menu.Items.Add('', None, EventHandler(self.open))
+        self.quit_item = self.menu.Items.Add('', None, EventHandler(self.quit))
+        self.menu.Opening += lambda *_: self.localise()
+        self.localise()
         self.icon = NotifyIcon()
         self.brand_icon = Icon(str(Path(__file__).parent / 'web' / 'cyai-logo.ico'))
         self.icon.Icon = self.brand_icon
@@ -29,6 +34,11 @@ class WindowsTray:
         self.window.native.FormClosing += self.on_closing
         self.window.native.FormClosed += self.dispose
         self.icon.Visible = True
+
+    def localise(self):
+        locale = language(self.runtime.config)
+        self.open_item.Text = translate('Ouvrir CyAI Orchestrator', locale)
+        self.quit_item.Text = translate('Quitter', locale)
 
     def on_closing(self, sender, args):
         # A Windows shutdown must never be cancelled by close-to-tray.
@@ -50,7 +60,7 @@ class WindowsTray:
         if engine:
             active = self.runtime.store.rows("SELECT id FROM missions WHERE status IN ('queued','running','awaiting_approval')")
             if active and MessageBox.Show(self.window.native,
-                'Des missions sont en cours. Quitter les interrompra. Quitter quand même ?',
+                translate('Des missions sont en cours. Quitter les interrompra. Quitter quand même ?', language(self.runtime.config)),
                 'CyAI Orchestrator', MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes:
                 return
         self.quitting = True

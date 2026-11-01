@@ -236,7 +236,7 @@ dialog.graph-dialog{width:94vw;max-width:1600px;height:90vh;max-height:94vh}
    buttons pushed to its right edge left a band of nothing on the left of every wide window. */
 .app.overlay-open .settings-layout{grid-template-columns:minmax(220px,260px) minmax(0,1fr);gap:0}
 .app.overlay-open .settings-layout>nav{width:auto;align-items:stretch;gap:2px;padding:88px 12px 24px 20px;background:var(--ui-panel);border-right:1px solid var(--ui-line)}
-.app.overlay-open .settings-layout>nav::before{content:'PARAMÈTRES';width:auto;padding:0 10px 8px;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--ui-muted)}
+.app.overlay-open .settings-layout>nav::before{content:var(--settings-heading,"SETTINGS");width:auto;padding:0 10px 8px;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--ui-muted)}
 .app.overlay-open .settings-layout>nav button{width:100%;flex-shrink:0;padding:6px 10px;font-size:13.5px;line-height:1.35;border-radius:6px;color:var(--ui-muted)!important}
 .app.overlay-open .settings-layout>nav button:hover{background:color-mix(in srgb,var(--ui-text) 7%,transparent);color:var(--ui-text)!important}
 .app.overlay-open .settings-layout>nav button.selected{color:var(--ui-text)!important}
@@ -257,7 +257,7 @@ dialog.graph-dialog{width:94vw;max-width:1600px;height:90vh;max-height:94vh}
 @media(max-width:850px){.app.overlay-open .settings-layout{grid-template-columns:minmax(170px,210px) minmax(0,1fr)}.app.overlay-open .settings-content{padding:40px 24px 32px!important}}
 @media(max-width:600px){.app.overlay-open .settings-layout{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr)}.app.overlay-open .settings-layout>nav{flex-direction:row;align-items:center;overflow-x:auto;padding:60px 8px 8px;border-right:0;border-bottom:1px solid var(--ui-line)}.app.overlay-open .settings-layout>nav::before{display:none}.app.overlay-open .settings-layout>nav button{width:auto;white-space:nowrap}.app.overlay-open .settings-content{padding:20px 16px 32px!important}.settings-close{top:10px;left:12px;flex-direction:row}.settings-close span{width:30px;height:30px}}
 /* The library shares the settings layout; only its label differs. */
-.app.overlay-open .library-layout>nav::before{content:'BIBLIOTHÈQUE'}
+.app.overlay-open .library-layout>nav::before{content:var(--library-heading,"LIBRARY")}
 .library-layout>nav .nav-label{padding:16px 10px 6px;font-size:11px;font-weight:700;letter-spacing:1px;color:var(--ui-muted)}
 .library-layout>nav button{display:flex;align-items:center;gap:8px}
 .nav-count{margin-left:auto;font-size:11px;color:var(--ui-muted)}

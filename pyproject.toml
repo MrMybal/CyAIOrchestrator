@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "CyAIOrchestrator"
-version = "0.2.60"
+version = "0.2.61"
 description = "Local, persistent multi-agent orchestration"
 requires-python = ">=3.11"
 dependencies = ["jsonschema>=4.23,<5"]
@@ -20,7 +20,7 @@ cyai-desktop = "cyai.desktop:main"
 cyai = "cyai.__main__:main"
 
 [tool.setuptools.package-data]
-cyai = ["piper_catalog.json", "web/*", "web/three/*", "web/cymd/*", "web/cymd/assets/*", "web/cyannota/*", "web/cyannota/assets/*", "web/cyannota/ffmpeg/*.js", "web/cyannota/ffmpeg/*.json", "plugin_bridge.mjs", "voice_workers/*", "evaluation_kit/*"]
+cyai = ["piper_catalog.json", "locales/*.json", "web/*", "web/three/*", "web/cymd/*", "web/cymd/assets/*", "web/cyannota/*", "web/cyannota/assets/*", "web/cyannota/ffmpeg/*.js", "web/cyannota/ffmpeg/*.json", "plugin_bridge.mjs", "voice_workers/*", "evaluation_kit/*"]
 
 [tool.setuptools.packages.find]
 include = ["cyai*"]

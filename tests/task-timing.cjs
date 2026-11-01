@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const source=fs.readFileSync('cyai/web/project.js','utf8');const code=source.slice(source.indexOf('function taskTiming('),source.indexOf('function updateTaskClocks('));const c={};vm.createContext(c);vm.runInContext(code,c);
+const source=fs.readFileSync('cyai/web/project.js','utf8');const code=source.slice(source.indexOf('function taskTiming('),source.indexOf('function updateTaskClocks('));const c={};vm.createContext(c);require('./ui-locale.cjs')(c);vm.runInContext(code,c);
 const event=(kind,seconds)=>({step_id:'a',kind,created_at:new Date(seconds*1000).toISOString()});
 let m={events:[event('model_settings',10)]},s={id:'a',status:'running'};
 assert.equal(c.taskTiming(m,s,40000).elapsed,30000);

@@ -11,7 +11,7 @@ const settings = {stt:{},tts:{voice:'pocket:french_24l:clone:ref'},connector_voi
 let reject = false;
 const context = vm.createContext({console, setInterval, clearInterval, state:{view:'settings',settingsTab:'voice'}, $:el, esc:s=>String(s??'').replaceAll('<','&lt;'), date:s=>s, agentName:s=>s,
  action:async name=>{if(reject)throw Error('Discovery failed');return name==='voice_catalog'?{items:[],jobs:[],folder:'test',runtimes_folder:'test'}:{settings,voices:[],inputs:[],outputs:[],connectors:[],stt:{ready:true},engines:{pocket:true},samples:settings.samples};}});
-vm.runInContext(fs.readFileSync('cyai/web/voice.js','utf8'), context);
+require('./ui-locale.cjs')(context);vm.runInContext(fs.readFileSync('cyai/web/voice.js','utf8'), context);
 (async()=>{
  for (const samples of [[],[{id:'ref',name:'Ma voix',seconds:12,created_at:'2026-09-20'}],[{id:'ref',name:'<script>',seconds:12,created_at:'today'},{id:'ref2',name:'Autre voix',seconds:8,created_at:'today'}]]) {
   settings.samples=samples;

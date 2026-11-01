@@ -38,7 +38,7 @@ function renderComposerPending(){
  const pending=composerRequests.has(draftKey()),loading=Boolean(state.conversation&&(state.loadingConversation||!state.detail));
  send.disabled=pending||loading||Boolean(state.detail?.archived);send.setAttribute('aria-busy',String(pending));
  send.textContent=pending?'…':'↑';
- if(pending||loading){send.title=pending?'Envoi en cours…':'Chargement de la conversation…';send.setAttribute('aria-label',send.title);}
+ if(pending||loading){send.title=pending?ui('Envoi en cours…'):ui('Chargement de la conversation…');send.setAttribute('aria-label',send.title);}
 }
 // The conversation tabs were replaced by the channels of the project; a new window is opened from the rail.
 function renderConversationTabs(){$('conversation-tabs')?.remove();}

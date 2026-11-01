@@ -11,7 +11,7 @@ function context(stored={}){
  const storage=()=>({getItem:key=>stored[key]??null,setItem:(key,value)=>{stored[key]=value;}});
  const state={project:'p',conversation:'a',conversationVersion:0,navigationVersion:0,view:'chat',detail:{id:'a'},files:new Set(),selected:new Set(),collapsedProjects:new Set(),data:{projects:[{id:'p'}],conversations:[{id:'a'},{id:'b'},{id:'c'}],missions:[],settings:{}}};
  const c=vm.createContext({console,URLSearchParams,Set,Map,crypto:require('node:crypto').webcrypto,sessionStorage:storage(),localStorage:storage(),window:{addEventListener(){}},document:{addEventListener:(event,fn)=>{(listeners[event]??=[]).push(fn);},querySelectorAll:()=>[]},$:el,state,esc:s=>String(s??''),toast:()=>{},fail:error=>{throw error;},setTimeout:()=>{},setInterval:()=>{},voiceUI:{fromVoice:false},mediaUploads:new Map(),renderRuntimeOptions(){},renderMessages(){},renderInspector(){},renderLive(){},renderSidebar(){},renderPage:async()=>{},renderConnectorStatus(){},applyAppearance(){},notifyFailures(){},active:s=>s==='running',L:{views:{chat:'Chat'}},refresh:async()=>{}});
- vm.runInContext(source('tabs'),c);
+ require('./ui-locale.cjs')(c);vm.runInContext(source('tabs'),c);
  c.showView=view=>{state.view=view;state.navigationVersion++;};
  c.contextOptions=()=>({file_ids:[...state.files]});
  return {c,state,el,stored,listeners,run:code=>vm.runInContext(code,c)};

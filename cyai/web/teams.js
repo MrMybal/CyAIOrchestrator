@@ -2,25 +2,25 @@
 // Global agent library and per-project team composition. Configuration only:
 // nothing on these screens starts an agent, and no control here pretends to run one.
 const teamsState = {profiles: null, showArchived: false, team: null, focus: null};
-const TEAM_ROLES = {chief: 'Chef de projet', lead: 'Lead / chef d’équipe', member: 'Membre', consultant: 'Consultant · sollicité à la tâche'};
+const TEAM_ROLES = {chief: ui('Chef de projet'), lead: ui('Lead / chef d’équipe'), member: ui('Membre'), consultant: ui('Consultant · sollicité à la tâche')};
 // A consultant answers task requests for what it does better; it owns no branch of the hierarchy.
 const HIERARCHY_ROLES = ['chief', 'lead', 'member'];
-const CONNECTOR_BADGE = {enabled: ['succeeded', 'Connecteur activé'], disabled: ['awaiting_approval', 'Connecteur désactivé'], missing: ['failed', 'Connecteur absent']};
-const MODEL_BADGE = {default: ['operational', 'Modèle par défaut du connecteur'], confirmed: ['succeeded', 'Modèle confirmé'],
-  unconfirmed: ['awaiting_approval', 'Modèle non confirmé'], catalogue_indisponible: ['awaiting_approval', 'Catalogue indisponible']};
+const CONNECTOR_BADGE = {enabled: ['succeeded', ui('Connecteur activé')], disabled: ['awaiting_approval', ui('Connecteur désactivé')], missing: ['failed', ui('Connecteur absent')]};
+const MODEL_BADGE = {default: ['operational', ui('Modèle par défaut du connecteur')], confirmed: ['succeeded', ui('Modèle confirmé')],
+  unconfirmed: ['awaiting_approval', ui('Modèle non confirmé')], catalogue_indisponible: ['awaiting_approval', ui('Catalogue indisponible')]};
 
 function profileBadges(status) {
-  const connector = CONNECTOR_BADGE[status.connector] || ['failed', 'Connecteur inconnu'];
-  const model = MODEL_BADGE[status.model] || ['awaiting_approval', 'Modèle non vérifié'];
+  const connector = CONNECTOR_BADGE[status.connector] || ['failed', ui('Connecteur inconnu')];
+  const model = MODEL_BADGE[status.model] || ['awaiting_approval', ui('Modèle non vérifié')];
   return `<span class="status ${connector[0]}" title="${esc(status.connector_detail)}">${esc(connector[1])}</span> <span class="status ${model[0]}" title="${esc(status.model_detail)}">${esc(model[1])}</span>`;
 }
 function skillChips(skills, attested = []) {
   return skills.length ? `<p class="team-skills">${skills.map(s => attested.includes(s)
-    ? `<span class="team-chip attested" title="Attestée par vous sur du travail accepté">✓ ${esc(s)}</span>`
-    : `<span class="team-chip" title="Déclarée, non attestée">${esc(s)}</span>`).join('')}</p>` : '<p class="muted">Aucune compétence déclarée.</p>';
+    ? ui`<span class="team-chip attested" title="Attestée par vous sur du travail accepté">✓ ${esc(s)}</span>`
+    : ui`<span class="team-chip" title="Déclarée, non attestée">${esc(s)}</span>`).join('')}</p>` : ui('<p class="muted">Aucune compétence déclarée.</p>');
 }
 function connectorDatalist() {
-  return `<datalist id="profile-connectors">${(state.data?.connectors || []).map(c => `<option value="${esc(c.id)}">${esc(agentName(c.id))}${c.enabled ? '' : ' · désactivé'}</option>`).join('')}</datalist>`;
+  return `<datalist id="profile-connectors">${(state.data?.connectors || []).map(c => `<option value="${esc(c.id)}">${esc(agentName(c.id))}${c.enabled ? '' : ui(' · désactivé')}</option>`).join('')}</datalist>`;
 }
 function modelDatalist(connector) {
   const models = state.data?.models_cache?.[connector] || [];
@@ -33,18 +33,18 @@ function profileCategories() {
   return [...new Set((teamsState.profiles || []).map(p => p.category || '').filter(Boolean))].sort((a, b) => a.localeCompare(b, 'fr'));
 }
 function profileCard(p) {
-  return `<article class="card team-profile-card" draggable="true" data-profile-card="${esc(p.id)}">
-    <div class="card-header"><h3>${p.icon ? esc(p.icon) + ' ' : ''}${esc(p.name)}</h3><span class="status ${p.archived ? 'disconnected' : 'operational'}">${p.archived ? 'Archivé' : TEAM_ROLES[p.role]}</span></div>
-    <p>${esc(p.description || 'Pas de description.')}</p>
+  return ui`<article class="card team-profile-card" draggable="true" data-profile-card="${esc(p.id)}">
+    <div class="card-header"><h3>${p.icon ? esc(p.icon) + ' ' : ''}${esc(p.name)}</h3><span class="status ${p.archived ? 'disconnected' : 'operational'}">${p.archived ? ui('Archivé') : TEAM_ROLES[p.role]}</span></div>
+    <p>${esc(p.description || ui('Pas de description.'))}</p>
     ${skillChips(p.skills, p.attested || [])}
-    <p><b>${esc(agentName(p.connector) || p.connector)}</b> · ${esc(p.model || 'modèle par défaut')}</p>
+    <p><b>${esc(agentName(p.connector) || p.connector)}</b> · ${esc(p.model || ui('modèle par défaut'))}</p>
     <p>${profileBadges(p.status)}</p>
-    ${(p.tools || []).length ? `<p><small>Outils : ${p.tools.map(id => esc((state.data?.plugins || []).find(x => x.id === id)?.name || id)).join(', ')}</small></p>` : ''}
-    ${(p.helpers || []).length ? `<p><small>Peut appeler : ${p.helpers.map(h => esc((teamsState.profiles || []).find(x => x.id === h.profile_id)?.name || 'profil supprimé')).join(', ')}</small></p>` : ''}
+    ${(p.tools || []).length ? ui`<p><small>Outils : ${p.tools.map(id => esc((state.data?.plugins || []).find(x => x.id === id)?.name || id)).join(', ')}</small></p>` : ''}
+    ${(p.helpers || []).length ? ui`<p><small>Peut appeler : ${p.helpers.map(h => esc((teamsState.profiles || []).find(x => x.id === h.profile_id)?.name || ui('profil supprimé'))).join(', ')}</small></p>` : ''}
     ${profileMethodsLine(p.id)}
     ${capabilityLine(p)}
     <small>Révision ${p.revision} · ${p.assignments.length} affectation(s) dans ${new Set(p.assignments.map(a => a.project_id)).size} projet(s)</small>
-    <div class="row-actions">${p.archived ? '' : `<button class="primary" data-profile-dm="${esc(p.id)}" title="Discussion privée, hors de tout projet">Écrire</button>`}<button class="secondary" data-profile-edit="${esc(p.id)}">Modifier</button><button class="secondary" data-profile-methods="${esc(p.id)}" title="Méthodes préférées ou à utiliser, et ses notes">Méthodes</button><button class="secondary" data-profile-duplicate="${esc(p.id)}">Dupliquer</button><button class="text-button" data-profile-history="${esc(p.id)}">Historique ↗</button><button class="text-button" data-profile-record="${esc(p.id)}">Bilan ↗</button><button class="text-button" data-profile-archive="${esc(p.id)}" data-archived="${p.archived ? 'false' : 'true'}">${p.archived ? 'Réactiver' : 'Archiver'}</button></div>
+    <div class="row-actions">${p.archived ? '' : ui`<button class="primary" data-profile-dm="${esc(p.id)}" title="Discussion privée, hors de tout projet">Écrire</button>`}<button class="secondary" data-profile-edit="${esc(p.id)}">Modifier</button><button class="secondary" data-profile-methods="${esc(p.id)}" title="Méthodes préférées ou à utiliser, et ses notes">Méthodes</button><button class="secondary" data-profile-duplicate="${esc(p.id)}">Dupliquer</button><button class="text-button" data-profile-history="${esc(p.id)}">Historique ↗</button><button class="text-button" data-profile-record="${esc(p.id)}">Bilan ↗</button><button class="text-button" data-profile-archive="${esc(p.id)}" data-archived="${p.archived ? 'false' : 'true'}">${p.archived ? ui('Réactiver') : ui('Archiver')}</button></div>
   </article>`;
 }
 async function renderAgentsPage() {
@@ -59,15 +59,15 @@ async function renderAgentsPage() {
   const categories = profileCategories();
   const count = list => `<span class="nav-count">${list.length}</span>`;
   const navButton = (key, label, list, drop) => `<button class="${filter === key ? 'selected' : ''}" data-library-filter="${esc(key)}" ${drop !== undefined ? `data-library-drop="${esc(drop)}"` : ''}>${label}${list ? count(list) : ''}</button>`;
-  const nav = `<nav aria-label="Bibliothèque">
-    ${navButton('all', 'Tous les agents', active)}
+  const nav = ui`<nav aria-label="Bibliothèque">
+    ${navButton('all', ui('Tous les agents'), active)}
     ${categories.map(c => navButton('cat:' + c, esc(c), active.filter(p => p.category === c), c)).join('')}
-    ${navButton('none', 'Sans catégorie', active.filter(p => !p.category), '')}
+    ${navButton('none', ui('Sans catégorie'), active.filter(p => !p.category), '')}
     <button class="nav-add" data-library-category-new>＋ Nouvelle catégorie</button>
     <span class="nav-label">MÉTHODES</span>
-    ${navButton('methods', 'Méthodes', methodState.list)}
+    ${navButton('methods', ui('Méthodes'), methodState.list)}
     <span class="nav-label">ARCHIVES</span>
-    ${navButton('archived', 'Profils archivés', result.profiles.filter(p => p.archived))}
+    ${navButton('archived', ui('Profils archivés'), result.profiles.filter(p => p.archived))}
   </nav>`;
   let heading, body;
   if (filter === 'methods') {
@@ -77,14 +77,14 @@ async function renderAgentsPage() {
     const pool = filter === 'archived' ? result.profiles.filter(p => p.archived)
       : filter === 'none' ? active.filter(p => !p.category)
       : filter.startsWith('cat:') ? active.filter(p => p.category === filter.slice(4)) : active;
-    const title = filter === 'all' ? 'Tous les agents' : filter === 'none' ? 'Sans catégorie' : filter === 'archived' ? 'Profils archivés' : filter.slice(4);
-    const rename = filter.startsWith('cat:') ? `<button class="secondary" data-library-category-rename="${esc(filter.slice(4))}">Renommer la catégorie</button>` : '';
-    heading = `<div class="page-intro"><div><h2>${esc(title)}</h2><p>Des profils réutilisables partout, comme des personnes : écrivez-leur directement, ou affectez-les à l’équipe d’un projet. Glissez une fiche sur une catégorie pour la ranger ; ranger ne crée pas de révision. Une compétence déclarée n’est pas une capacité vérifiée.</p></div><div class="row-actions"><button class="primary" data-profile-new>＋ Nouveau profil</button>${rename}</div></div>`;
+    const title = filter === 'all' ? ui('Tous les agents') : filter === 'none' ? ui('Sans catégorie') : filter === 'archived' ? ui('Profils archivés') : filter.slice(4);
+    const rename = filter.startsWith('cat:') ? ui`<button class="secondary" data-library-category-rename="${esc(filter.slice(4))}">Renommer la catégorie</button>` : '';
+    heading = ui`<div class="page-intro"><div><h2>${esc(title)}</h2><p>Des profils réutilisables partout, comme des personnes : écrivez-leur directement, ou affectez-les à l’équipe d’un projet. Glissez une fiche sur une catégorie pour la ranger ; ranger ne crée pas de révision. Une compétence déclarée n’est pas une capacité vérifiée.</p></div><div class="row-actions"><button class="primary" data-profile-new>＋ Nouveau profil</button>${rename}</div></div>`;
     const grouped = filter === 'all' && categories.length
-      ? [...categories.map(c => [c, pool.filter(p => p.category === c)]), ['Sans catégorie', pool.filter(p => !p.category)]].filter(([, list]) => list.length)
+      ? [...categories.map(c => [c, pool.filter(p => p.category === c)]), [ui('Sans catégorie'), pool.filter(p => !p.category)]].filter(([, list]) => list.length)
       : [[null, pool]];
     body = grouped.map(([label, list]) => `${label ? `<h3 class="library-group">${esc(label)} <small>${list.length}</small></h3>` : ''}<div class="card-grid">${list.map(profileCard).join('')}</div>`).join('')
-      || `<div class="empty-state">${filter === 'archived' ? 'Aucun profil archivé.' : filter === 'all' ? 'Aucun profil. Créez le chef de projet, puis ses leads et ses membres.' : 'Aucun profil ici. Glissez une fiche sur cette catégorie pour l’y ranger.'}</div>`;
+      || `<div class="empty-state">${filter === 'archived' ? ui('Aucun profil archivé.') : filter === 'all' ? ui('Aucun profil. Créez le chef de projet, puis ses leads et ses membres.') : ui('Aucun profil ici. Glissez une fiche sur cette catégorie pour l’y ranger.')}</div>`;
   }
   htmlIfChanged('page', `<div class="settings-layout library-layout">${nav}<section class="settings-content library-content">${heading}${body}</section></div>`);
 }
@@ -97,7 +97,7 @@ async function fileProfiles(ids, category) {
 
 function profileForm(profile) {
   const p = profile || {name: '', icon: '', role: 'member', description: '', skills: [], connector: (state.data?.connectors || []).find(c => c.enabled)?.id || 'codex', model: '', prompt: '', settings: {}, helpers: [], tools: []};
-  return `<div class="fields">
+  return ui`<div class="fields">
     <div class="two-fields">
       <label>Nom affiché<input name="name" value="${esc(p.name)}" maxlength="120" required autofocus></label>
       <label>Icône (emoji ou 1-2 caractères)<input name="icon" value="${esc(p.icon || '')}" maxlength="8" placeholder="🛠"></label>
@@ -113,7 +113,7 @@ function profileForm(profile) {
       <label>Modèle (vide = défaut du connecteur)<input name="model" id="profile-model" list="profile-models" value="${esc(p.model)}"></label>
     </div>${connectorDatalist()}${modelDatalist(p.connector)}
     <div class="row-actions"><button type="button" class="secondary" data-profile-catalog>Actualiser le catalogue du connecteur</button></div>
-    <p class="field-help" id="profile-status">${profile ? profileBadges(profile.status) : 'Le connecteur et le modèle sont vérifiés à l’enregistrement, puis affichés sur la fiche.'}</p>
+    <p class="field-help" id="profile-status">${profile ? profileBadges(profile.status) : ui('Le connecteur et le modèle sont vérifiés à l’enregistrement, puis affichés sur la fiche.')}</p>
     <label>Consignes initiales / préprompt<textarea name="prompt" rows="6" maxlength="20000">${esc(p.prompt)}</textarea></label>
     <div class="two-fields">
       <label>Effort de raisonnement (si le connecteur le propose)<input name="effort" value="${esc(p.settings.effort || '')}" placeholder="vide = défaut"></label>
@@ -122,7 +122,7 @@ function profileForm(profile) {
     <label>Spécialistes que cet agent peut appeler pendant son travail
       <select name="helpers" multiple size="4">${(teamsState.profiles || []).filter(x => !x.archived && x.id !== profile?.id).map(x => `<option value="${esc(x.id)}" ${(p.helpers || []).some(h => h.profile_id === x.id) ? 'selected' : ''}>${x.icon ? esc(x.icon) + ' ' : ''}${esc(x.name)} · ${esc(x.connector)}</option>`).join('')}</select></label>
     <label>Outils (plugins) que cet agent peut utiliser directement
-      <select name="tools" multiple size="3">${(state.data?.plugins || []).filter(x => x.type === 'mcp').map(x => `<option value="${esc(x.id)}" ${(p.tools || []).includes(x.id) ? 'selected' : ''}>${esc(x.name || x.id)}${x.enabled ? '' : ' · désactivé'}</option>`).join('') || '<option disabled>Aucun plugin MCP configuré</option>'}</select></label>
+      <select name="tools" multiple size="3">${(state.data?.plugins || []).filter(x => x.type === 'mcp').map(x => `<option value="${esc(x.id)}" ${(p.tools || []).includes(x.id) ? 'selected' : ''}>${esc(x.name || x.id)}${x.enabled ? '' : ui(' · désactivé')}</option>`).join('') || ui('<option disabled>Aucun plugin MCP configuré</option>')}</select></label>
     <p class="field-help">Par exemple un serveur MCP Blender pour un modeleur. Un outil en lecture s’utilise librement ; un outil qui agit passe par votre autorisation, comme un outil natif. Chaque appel est enregistré. Déclarer un outil est une permission : CyAI ne vérifie pas que le plugin fait ce que son nom annonce.</p>
     <p class="field-help">Pendant son exécution, cet agent verra un outil pour solliciter ces spécialistes — par exemple faire produire des images de référence avant de modéliser. Chaque appel est enregistré dans la chaîne, un spécialiste ne peut pas en appeler un autre, et le nombre d’appels par étape est plafonné. Sa réponse est un compte rendu, pas une preuve.</p>
     <label>Note de révision (facultative)<input name="note" maxlength="400" placeholder="Ce qui change et pourquoi"></label>
@@ -131,7 +131,7 @@ function profileForm(profile) {
 }
 
 function openProfileDialog(profile) {
-  openDialog(profile ? 'Modifier le profil' : 'Nouveau profil d’agent', profileForm(profile), async form => {
+  openDialog(profile ? ui('Modifier le profil') : ui('Nouveau profil d’agent'), profileForm(profile), async form => {
     const values = Object.fromEntries(form);
     const helpers = form.getAll('helpers').map(id => ({profile_id: id,
       purpose: (profile?.helpers || []).find(h => h.profile_id === id)?.purpose || ''}));
@@ -141,14 +141,14 @@ function openProfileDialog(profile) {
     const result = await action('agent_profile_save', {...(profile ? {id: profile.id} : {}), name: values.name, role: values.role,
       icon: values.icon, category: values.category.trim(), description: values.description, skills: values.skills, connector: values.connector,
       model: values.model, prompt: values.prompt, settings, helpers, tools: form.getAll('tools'), note: values.note});
-    toast(result.notice || 'Profil enregistré · révision ' + result.revision + '.');
-  }, profile ? 'Enregistrer la révision' : 'Créer le profil');
+    toast(result.notice || ui('Profil enregistré · révision ') + result.revision + '.');
+  }, profile ? ui('Enregistrer la révision') : ui('Créer le profil'));
 }
 
 // --- project team ---------------------------------------------------------------------------
 
 function memberById(id) { return (teamsState.team?.members || []).find(m => m.id === id); }
-function override(member, field) { return (member.overridden || []).includes(field) ? ' <span class="status awaiting_approval">modifié ici</span>' : ''; }
+function override(member, field) { return (member.overridden || []).includes(field) ? ui(' <span class="status awaiting_approval">modifié ici</span>') : ''; }
 function eligibleManagers(exclude) {
   const members = teamsState.team?.members || [];
   const banned = new Set();
@@ -161,24 +161,24 @@ function eligibleManagers(exclude) {
 function isConsultant(id) { return memberById(id)?.role === 'consultant';
 }
 function managerOptions(selected, exclude) {
-  return `<option value="">Aucun responsable (à compléter)</option>` + eligibleManagers(exclude).map(m =>
+  return ui`<option value="">Aucun responsable (à compléter)</option>` + eligibleManagers(exclude).map(m =>
     `<option value="${esc(m.id)}" ${m.id === selected ? 'selected' : ''}>${esc(m.definition.name)} · ${TEAM_ROLES[m.role]}</option>`).join('');
 }
 function memberCardHTML(member, issues) {
   const own = issues.filter(i => i.member_id === member.id);
   const subordinates = (teamsState.team.members || []).filter(m => m.active && m.manager_id === member.id);
-  return `<div class="team-node ${teamsState.focus === member.id ? 'focused' : ''}" id="team-node-${esc(member.id)}">
-    <div class="team-node-head"><strong>${member.definition.icon ? esc(member.definition.icon) + ' ' : ''}${esc(member.definition.name)}</strong><span class="status ${member.role === 'chief' ? 'operational' : 'connected'}">${TEAM_ROLES[member.role]}</span>${member.active ? '' : '<span class="status disconnected">Retiré</span>'}</div>
-    <small>${esc(agentName(member.definition.connector) || member.definition.connector)} · ${esc(member.definition.model || 'modèle par défaut')} · révision figée ${member.profile_revision}${member.update_available ? ' · révision ' + member.profile_revision_current + ' disponible' : ''}${member.profile_archived ? ' · profil archivé' : ''}${member.override_labels?.length ? ' · modifié ici : ' + member.override_labels.map(esc).join(', ') : ''}</small>
+  return ui`<div class="team-node ${teamsState.focus === member.id ? 'focused' : ''}" id="team-node-${esc(member.id)}">
+    <div class="team-node-head"><strong>${member.definition.icon ? esc(member.definition.icon) + ' ' : ''}${esc(member.definition.name)}</strong><span class="status ${member.role === 'chief' ? 'operational' : 'connected'}">${TEAM_ROLES[member.role]}</span>${member.active ? '' : ui('<span class="status disconnected">Retiré</span>')}</div>
+    <small>${esc(agentName(member.definition.connector) || member.definition.connector)} · ${esc(member.definition.model || ui('modèle par défaut'))} · révision figée ${member.profile_revision}${member.update_available ? ui(' · révision ') + member.profile_revision_current + ' disponible' : ''}${member.profile_archived ? ui(' · profil archivé') : ''}${member.override_labels?.length ? ui(' · modifié ici : ') + member.override_labels.map(esc).join(', ') : ''}</small>
     <p>${profileBadges(member.status)}</p>
-    <p class="team-responsibility">${esc(member.responsibility || 'Responsabilité locale à préciser.')}</p>
+    <p class="team-responsibility">${esc(member.responsibility || ui('Responsabilité locale à préciser.'))}</p>
     ${own.map(i => `<p class="team-issue">⚠ ${esc(i.message)}</p>`).join('')}
     <div class="row-actions">
       <button class="secondary" data-member-edit="${esc(member.id)}">Modifier</button>
-      ${member.active ? `<button class="secondary" data-member-chat="${esc(member.id)}">Discuter ↗</button>` : ''}
-      ${member.update_available ? `<button class="secondary" data-member-revision="${esc(member.id)}">Voir la révision ${member.profile_revision_current}</button>` : ''}
-      ${member.active ? `<button class="text-button danger" data-member-remove="${esc(member.id)}" data-subordinates="${subordinates.length}">Retirer</button>`
-                      : `<button class="text-button" data-member-restore="${esc(member.id)}">Réintégrer</button>`}
+      ${member.active ? ui`<button class="secondary" data-member-chat="${esc(member.id)}">Discuter ↗</button>` : ''}
+      ${member.update_available ? ui`<button class="secondary" data-member-revision="${esc(member.id)}">Voir la révision ${member.profile_revision_current}</button>` : ''}
+      ${member.active ? ui`<button class="text-button danger" data-member-remove="${esc(member.id)}" data-subordinates="${subordinates.length}">Retirer</button>`
+                      : ui`<button class="text-button" data-member-restore="${esc(member.id)}">Réintégrer</button>`}
     </div></div>`;
 }
 function teamTreeHTML(members, issues) {
@@ -197,9 +197,9 @@ function teamTreeHTML(members, issues) {
   const orphans = active.filter(m => !rendered.has(m.id));
   if (orphans.length) html += orphans.map(m => `<li>${memberCardHTML(m, issues)}</li>`).join('');
   const retired = members.filter(m => !m.active);
-  const advisory = consultants.length ? `<div class="team-panel"><h4>Consultants · sollicités à la tâche</h4><p>Hors hiérarchie : ils ne dirigent personne et ne rendent pas compte à un responsable. On les sollicite sur une tâche précise pour ce qu’ils font mieux. La sollicitation elle-même arrive avec le board.</p><ul class="team-tree">${consultants.map(m => `<li>${memberCardHTML(m, issues)}</li>`).join('')}</ul></div>` : '';
-  return `<ul class="team-tree">${html || '<li class="empty-state">Aucun agent actif. Commencez par le chef de projet.</li>'}</ul>` + advisory +
-    (retired.length ? `<details class="event"><summary>${retired.length} agent(s) retiré(s)</summary><ul class="team-tree">${retired.map(m => `<li>${memberCardHTML(m, issues)}</li>`).join('')}</ul></details>` : '');
+  const advisory = consultants.length ? ui`<div class="team-panel"><h4>Consultants · sollicités à la tâche</h4><p>Hors hiérarchie : ils ne dirigent personne et ne rendent pas compte à un responsable. On les sollicite sur une tâche précise pour ce qu’ils font mieux. La sollicitation elle-même arrive avec le board.</p><ul class="team-tree">${consultants.map(m => `<li>${memberCardHTML(m, issues)}</li>`).join('')}</ul></div>` : '';
+  return `<ul class="team-tree">${html || ui('<li class="empty-state">Aucun agent actif. Commencez par le chef de projet.</li>')}</ul>` + advisory +
+    (retired.length ? ui`<details class="event"><summary>${retired.length} agent(s) retiré(s)</summary><ul class="team-tree">${retired.map(m => `<li>${memberCardHTML(m, issues)}</li>`).join('')}</ul></details>` : '');
 }
 
 async function teamTabHTML(project=state.project) {
@@ -208,20 +208,20 @@ async function teamTabHTML(project=state.project) {
   teamsState.team = data;
   const board = `<p class="field-help">${esc(data.notice)}</p>`;
   if (!data.team) {
-    return `<div class="page-heading"><div><small>ÉQUIPE DU PROJET</small><h3>Aucune équipe pour ce projet</h3></div></div>
+    return ui`<div class="page-heading"><div><small>ÉQUIPE DU PROJET</small><h3>Aucune équipe pour ce projet</h3></div></div>
       <p>Composez une équipe à partir de la bibliothèque globale : un chef de projet, des leads et des membres. La composition est enregistrée telle quelle ; aucune conversation ni exécution n’est créée.</p>
-      <div class="row-actions"><button class="primary" data-team-create>Créer l’équipe</button><button class="secondary" data-view="agents">Ouvrir la bibliothèque d’agents</button>${data.templates.length ? '<button class="secondary" data-team-apply-template>Appliquer un modèle d’équipe</button>' : ''}</div>${board}`;
+      <div class="row-actions"><button class="primary" data-team-create>Créer l’équipe</button><button class="secondary" data-view="agents">Ouvrir la bibliothèque d’agents</button>${data.templates.length ? ui('<button class="secondary" data-team-apply-template>Appliquer un modèle d’équipe</button>') : ''}</div>${board}`;
   }
   const ready = data.team.status === 'ready' && !data.issues.length;
-  const problems = data.issues.length ? `<div class="team-panel"><h4>À corriger avant de déclarer l’équipe prête</h4><ul class="team-problems">${data.issues.map(i =>
-    `<li>${esc(i.message)} ${i.member_id ? `<button class="text-button" data-member-edit="${esc(i.member_id)}">Corriger ↗</button>` : `<button class="text-button" data-team-rename>Corriger ↗</button>`}</li>`).join('')}</ul></div>`
-    : '<div class="team-panel"><h4>Composition valide</h4><p>Chaque branche remonte au chef de projet. « Prête » décrit la configuration, pas une exécution.</p></div>';
-  const warnings = data.warnings.length ? `<details class="event"><summary>${data.warnings.length} avertissement(s) d’exécution · n’empêchent pas la configuration</summary><ul>${data.warnings.map(w => `<li>${esc(w.message)}</li>`).join('')}</ul><p class="field-help">Ces points concernent une future exécution. Ils ne bloquent ni l’enregistrement ni la déclaration « prête », et ne valent pas un statut « prêt à exécuter ».</p></details>` : '';
-  return `<div class="page-heading"><div><small>ÉQUIPE DU PROJET</small><h3>${esc(data.team.name)}</h3></div><span class="status ${ready ? 'succeeded' : 'awaiting_approval'}">${ready ? 'Composition prête' : 'Brouillon'}</span></div>
+  const problems = data.issues.length ? ui`<div class="team-panel"><h4>À corriger avant de déclarer l’équipe prête</h4><ul class="team-problems">${data.issues.map(i =>
+    `<li>${esc(i.message)} ${i.member_id ? ui`<button class="text-button" data-member-edit="${esc(i.member_id)}">Corriger ↗</button>` : ui`<button class="text-button" data-team-rename>Corriger ↗</button>`}</li>`).join('')}</ul></div>`
+    : ui('<div class="team-panel"><h4>Composition valide</h4><p>Chaque branche remonte au chef de projet. « Prête » décrit la configuration, pas une exécution.</p></div>');
+  const warnings = data.warnings.length ? ui`<details class="event"><summary>${data.warnings.length} avertissement(s) d’exécution · n’empêchent pas la configuration</summary><ul>${data.warnings.map(w => `<li>${esc(w.message)}</li>`).join('')}</ul><p class="field-help">Ces points concernent une future exécution. Ils ne bloquent ni l’enregistrement ni la déclaration « prête », et ne valent pas un statut « prêt à exécuter ».</p></details>` : '';
+  return ui`<div class="page-heading"><div><small>ÉQUIPE DU PROJET</small><h3>${esc(data.team.name)}</h3></div><span class="status ${ready ? 'succeeded' : 'awaiting_approval'}">${ready ? ui('Composition prête') : ui('Brouillon')}</span></div>
     <div class="row-actions">
       <button class="primary" data-team-add>＋ Ajouter un agent</button>
       <button class="secondary" data-team-rename>Renommer</button>
-      ${ready ? '<button class="secondary" data-team-status="draft">Repasser en brouillon</button>' : '<button class="secondary" data-team-status="ready">Déclarer l’équipe prête</button>'}
+      ${ready ? ui('<button class="secondary" data-team-status="draft">Repasser en brouillon</button>') : ui('<button class="secondary" data-team-status="ready">Déclarer l’équipe prête</button>')}
       <button class="secondary" data-team-save-template>Enregistrer comme modèle</button>
       <button class="secondary" data-team-apply-template>Appliquer un modèle</button>
       <button class="text-button" data-view="agents">Bibliothèque d’agents ↗</button>
@@ -237,20 +237,20 @@ async function teamLearningHTML(project=state.project) {
   const memory = await action('agent_memory_list', {scope: 'member', project_id: project});
   const proposals = (await action('improvement_list', {project_id: project})).proposals;
   const pending = proposals.filter(p => p.status === 'proposed');
-  return `<details class="event" ${pending.length ? 'open' : ''}><summary>Mémoire des agents et propositions · ${memory.entries.length} observation(s), ${pending.length} à décider</summary>
+  return ui`<details class="event" ${pending.length ? 'open' : ''}><summary>Mémoire des agents et propositions · ${memory.entries.length} observation(s), ${pending.length} à décider</summary>
     <p class="field-help">${esc(memory.notice)}</p>
     <h4>Observations locales</h4>
     <p class="field-help">Ce qu’un agent a appris <b>dans ce projet</b>. Ces notes ne partent jamais ailleurs toutes seules : il faut une proposition que vous adoptez.</p>
-    ${memory.entries.map(e => `<p class="board-execution"><b>${esc(e.member)}</b>${e.category ? ' · ' + esc(e.category) : ''} · ${date(e.created_at)}<br>${esc(e.content)}<br><small>${e.source_ids.length} source(s) · <button type="button" class="text-button" data-memory-edit="${esc(e.id)}" data-member="${esc(e.member_id)}">Modifier</button> · <button type="button" class="text-button danger" data-memory-delete="${esc(e.id)}">Supprimer</button></small></p>`).join('') || '<p class="muted">Aucune observation enregistrée.</p>'}
+    ${memory.entries.map(e => ui`<p class="board-execution"><b>${esc(e.member)}</b>${e.category ? ' · ' + esc(e.category) : ''} · ${date(e.created_at)}<br>${esc(e.content)}<br><small>${e.source_ids.length} source(s) · <button type="button" class="text-button" data-memory-edit="${esc(e.id)}" data-member="${esc(e.member_id)}">Modifier</button> · <button type="button" class="text-button danger" data-memory-delete="${esc(e.id)}">Supprimer</button></small></p>`).join('') || ui('<p class="muted">Aucune observation enregistrée.</p>')}
     <div class="row-actions"><button type="button" class="secondary" data-memory-new>Ajouter une observation</button><button type="button" class="secondary" data-proposal-new>Proposer une amélioration</button></div>
     <h4>Propositions d’amélioration</h4>
-    ${proposals.map(p => `<details class="event"><summary>${esc(p.profile)} · ${esc(p.kind_label)} · ${esc(p.status_label)}</summary>
+    ${proposals.map(p => ui`<details class="event"><summary>${esc(p.profile)} · ${esc(p.kind_label)} · ${esc(p.status_label)}</summary>
       <p><b>Motif</b><br>${esc(p.rationale)}</p>
-      ${p.current_value ? `<p><b>Actuel</b></p><pre class="context-pre">${esc(p.current_value)}</pre>` : ''}
+      ${p.current_value ? ui`<p><b>Actuel</b></p><pre class="context-pre">${esc(p.current_value)}</pre>` : ''}
       <p><b>Proposé</b></p><pre class="context-pre">${esc(p.proposed_value)}</pre>
-      <small>${p.source_ids.length} source(s)${p.source_ids.length === 1 ? ' — une seule : vérifiez qu’il ne s’agit pas d’un incident isolé' : ''}${p.decided_at ? ' · décidée le ' + date(p.decided_at) : ''}${p.revision ? ' · révision ' + p.revision : ''}</small>
+      <small>${p.source_ids.length} source(s)${p.source_ids.length === 1 ? ui(' — une seule : vérifiez qu’il ne s’agit pas d’un incident isolé') : ''}${p.decided_at ? ui(' · décidée le ') + date(p.decided_at) : ''}${p.revision ? ui(' · révision ') + p.revision : ''}</small>
       ${p.decision ? `<p><small>${esc(p.decision)}</small></p>` : ''}
-      ${p.status === 'proposed' ? `<div class="row-actions"><button type="button" class="primary" data-proposal-decide="${esc(p.id)}" data-adopt="true">Adopter</button><button type="button" class="secondary" data-proposal-decide="${esc(p.id)}" data-adopt="false">Écarter</button></div>` : ''}</details>`).join('') || '<p class="muted">Aucune proposition.</p>'}
+      ${p.status === 'proposed' ? ui`<div class="row-actions"><button type="button" class="primary" data-proposal-decide="${esc(p.id)}" data-adopt="true">Adopter</button><button type="button" class="secondary" data-proposal-decide="${esc(p.id)}" data-adopt="false">Écarter</button></div>` : ''}</details>`).join('') || ui('<p class="muted">Aucune proposition.</p>')}
   </details>`;
 }
 
@@ -258,8 +258,8 @@ function openMemberDialog(id) {
   const member = memberById(id);
   if (!member) return;
   const subordinates = teamsState.team.members.filter(m => m.active && m.manager_id === id);
-  openDialog('Affectation · ' + member.definition.name, `<div class="fields">
-    <p>Profil <b>${esc(member.profile_name)}</b>, révision figée ${member.profile_revision}${member.profile_archived ? ' · profil archivé dans la bibliothèque' : ''}.</p>
+  openDialog(ui('Affectation · ') + member.definition.name, ui`<div class="fields">
+    <p>Profil <b>${esc(member.profile_name)}</b>, révision figée ${member.profile_revision}${member.profile_archived ? ui(' · profil archivé dans la bibliothèque') : ''}.</p>
     <label>Rôle dans cette équipe<select name="role">${Object.entries(TEAM_ROLES).map(([k, v]) => `<option value="${k}" ${k === member.role ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
     <label>Responsable<select name="manager_id">${managerOptions(member.manager_id, member.id)}</select></label>
     <p class="field-help">Un chef de projet n’a pas de responsable. Seuls un chef ou un lead peuvent en diriger d’autres, et une boucle hiérarchique est refusée par le service.</p>
@@ -289,10 +289,10 @@ function openMemberDialog(id) {
         <select name="o_tools" multiple size="3">${(state.data?.plugins || []).filter(x => x.type === 'mcp').map(x => `<option value="${esc(x.id)}" ${(member.definition.tools || []).includes(x.id) ? 'selected' : ''}>${esc(x.name || x.id)}</option>`).join('')}</select></label>
       <label>Spécialistes appelables${override(member, 'helpers')}
         <select name="o_helpers" multiple size="4">${(teamsState.team?.library || []).filter(x => !x.archived).map(x => `<option value="${esc(x.id)}" ${(member.definition.helpers || []).some(h => h.profile_id === x.id) ? 'selected' : ''}>${esc(x.name)} · ${esc(x.connector)}</option>`).join('')}</select></label>
-      ${member.overridden?.length ? `<label><span><input type="checkbox" name="reset"> Effacer mes modifications locales et revenir à la révision figée ${member.profile_revision}</span></label>` : ''}
+      ${member.overridden?.length ? ui`<label><span><input type="checkbox" name="reset"> Effacer mes modifications locales et revenir à la révision figée ${member.profile_revision}</span></label>` : ''}
     </details>
-    ${subordinates.length ? `<label>Si cet agent perd son autorité, réaffecter ses ${subordinates.length} subordonné(s) à<select name="reassign_to"><option value="">Personne (équipe explicitement incomplète)</option>${eligibleManagers(member.id).map(m => `<option value="${esc(m.id)}">${esc(m.definition.name)}</option>`).join('')}</select></label>` : ''}
-    <details><summary>Consignes initiales figées pour cette affectation</summary><pre class="context-pre">${esc(member.definition.prompt || 'Aucune consigne enregistrée dans cette révision.')}</pre></details>
+    ${subordinates.length ? ui`<label>Si cet agent perd son autorité, réaffecter ses ${subordinates.length} subordonné(s) à<select name="reassign_to"><option value="">Personne (équipe explicitement incomplète)</option>${eligibleManagers(member.id).map(m => `<option value="${esc(m.id)}">${esc(m.definition.name)}</option>`).join('')}</select></label>` : ''}
+    <details><summary>Consignes initiales figées pour cette affectation</summary><pre class="context-pre">${esc(member.definition.prompt || ui('Aucune consigne enregistrée dans cette révision.'))}</pre></details>
   </div>`, async form => {
     const values = Object.fromEntries(form);
     const settings = {};
@@ -313,9 +313,9 @@ function openMemberDialog(id) {
 
 function openAddMemberDialog() {
   const library = (teamsState.team?.library || []).filter(p => !p.archived);
-  if (!library.length) { openDialog('Aucun profil disponible', '<p>La bibliothèque globale est vide ou entièrement archivée. Créez un profil d’agent avant de composer l’équipe.</p><div class="row-actions"><button type="button" class="secondary" data-view="agents">Ouvrir la bibliothèque ↗</button></div>', null); return; }
-  openDialog('Ajouter un agent à l’équipe', `<div class="fields">
-    <label>Profil global<select name="profile_id">${library.map(p => `<option value="${esc(p.id)}">${esc(p.name)} · ${TEAM_ROLES[p.role]} · ${esc(p.connector)}${p.model ? ' / ' + esc(p.model) : ''} · révision ${p.revision}</option>`).join('')}</select></label>
+  if (!library.length) { openDialog(ui('Aucun profil disponible'), ui('<p>La bibliothèque globale est vide ou entièrement archivée. Créez un profil d’agent avant de composer l’équipe.</p><div class="row-actions"><button type="button" class="secondary" data-view="agents">Ouvrir la bibliothèque ↗</button></div>'), null); return; }
+  openDialog(ui('Ajouter un agent à l’équipe'), ui`<div class="fields">
+    <label>Profil global<select name="profile_id">${library.map(p => ui`<option value="${esc(p.id)}">${esc(p.name)} · ${TEAM_ROLES[p.role]} · ${esc(p.connector)}${p.model ? ' / ' + esc(p.model) : ''} · révision ${p.revision}</option>`).join('')}</select></label>
     <label>Rôle dans cette équipe<select name="role"><option value="">Rôle conseillé du profil</option>${Object.entries(TEAM_ROLES).map(([k, v]) => `<option value="${k}">${v}</option>`).join('')}</select></label>
     <label>Responsable<select name="manager_id">${managerOptions(null, null)}</select></label>
     <label>Responsabilité locale<textarea name="responsibility" rows="3" placeholder="Ce dont cet agent répond dans ce projet"></textarea></label>
@@ -326,49 +326,49 @@ function openAddMemberDialog() {
       manager_id: values.manager_id, responsibility: values.responsibility});
     teamsState.focus = result.id;
     toast(result.notice);
-  }, 'Affecter au projet');
+  }, ui('Affecter au projet'));
 }
 
 async function openRevisionDialog(id) {
   const preview = await action('team_revision_preview', {project_id: state.project, id});
   const member = memberById(id);
   const rows = preview.changes.map(c => `<tr><td>${esc(c.label)}</td><td><pre class="context-pre">${esc(JSON.stringify(c.from, null, 1))}</pre></td><td><pre class="context-pre">${esc(JSON.stringify(c.to, null, 1))}</pre></td></tr>`).join('');
-  openDialog('Révision ' + preview.from_revision + ' → ' + preview.to_revision + ' · ' + member.definition.name,
-    `<p>${esc(preview.notice)}</p><div class="table-scroll"><table class="project-table"><thead><tr><th>Champ</th><th>Révision figée ${preview.from_revision}</th><th>Révision ${preview.to_revision}</th></tr></thead><tbody>${rows || '<tr><td colspan="3">Aucune différence entre ces deux révisions.</td></tr>'}</tbody></table></div><p class="field-help">L’adoption ne concerne que cette affectation. Les autres projets gardent la révision qu’ils utilisent.</p>`,
+  openDialog(ui('Révision ') + preview.from_revision + ' → ' + preview.to_revision + ' · ' + member.definition.name,
+    ui`<p>${esc(preview.notice)}</p><div class="table-scroll"><table class="project-table"><thead><tr><th>Champ</th><th>Révision figée ${preview.from_revision}</th><th>Révision ${preview.to_revision}</th></tr></thead><tbody>${rows || ui('<tr><td colspan="3">Aucune différence entre ces deux révisions.</td></tr>')}</tbody></table></div><p class="field-help">L’adoption ne concerne que cette affectation. Les autres projets gardent la révision qu’ils utilisent.</p>`,
     async () => { const r = await action('team_adopt_revision', {project_id: state.project, id, revision: preview.to_revision}); teamsState.focus = id; toast(r.notice); },
-    'Adopter la révision ' + preview.to_revision);
+    ui('Adopter la révision ') + preview.to_revision);
 }
 
 function openRemoveDialog(id, subordinates) {
   const member = memberById(id);
-  openDialog('Retirer ' + member.definition.name, `<div class="fields">
+  openDialog(ui('Retirer ') + member.definition.name, ui`<div class="fields">
     <p>L’affectation est conservée et réintégrable ; elle n’est pas supprimée de l’historique.</p>
-    ${subordinates ? `<label>Réaffecter ses ${subordinates} subordonné(s) à<select name="reassign_to"><option value="">Personne : laisser l’équipe explicitement incomplète</option>${eligibleManagers(id).map(m => `<option value="${esc(m.id)}">${esc(m.definition.name)} · ${TEAM_ROLES[m.role]}</option>`).join('')}</select></label>` : ''}
+    ${subordinates ? ui`<label>Réaffecter ses ${subordinates} subordonné(s) à<select name="reassign_to"><option value="">Personne : laisser l’équipe explicitement incomplète</option>${eligibleManagers(id).map(m => `<option value="${esc(m.id)}">${esc(m.definition.name)} · ${TEAM_ROLES[m.role]}</option>`).join('')}</select></label>` : ''}
     <label><span><input type="checkbox" name="delete"> Supprimer définitivement cette affectation de la composition</span></label>
   </div>`, async form => {
     const values = Object.fromEntries(form);
     const r = await action('team_remove_member', {project_id: state.project, id, reassign_to: values.reassign_to || '', acknowledged: true, delete: form.has('delete')});
     toast(r.notice);
-  }, 'Retirer');
+  }, ui('Retirer'));
 }
 
 function openTemplateDialogs(mode) {
   if (mode === 'save') {
-    openDialog('Enregistrer la composition comme modèle', `<div class="fields">
+    openDialog(ui('Enregistrer la composition comme modèle'), ui`<div class="fields">
       <label>Nom du modèle<input name="name" required autofocus maxlength="120" value="${esc(teamsState.team.team.name)}"></label>
       <label>Description<textarea name="description" rows="2" maxlength="2000"></textarea></label>
       <p class="field-help">Le modèle reprend profils, révisions, rôles, responsabilités et liens hiérarchiques. Il ne copie ni tâches, ni discussions, ni sessions natives, ni mémoire du projet.</p></div>`,
-      async form => { const r = await action('team_save_template', {project_id: state.project, ...Object.fromEntries(form)}); toast(r.notice); }, 'Enregistrer le modèle');
+      async form => { const r = await action('team_save_template', {project_id: state.project, ...Object.fromEntries(form)}); toast(r.notice); }, ui('Enregistrer le modèle'));
     return;
   }
   const templates = teamsState.team.templates || [];
-  if (!templates.length) { openDialog('Aucun modèle d’équipe', '<p>Enregistrez d’abord une composition comme modèle depuis un projet.</p>', null); return; }
+  if (!templates.length) { openDialog(ui('Aucun modèle d’équipe'), ui('<p>Enregistrez d’abord une composition comme modèle depuis un projet.</p>'), null); return; }
   const occupied = (teamsState.team.members || []).length;
-  openDialog('Appliquer un modèle d’équipe', `<div class="fields">
+  openDialog(ui('Appliquer un modèle d’équipe'), ui`<div class="fields">
     <label>Modèle<select name="template_id">${templates.map(t => `<option value="${esc(t.id)}">${esc(t.name)} · ${t.composition.members.length} agent(s)</option>`).join('')}</select></label>
-    ${occupied ? `<label><span><input type="checkbox" name="replace" required> Remplacer les ${occupied} affectation(s) actuelles de ce projet</span></label>` : ''}
+    ${occupied ? ui`<label><span><input type="checkbox" name="replace" required> Remplacer les ${occupied} affectation(s) actuelles de ce projet</span></label>` : ''}
     <p class="field-help">De nouveaux identifiants d’affectation sont générés et la hiérarchie est reconstruite. Rien n’est importé du projet d’origine en dehors de la composition.</p></div>`,
-    async form => { const r = await action('team_apply_template', {project_id: state.project, template_id: form.get('template_id'), replace: form.has('replace')}); toast(r.notice); }, 'Appliquer');
+    async form => { const r = await action('team_apply_template', {project_id: state.project, template_id: form.get('template_id'), replace: form.has('replace')}); toast(r.notice); }, ui('Appliquer'));
 }
 
 // --- delegated actions ----------------------------------------------------------------------
@@ -387,59 +387,59 @@ document.addEventListener('click', async e => {
       toast(r.notice); await refresh(true); await selectConversation(r.id);
     }
     if (button.hasAttribute('data-library-category-new')) {
-      openDialog('Nouvelle catégorie', `<div class="fields"><label>Nom<input name="name" maxlength="60" required autofocus placeholder="3D, Recherche, Code…"></label>
+      openDialog(ui('Nouvelle catégorie'), ui`<div class="fields"><label>Nom<input name="name" maxlength="60" required autofocus placeholder="3D, Recherche, Code…"></label>
         <fieldset class="profile-picks"><legend>Profils à y ranger</legend>${(teamsState.profiles || []).filter(p => !p.archived).map(p => `<label><input type="checkbox" name="ids" value="${esc(p.id)}"> ${p.icon ? esc(p.icon) + ' ' : ''}${esc(p.name)}${p.category ? ' <small>(' + esc(p.category) + ')</small>' : ''}</label>`).join('')}</fieldset>
         <p class="field-help">Une catégorie existe tant qu’un profil y est rangé. Ranger ne crée pas de révision.</p></div>`,
         async form => {
           const name = form.get('name').trim(), ids = form.getAll('ids');
-          if (!ids.length) throw new Error('Choisissez au moins un profil : une catégorie vide ne serait pas conservée.');
-          await fileProfiles(ids, name); teamsState.libraryFilter = 'cat:' + name; toast('Catégorie « ' + name + ' » créée.');
-        }, 'Créer');
+          if (!ids.length) throw new Error(ui('Choisissez au moins un profil : une catégorie vide ne serait pas conservée.'));
+          await fileProfiles(ids, name); teamsState.libraryFilter = 'cat:' + name; toast(ui('Catégorie « ') + name + ui(' » créée.'));
+        }, ui('Créer'));
     }
     if (d.libraryCategoryRename) {
       const old = d.libraryCategoryRename;
-      openDialog('Renommer « ' + old + ' »', `<label>Nouveau nom (vide pour retirer la catégorie)<input name="name" maxlength="60" value="${esc(old)}"></label>`,
+      openDialog(ui('Renommer « ') + old + ' »', ui`<label>Nouveau nom (vide pour retirer la catégorie)<input name="name" maxlength="60" value="${esc(old)}"></label>`,
         async form => {
           const name = form.get('name').trim();
           await fileProfiles((teamsState.profiles || []).filter(p => p.category === old).map(p => p.id), name);
           teamsState.libraryFilter = name ? 'cat:' + name : 'none';
-        }, 'Renommer');
+        }, ui('Renommer'));
     }
     if (d.profileEdit) openProfileDialog(await action('agent_profile_get', {id: d.profileEdit}));
     if (d.profileDuplicate) {
       const profile = await action('agent_profile_get', {id: d.profileDuplicate});
-      openDialog('Dupliquer ' + profile.name, `<p>La copie est un profil indépendant : elle ne partage ni révisions, ni affectations, ni conversation avec l’original.</p><label>Nom de la copie<input name="name" value="${esc(profile.name + ' (copie)')}" required autofocus></label>`,
-        async form => { const r = await action('agent_profile_duplicate', {id: profile.id, name: form.get('name')}); toast(r.notice); }, 'Dupliquer');
+      openDialog(ui('Dupliquer ') + profile.name, ui`<p>La copie est un profil indépendant : elle ne partage ni révisions, ni affectations, ni conversation avec l’original.</p><label>Nom de la copie<input name="name" value="${esc(profile.name + ' (copie)')}" required autofocus></label>`,
+        async form => { const r = await action('agent_profile_duplicate', {id: profile.id, name: form.get('name')}); toast(r.notice); }, ui('Dupliquer'));
     }
     if (d.profileHistory) {
       const profile = await action('agent_profile_get', {id: d.profileHistory});
-      openDialog('Historique des révisions · ' + profile.name, `<p>Révision courante : ${profile.revision}. Les affectations gardent la révision qu’elles ont figée.</p>` +
-        profile.revisions.map(r => `<details class="event"${r.revision === profile.revision ? ' open' : ''}><summary>Révision ${r.revision} · ${date(r.created_at)}${r.note ? ' · ' + esc(r.note) : ''}</summary><pre class="context-pre">${esc(JSON.stringify(r.definition, null, 2))}</pre></details>`).join('') +
-        (profile.assignments.length ? `<h4>Affectations</h4><ul>${profile.assignments.map(a => `<li>${esc(a.project)} · ${TEAM_ROLES[a.role]} · révision ${a.profile_revision}${a.active ? '' : ' · retiré'}</li>`).join('')}</ul>` : '<p>Aucune affectation.</p>'), null);
+      openDialog(ui('Historique des révisions · ') + profile.name, ui`<p>Révision courante : ${profile.revision}. Les affectations gardent la révision qu’elles ont figée.</p>` +
+        profile.revisions.map(r => ui`<details class="event"${r.revision === profile.revision ? ' open' : ''}><summary>Révision ${r.revision} · ${date(r.created_at)}${r.note ? ' · ' + esc(r.note) : ''}</summary><pre class="context-pre">${esc(JSON.stringify(r.definition, null, 2))}</pre></details>`).join('') +
+        (profile.assignments.length ? ui`<h4>Affectations</h4><ul>${profile.assignments.map(a => ui`<li>${esc(a.project)} · ${TEAM_ROLES[a.role]} · révision ${a.profile_revision}${a.active ? '' : ui(' · retiré')}</li>`).join('')}</ul>` : ui('<p>Aucune affectation.</p>')), null);
     }
     if (d.profileRecord) {
       const profile = (teamsState.profiles || []).find(x => x.id === d.profileRecord);
       const r = await action('profile_track_record', {profile_id: d.profileRecord});
       const rec = r.record, att = Object.fromEntries(r.attestations.map(a => [a.skill, a]));
-      openDialog('Bilan · ' + profile.name, `<p class="field-help">${esc(r.notice)}</p>
+      openDialog(ui('Bilan · ') + profile.name, ui`<p class="field-help">${esc(r.notice)}</p>
         <div class="project-stats"><div><b>${rec.tasks}</b> tâche(s)</div><div><b>${rec.accepted}</b> acceptée(s)</div><div><b>${rec.executions}</b> exécution(s), ${rec.failed_executions} échouée(s)</div></div>
         <h4>Évaluations (${rec.evaluations})</h4>
-        ${Object.keys(rec.averages).length ? `<ul class="board-history">${Object.entries(rec.averages).map(([k, v]) => `<li>${esc(k)} : <b>${v.average}</b>/5 <small>sur ${v.count} évaluation(s)${v.count < 3 ? ' — trop peu pour conclure' : ''}</small></li>`).join('')}</ul>` : '<p class="muted">Aucune évaluation enregistrée.</p>'}
+        ${Object.keys(rec.averages).length ? `<ul class="board-history">${Object.entries(rec.averages).map(([k, v]) => ui`<li>${esc(k)} : <b>${v.average}</b>/5 <small>sur ${v.count} évaluation(s)${v.count < 3 ? ui(' — trop peu pour conclure') : ''}</small></li>`).join('')}</ul>` : ui('<p class="muted">Aucune évaluation enregistrée.</p>')}
         <h4>Compétences</h4>
         <p class="field-help">Une compétence déclarée n’est pas une capacité vérifiée. Vous pouvez l’attester en citant une tâche <b>acceptée</b> de ce profil ou une évaluation de son travail : c’est ce qui a été constaté, pas une promesse pour la suite.</p>
         <ul class="board-history">${profile.skills.map(s => att[s]
-          ? `<li>✓ <b>${esc(s)}</b> <small>attestée sur ${att[s].source_ids.length} preuve(s)${att[s].note ? ' · ' + esc(att[s].note) : ''}</small> <button type="button" class="text-button" data-skill-withdraw="${esc(s)}" data-profile="${esc(profile.id)}">Retirer</button></li>`
-          : `<li>${esc(s)} <small>déclarée</small> <button type="button" class="text-button" data-skill-attest="${esc(s)}" data-profile="${esc(profile.id)}">Attester…</button></li>`).join('') || '<li class="muted">Aucune compétence déclarée.</li>'}</ul>`, null);
+          ? ui`<li>✓ <b>${esc(s)}</b> <small>attestée sur ${att[s].source_ids.length} preuve(s)${att[s].note ? ' · ' + esc(att[s].note) : ''}</small> <button type="button" class="text-button" data-skill-withdraw="${esc(s)}" data-profile="${esc(profile.id)}">Retirer</button></li>`
+          : ui`<li>${esc(s)} <small>déclarée</small> <button type="button" class="text-button" data-skill-attest="${esc(s)}" data-profile="${esc(profile.id)}">Attester…</button></li>`).join('') || ui('<li class="muted">Aucune compétence déclarée.</li>')}</ul>`, null);
     }
     if (d.skillAttest) {
       const skill = d.skillAttest, profileId = d.profile;
       if ($('dialog').open) $('dialog').close();
-      openDialog('Attester « ' + skill + ' »', `<div class="fields">
+      openDialog(ui('Attester « ') + skill + ' »', ui`<div class="fields">
         <label>Preuves (identifiants de tâches acceptées ou d’évaluations, séparés par des virgules)<input name="source_ids" required></label>
         <label>Ce que vous avez constaté<textarea name="note" rows="3" maxlength="2000"></textarea></label>
         <p class="field-help">Les preuves qui ne sont ni une tâche acceptée de ce profil, ni une évaluation de son travail, sont écartées et signalées.</p></div>`,
         async form => { const r = await action('skill_attest', {profile_id: profileId, skill, note: form.get('note'),
-          source_ids: form.get('source_ids').split(',').map(s => s.trim()).filter(Boolean)}); toast(r.notice); }, 'Attester');
+          source_ids: form.get('source_ids').split(',').map(s => s.trim()).filter(Boolean)}); toast(r.notice); }, ui('Attester'));
     }
     if (d.skillWithdraw) {
       const r = await action('skill_withdraw', {profile_id: d.profile, skill: d.skillWithdraw});
@@ -450,13 +450,13 @@ document.addEventListener('click', async e => {
     if (button.hasAttribute('data-profile-catalog')) {
       const connector = $('profile-connector').value.trim();
       button.disabled = true;
-      try { const r = await action('list_models', {id: connector}); state.data.models_cache[connector] = r.models; $('profile-models').outerHTML = modelDatalist(connector); $('profile-status').textContent = r.models.length + ' modèle(s) au catalogue de ' + connector + '.'; }
-      catch (err) { $('profile-status').textContent = 'Catalogue indisponible : ' + err.message + ' Vous pouvez saisir un identifiant de modèle explicite.'; }
+      try { const r = await action('list_models', {id: connector}); state.data.models_cache[connector] = r.models; $('profile-models').outerHTML = modelDatalist(connector); $('profile-status').textContent = r.models.length + ui(' modèle(s) au catalogue de ') + connector + '.'; }
+      catch (err) { $('profile-status').textContent = ui('Catalogue indisponible : ') + err.message + ui(' Vous pouvez saisir un identifiant de modèle explicite.'); }
       finally { button.disabled = false; }
     }
     if (button.hasAttribute('data-team-create')) { const r = await action('team_save', {project_id: state.project}); toast(r.notice); $('page')._rendered = null; await refresh(true); }
     if (button.hasAttribute('data-team-add')) openAddMemberDialog();
-    if (button.hasAttribute('data-team-rename')) openDialog('Nom de l’équipe', `<label>Nom<input name="name" value="${esc(teamsState.team.team?.name || '')}" required autofocus maxlength="120"></label>`,
+    if (button.hasAttribute('data-team-rename')) openDialog(ui('Nom de l’équipe'), ui`<label>Nom<input name="name" value="${esc(teamsState.team.team?.name || '')}" required autofocus maxlength="120"></label>`,
       async form => { await action('team_save', {project_id: state.project, name: form.get('name')}); });
     if (d.teamStatus) {
       const r = await action('team_save', {project_id: state.project, status: d.teamStatus});
@@ -468,7 +468,7 @@ document.addEventListener('click', async e => {
       const members = (teamsState.team?.members || []).filter(m => m.active);
       const entry = d.memoryEdit ? (await action('agent_memory_list', {scope: 'member', project_id: state.project})).entries.find(e => e.id === d.memoryEdit) : null;
       if ($('dialog').open) $('dialog').close();
-      openDialog(entry ? 'Modifier l’observation' : 'Observation locale d’un agent', `<div class="fields">
+      openDialog(entry ? ui('Modifier l’observation') : ui('Observation locale d’un agent'), ui`<div class="fields">
         <label>Agent<select name="member_id">${members.map(m => `<option value="${esc(m.id)}" ${entry && m.id === entry.member_id ? 'selected' : ''}>${esc(m.definition.name)} · ${TEAM_ROLES[m.role]}</option>`).join('')}</select></label>
         <label>Observation<textarea name="content" rows="4" maxlength="20000" required placeholder="Ce que cet agent a appris dans ce projet">${esc(entry?.content || '')}</textarea></label>
         <label>Catégorie<input name="category" maxlength="80" value="${esc(entry?.category || '')}" placeholder="Convention, piège connu, décision…"></label>
@@ -480,14 +480,14 @@ document.addEventListener('click', async e => {
           ...(entry ? {id: entry.id} : {}), content: values.content, category: values.category,
           source_ids: values.source_ids.split(',').map(s => s.trim()).filter(Boolean)});
         toast(r.notice);
-      }, 'Enregistrer');
+      }, ui('Enregistrer'));
     }
     if (d.memoryDelete) { const r = await action('agent_memory_delete', {id: d.memoryDelete}); toast(r.notice); $('page')._rendered = null; await refresh(true); }
     if (button.hasAttribute('data-proposal-new')) {
       const all = (teamsState.team?.members || []).filter(m => m.active);
       const authors = all.filter(m => m.role === 'chief' || m.role === 'lead');
-      if (!authors.length) { openDialog('Aucun responsable', '<p>Une proposition vient d’un chef de projet ou d’un lead : c’est une observation de responsable, pas une auto-évaluation.</p>', null); return; }
-      openDialog('Proposer une amélioration', `<div class="fields">
+      if (!authors.length) { openDialog(ui('Aucun responsable'), ui('<p>Une proposition vient d’un chef de projet ou d’un lead : c’est une observation de responsable, pas une auto-évaluation.</p>'), null); return; }
+      openDialog(ui('Proposer une amélioration'), ui`<div class="fields">
         <label>Proposée par<select name="member_id">${authors.map(m => `<option value="${esc(m.id)}">${esc(m.definition.name)} · ${TEAM_ROLES[m.role]}</option>`).join('')}</select></label>
         <label>Profil concerné<select name="profile_id">${all.map(m => `<option value="${esc(m.profile_id)}">${esc(m.profile_name)}</option>`).join('')}</select></label>
         <label>Type<select name="kind"><option value="prompt">Consignes initiales — crée une nouvelle révision</option><option value="memory">Mémoire transférable — méthode générale</option></select></label>
@@ -501,16 +501,16 @@ document.addEventListener('click', async e => {
           profile_id: values.profile_id, kind: values.kind, proposed_value: values.proposed_value, rationale: values.rationale,
           source_ids: values.source_ids.split(',').map(s => s.trim()).filter(Boolean)});
         toast(r.notice);
-      }, 'Enregistrer la proposition');
+      }, ui('Enregistrer la proposition'));
     }
     if (d.proposalDecide) {
       const adopt = d.adopt === 'true';
       if ($('dialog').open) $('dialog').close();
-      openDialog(adopt ? 'Adopter la proposition' : 'Écarter la proposition',
-        `<p>${adopt ? 'L’adoption crée une nouvelle révision du profil global, ou ajoute une mémoire transférable. Aucune équipe ne change : chaque projet adopte la révision explicitement.' : 'La proposition reste consultable avec votre motif. Rien n’est modifié.'}</p>
+      openDialog(adopt ? ui('Adopter la proposition') : ui('Écarter la proposition'),
+        ui`<p>${adopt ? ui('L’adoption crée une nouvelle révision du profil global, ou ajoute une mémoire transférable. Aucune équipe ne change : chaque projet adopte la révision explicitement.') : ui('La proposition reste consultable avec votre motif. Rien n’est modifié.')}</p>
          <label>Motif de la décision<textarea name="decision" rows="3" maxlength="2000"></textarea></label>`,
         async form => { const r = await action('improvement_decide', {id: d.proposalDecide, adopt, decision: form.get('decision')}); toast(r.notice); },
-        adopt ? 'Adopter' : 'Écarter');
+        adopt ? ui('Adopter') : ui('Écarter'));
     }
     if (d.memberEdit) { if ($('dialog').open) $('dialog').close(); openMemberDialog(d.memberEdit); }
     if (d.memberRevision) await openRevisionDialog(d.memberRevision);

@@ -16,6 +16,7 @@ from .security import PathPolicy, SecretStore
 from .server import make_server
 from .service import Service
 from .store import Store
+from .i18n import language, translate
 
 
 class DesktopWindows:
@@ -210,10 +211,10 @@ def main():
                 args.verify_ui.write_text(json.dumps(report), encoding="utf-8")
             window.events.loaded += verify
         webview.start(tray.install, gui="edgechromium", private_mode=False, storage_path=str(runtime.data_dir / "window-state"), localization={
-            "global.quitConfirmation": "Fermer CyAI Orchestrator ? Les missions du service démarré par cette fenêtre seront interrompues.",
-            "global.ok": "Oui", "global.cancel": "Annuler"})
+            "global.quitConfirmation": translate("Fermer CyAI Orchestrator ? Les missions du service démarré par cette fenêtre seront interrompues.", language(runtime.config)),
+            "global.ok": translate("Oui", language(runtime.config)), "global.cancel": translate("Annuler", language(runtime.config))})
     except Exception as exc:
-        message = f"Impossible d’ouvrir CyAI Orchestrator.\n\n{exc}\n\nConfiguration : {args.config}"
+        message = f"Unable to open CyAI Orchestrator.\n\n{exc}\n\nConfiguration: {args.config}"
         if os.name == "nt":
             ctypes.windll.user32.MessageBoxW(None, message, "CyAI Orchestrator", 0x10)
         else:

@@ -6,30 +6,30 @@ const board = {id: null, data: null, base: null, name: '', view: {x: 40, y: 40, 
   drag: null, dirty: false, saving: false, conflict: false, timer: null, mounted: null};
 const NOTE_COLORS = ['yellow', 'blue', 'green', 'pink', 'violet', 'grey'];
 const NOTE_WIDTH = 200;
-L.views.space = 'Tableau blanc';
+L.views.space = ui('Tableau blanc');
 
 function noteById(id) { return board.data.notes.find(n => n.id === id); }
 function boardStatus(text) { const el = $('wb-status'); if (el) el.textContent = text; }
 function scheduleSave() {
-  board.dirty = true; boardStatus('Modifications…');
+  board.dirty = true; boardStatus(ui('Modifications…'));
   clearTimeout(board.timer);
   board.timer = setTimeout(saveBoard, 700);
 }
 async function saveBoard() {
   if (!board.dirty || board.saving || board.conflict) return;
-  board.saving = true; boardStatus('Enregistrement…');
+  board.saving = true; boardStatus(ui('Enregistrement…'));
   try {
     const r = await action('whiteboard_save', {project_id: state.project, id: board.id, data: board.data, base: board.base});
-    board.base = r.updated_at; board.dirty = false; boardStatus('Enregistré');
+    board.base = r.updated_at; board.dirty = false; boardStatus(ui('Enregistré'));
   } catch (error) {
     if (/modifié ailleurs/.test(error.message)) { board.conflict = true; renderConflict(); }
-    else { boardStatus('Échec de l’enregistrement'); fail(error); }
+    else { boardStatus(ui('Échec de l’enregistrement')); fail(error); }
   } finally { board.saving = false; }
 }
 function renderConflict() {
   const bar = $('wb-conflict');
   if (bar) bar.hidden = !board.conflict;
-  boardStatus(board.conflict ? 'Non enregistré' : '');
+  boardStatus(board.conflict ? ui('Non enregistré') : '');
 }
 
 function linkPath(a, b) {
@@ -45,7 +45,7 @@ function linksSVG() {
   }).join('') + '<path id="wb-wire" class="wb-link pending" d=""></path>';
 }
 function noteHTML(n) {
-  return `<div class="wb-note color-${esc(n.color)} ${board.selected === n.id ? 'selected' : ''}" data-note="${esc(n.id)}">
+  return ui`<div class="wb-note color-${esc(n.color)} ${board.selected === n.id ? 'selected' : ''}" data-note="${esc(n.id)}">
     <div class="wb-grip" data-note-drag="${esc(n.id)}" title="Déplacer"></div>
     <textarea data-note-text="${esc(n.id)}" maxlength="4000" placeholder="Écrire…">${esc(n.text)}</textarea>
     <span class="wb-handle" data-note-link="${esc(n.id)}" title="Glisser vers une autre note pour les relier"></span>
@@ -94,16 +94,16 @@ async function renderSpace() {
   board.mounted = state.spaceId;
   board.view = {x: 40, y: 40, z: 1};
   $('page-title').textContent = board.name;
-  $('page').innerHTML = `<div class="whiteboard">
+  $('page').innerHTML = ui`<div class="whiteboard">
     <div class="wb-toolbar"><button type="button" class="secondary" data-wb-add>＋ Note</button>
-      <span id="wb-colors" class="wb-colors" hidden>${NOTE_COLORS.map(c => `<button type="button" class="wb-swatch color-${c}" data-wb-color="${c}" aria-label="Couleur ${c}"></button>`).join('')}<button type="button" class="text-button danger" data-wb-delete>Supprimer la note</button></span>
+      <span id="wb-colors" class="wb-colors" hidden>${NOTE_COLORS.map(c => ui`<button type="button" class="wb-swatch color-${c}" data-wb-color="${c}" aria-label="Couleur ${c}"></button>`).join('')}<button type="button" class="text-button danger" data-wb-delete>Supprimer la note</button></span>
       <span class="me-spacer"></span><span id="wb-status" class="wb-status">Enregistré</span>
       <button type="button" class="secondary" data-wb-fit>Cadrer</button></div>
     <div id="wb-conflict" class="notice" hidden>Ce tableau a été modifié ailleurs (par une IA ou une autre fenêtre) depuis son ouverture. Vos dernières modifications ne sont pas enregistrées. <button type="button" class="secondary" data-wb-reload>Recharger le tableau</button></div>
     <div id="wb-canvas" class="wb-canvas" tabindex="0"><div id="wb-world" class="me-world">
       <svg class="me-edges" width="20000" height="20000" viewBox="-10000 -10000 20000 20000"><defs><marker id="wb-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="wb-arrow"></path></marker></defs><g id="wb-links"></g></svg>
       <div id="wb-notes"></div></div>
-      ${board.data.notes.length ? '' : '<p class="wb-empty">Double-cliquez pour ajouter une note. Glissez le ● d’une note vers une autre pour les relier.</p>'}</div>
+      ${board.data.notes.length ? '' : ui('<p class="wb-empty">Double-cliquez pour ajouter une note. Glissez le ● d’une note vers une autre pour les relier.</p>')}</div>
   </div>`;
   renderBoard();
 }
@@ -180,8 +180,8 @@ document.addEventListener('dblclick', e => {
   const hit = e.target.closest('[data-link]');
   if (hit) {
     const link = board.data.links[Number(hit.dataset.link)];
-    openDialog('Libellé du lien', `<label>Libellé<input name="label" maxlength="120" value="${esc(link.label || '')}" autofocus></label>`,
-      async form => { link.label = form.get('label').trim(); renderLinksOnly(); scheduleSave(); }, 'Enregistrer');
+    openDialog(ui('Libellé du lien'), ui`<label>Libellé<input name="label" maxlength="120" value="${esc(link.label || '')}" autofocus></label>`,
+      async form => { link.label = form.get('label').trim(); renderLinksOnly(); scheduleSave(); }, ui('Enregistrer'));
     return;
   }
   if (e.target.closest('[data-note]')) return;
@@ -225,7 +225,7 @@ setInterval(async () => {
   if (document.activeElement?.dataset?.noteText) return;
   try {
     const space = (await action('space_get', {project_id: state.project, id: board.id})).space;
-    if (space.updated_at !== board.base && !board.dirty) { board.data = space.data; board.base = space.updated_at; renderBoard(); boardStatus('Mis à jour'); }
+    if (space.updated_at !== board.base && !board.dirty) { board.data = space.data; board.base = space.updated_at; renderBoard(); boardStatus(ui('Mis à jour')); }
   } catch (error) { /* the next tick retries */ }
 }, 3000);
 
@@ -239,9 +239,9 @@ document.addEventListener('click', async e => {
       state.spaceId = d.space; board.mounted = null; showView('space');
     }
     if (d.shellAction === 'new-space') {
-      openDialog('Nouveau salon', `<div class="fields"><label>Nom<input name="name" maxlength="80" placeholder="Idées, architecture, planches…" autofocus></label>
-        <label>Type<select name="type"><option value="whiteboard">Tableau blanc — notes et liens</option><option value="graph:tasks">Graphe — tâches et dépendances</option><option value="graph:team">Graphe — hiérarchie de l’équipe</option>${consolePlugins().length ? '<option value="plugin">Console de plugin — ses outils de lecture</option>' : ''}</select></label>
-        ${consolePlugins().length ? `<label>Plugin (pour une console)<select name="plugin">${consolePlugins().map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}</select></label>` : ''}
+      openDialog(ui('Nouveau salon'), ui`<div class="fields"><label>Nom<input name="name" maxlength="80" placeholder="Idées, architecture, planches…" autofocus></label>
+        <label>Type<select name="type"><option value="whiteboard">Tableau blanc — notes et liens</option><option value="graph:tasks">Graphe — tâches et dépendances</option><option value="graph:team">Graphe — hiérarchie de l’équipe</option>${consolePlugins().length ? ui('<option value="plugin">Console de plugin — ses outils de lecture</option>') : ''}</select></label>
+        ${consolePlugins().length ? ui`<label>Plugin (pour une console)<select name="plugin">${consolePlugins().map(p => `<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}</select></label>` : ''}
         <p class="field-help">Une IA du projet peut aussi le lire et y dessiner par le MCP CyAI, avec votre autorisation.</p></div>`,
         async form => {
           const [type, source] = form.get('type').split(':');
@@ -250,17 +250,17 @@ document.addEventListener('click', async e => {
           toast(r.notice);
           shell.channels[state.project] = await action('project_channels', {project_id: state.project});
           setTimeout(() => { state.spaceId = r.id; board.mounted = null; showView('space'); }, 0);
-        }, 'Créer');
+        }, ui('Créer'));
     }
     if (d.spaceMenu) {
       const id = d.spaceMenu, channel = (shell.channels[state.project]?.channels || []).find(c => c.id === id);
-      openDialog('Salon « ' + (channel?.name || '') + ' »', `<label>Nom<input name="name" maxlength="80" value="${esc(channel?.name || '')}" required></label>
+      openDialog(ui('Salon « ') + (channel?.name || '') + ' »', ui`<label>Nom<input name="name" maxlength="80" value="${esc(channel?.name || '')}" required></label>
         <label><span><input type="checkbox" name="delete"> Supprimer ce salon et son contenu</span></label>`,
         async form => {
           if (form.get('delete')) { toast((await action('space_delete', {project_id: state.project, id})).notice); if (state.spaceId === id) { state.spaceId = null; setTimeout(() => showView('project'), 0); } }
           else await action('space_rename', {project_id: state.project, id, name: form.get('name')});
           shell.fetchedAt[state.project] = 0;
-        }, 'Enregistrer');
+        }, ui('Enregistrer'));
     }
     if (state.view !== 'space') return;
     if (button.hasAttribute('data-wb-add')) addNote();
@@ -322,12 +322,12 @@ async function renderGraphSpace() {
   graph.data = data; graph.signature = JSON.stringify(data); graph.view = {x: 40, y: 40, z: 1};
   board.mounted = state.spaceId; board.id = null;
   $('page-title').textContent = data.name;
-  $('page').innerHTML = `<div class="whiteboard">
-    <div class="wb-toolbar"><b>${esc(data.source_label)}</b><span class="wb-status">Calculé à partir du ${data.source === 'tasks' ? 'board' : 'l’équipe'}, à jour à chaque affichage. Cliquez sur un nœud pour l’ouvrir.</span><span class="me-spacer"></span></div>
+  $('page').innerHTML = ui`<div class="whiteboard">
+    <div class="wb-toolbar"><b>${esc(data.source_label)}</b><span class="wb-status">Calculé à partir du ${data.source === 'tasks' ? 'board' : ui('l’équipe')}, à jour à chaque affichage. Cliquez sur un nœud pour l’ouvrir.</span><span class="me-spacer"></span></div>
     <div id="gr-canvas" class="wb-canvas"><div id="gr-world" class="me-world">
       <svg class="me-edges" width="20000" height="20000" viewBox="-10000 -10000 20000 20000"><defs><marker id="gr-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="wb-arrow"></path></marker></defs><g id="gr-edges"></g></svg>
       <div id="gr-nodes"></div></div>
-      <p id="gr-empty" class="wb-empty">${!data.team ? 'Aucune équipe dans ce projet : composez-la dans le salon équipe.' : data.source === 'tasks' ? 'Aucune carte sur le board pour l’instant.' : 'Aucun membre actif.'}</p></div>
+      <p id="gr-empty" class="wb-empty">${!data.team ? ui('Aucune équipe dans ce projet : composez-la dans le salon équipe.') : data.source === 'tasks' ? ui('Aucune carte sur le board pour l’instant.') : ui('Aucun membre actif.')}</p></div>
   </div>`;
   drawGraph();
 }
@@ -372,10 +372,10 @@ function argumentFields(tool) {
   return simple.map(([key, s]) => s.type === 'boolean'
     ? `<label><span><input type="checkbox" data-arg="${esc(key)}" data-arg-type="boolean"> ${esc(key)}</span>${s.description ? `<small class="field-help">${esc(s.description)}</small>` : ''}</label>`
     : `<label>${esc(key)}${required.includes(key) ? ' *' : ''}<input data-arg="${esc(key)}" data-arg-type="${esc(s.type)}" ${s.type === 'string' ? '' : 'type="number"'} ${required.includes(key) ? 'required' : ''}>${s.description ? `<small class="field-help">${esc(s.description)}</small>` : ''}</label>`).join('')
-    + `<label>Autres arguments (JSON)<textarea data-arg-json rows="3">{}</textarea></label>`;
+    + ui`<label>Autres arguments (JSON)<textarea data-arg-json rows="3">{}</textarea></label>`;
 }
 function callHTML(c) {
-  return `<article class="pc-call ${c.ok ? 'ok' : 'error'}"><header><b>${esc(c.tool)}</b> <span class="status ${c.ok ? 'succeeded' : 'failed'}">${c.ok ? 'Réponse' : 'Refusé ou en erreur'}</span><time>${date(c.at)}</time></header>
+  return `<article class="pc-call ${c.ok ? 'ok' : 'error'}"><header><b>${esc(c.tool)}</b> <span class="status ${c.ok ? 'succeeded' : 'failed'}">${c.ok ? ui('Réponse') : ui('Refusé ou en erreur')}</span><time>${date(c.at)}</time></header>
     ${Object.keys(c.arguments || {}).length ? `<pre class="context-pre">${esc(JSON.stringify(c.arguments, null, 2))}</pre>` : ''}
     <pre class="context-pre">${esc(c.ok ? c.result : c.error)}</pre></article>`;
 }
@@ -385,14 +385,14 @@ async function renderPluginSpace() {
   pluginConsole.data = data; board.mounted = state.spaceId; board.id = null;
   $('page-title').textContent = data.name;
   const tool = data.tools[0];
-  $('page').innerHTML = `<div class="page-intro"><h2>${esc(data.name)}</h2><p>Console du plugin <b>${esc(data.plugin)}</b> : seuls ses outils de <b>lecture</b> déclarés sont appelables, dans les règles de ce projet. Chaque appel et sa réponse restent dans ce salon.</p></div>
+  $('page').innerHTML = ui`<div class="page-intro"><h2>${esc(data.name)}</h2><p>Console du plugin <b>${esc(data.plugin)}</b> : seuls ses outils de <b>lecture</b> déclarés sont appelables, dans les règles de ce projet. Chaque appel et sa réponse restent dans ce salon.</p></div>
     ${data.problem ? `<p class="me-warning">⚠ ${esc(data.problem)}</p>` : ''}
-    ${data.tools.length ? `<form id="pc-form" class="card fields">
+    ${data.tools.length ? ui`<form id="pc-form" class="card fields">
       <label>Outil<select id="pc-tool">${data.tools.map(t => `<option value="${esc(t.name)}">${esc(t.name)}</option>`).join('')}</select></label>
       <p id="pc-description" class="field-help">${esc(tool.description || '')}</p>
       <div id="pc-args" class="fields">${argumentFields(tool)}</div>
       <div class="row-actions"><button class="primary" type="submit">Appeler</button></div></form>` : ''}
-    <h3>Historique</h3><div id="pc-history">${data.calls.map(callHTML).join('') || '<div class="empty-state">Aucun appel pour l’instant.</div>'}</div>`;
+    <h3>Historique</h3><div id="pc-history">${data.calls.map(callHTML).join('') || ui('<div class="empty-state">Aucun appel pour l’instant.</div>')}</div>`;
 }
 document.addEventListener('change', e => {
   if (e.target.id !== 'pc-tool') return;
@@ -405,7 +405,7 @@ document.addEventListener('submit', async e => {
   e.preventDefault();
   try {
     let args = {};
-    try { args = JSON.parse(e.target.querySelector('[data-arg-json]').value || '{}'); } catch (error) { throw new Error('Les autres arguments ne sont pas un JSON valide.'); }
+    try { args = JSON.parse(e.target.querySelector('[data-arg-json]').value || '{}'); } catch (error) { throw new Error(ui('Les autres arguments ne sont pas un JSON valide.')); }
     e.target.querySelectorAll('[data-arg]').forEach(input => {
       const type = input.dataset.argType;
       if (type === 'boolean') { if (input.checked) args[input.dataset.arg] = true; return; }

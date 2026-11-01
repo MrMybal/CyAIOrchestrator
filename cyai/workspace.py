@@ -145,7 +145,12 @@ def workspace_action(s, action, d):
         settings=s.config.setdefault('settings',{})
         theme=d.get('theme',settings.get('theme','dark'))
         if theme not in {'dark','light','system','ocean','forest',*settings.get('custom_themes',{})}: raise ValueError('Thème invalide.')
+        if 'language' in d:
+            from .i18n import LANGUAGES
+            if not isinstance(d['language'], str) or d['language'] not in LANGUAGES:
+                raise ValueError('Unsupported interface language.')
         settings['theme']=theme
+        if 'language' in d: settings['language']=d['language']
         if 'send_on_enter' in d:settings['send_on_enter']=d['send_on_enter'] in (True,'true','1','on')
         if 'backup_dir' in d:
             folder=Path(d['backup_dir']).resolve(strict=True)

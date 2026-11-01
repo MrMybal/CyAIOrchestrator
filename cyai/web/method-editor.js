@@ -7,29 +7,29 @@
 // Nothing here runs anything: applying a method prepares a chain that you launch yourself.
 const methodEditor = {draft: null, id: null, selected: null, edge: null, view: {x: 40, y: 40, z: 1}, dirty: false,
   warnings: [], mounted: null, drag: null, library: [], stack: [], menu: null, revisions: null};
-const EXECUTOR_LABELS = {profile: 'Profil de la bibliothèque', any: 'N’importe quelle IA', connector: 'Connecteur précis'};
+const EXECUTOR_LABELS = {profile: ui('Profil de la bibliothèque'), any: ui('N’importe quelle IA'), connector: ui('Connecteur précis')};
 const EXECUTOR_ICONS = {profile: '@', any: '✦', connector: '⚙', method: '⧉'};
-const KIND_LABELS = {text: 'Texte', context: 'Contexte', file: 'Fichier'};
+const KIND_LABELS = {text: ui('Texte'), context: ui('Contexte'), file: ui('Fichier')};
 const IN_NODE = '@entrees', OUT_NODE = '@sorties';
-L.views.method = 'Éditeur de méthode';
+L.views.method = ui('Éditeur de méthode');
 const NODE_WIDTH = 240, IO_WIDTH = 200, PORT_Y = 19, PIN_TOP = 44, PIN_H = 22;
 
 function newStep(key, name, position) {
   return {key, kind: 'task', name, description: '', executor: 'any', profile_id: '', connector: '', model: '', instruction: '',
     depends_on: [], artifact: '', helpers: [], receives: 'inputs', inputs: [], attachments: [],
-    outputs: [{key: 's1', name: 'Résultat', kind: 'text', description: ''}], position};
+    outputs: [{key: 's1', name: ui('Résultat'), kind: 'text', description: ''}], position};
 }
 function blankMethod() {
-  return {name: 'Nouvelle méthode', description: '', category: '', preprompt: '', usage: '', requirements: [],
-    inputs: [{key: 'objectif', name: 'Objectif', kind: 'text', description: 'Ce que la méthode doit produire.', required: true, prepare: ''}],
-    outputs: [], layout: {in: {x: -200, y: 120}, out: {x: 420, y: 120}}, steps: [newStep('t1', 'Tâche 1', {x: 80, y: 120})]};
+  return {name: ui('Nouvelle méthode'), description: '', category: '', preprompt: '', usage: '', requirements: [],
+    inputs: [{key: 'objectif', name: ui('Objectif'), kind: 'text', description: ui('Ce que la méthode doit produire.'), required: true, prepare: ''}],
+    outputs: [], layout: {in: {x: -200, y: 120}, out: {x: 420, y: 120}}, steps: [newStep('t1', ui('Tâche 1'), {x: 80, y: 120})]};
 }
 function methodProfiles() { return (teamsState.profiles || []).filter(p => !p.archived); }
 function stepByKey(key) { return methodEditor.draft.steps.find(s => s.key === key); }
 function ioNode(key) {
   const m = methodEditor.draft;
-  if (key === IN_NODE) return {key, io: true, name: 'Entrées de la méthode', position: m.layout.in, inputs: [], outputs: m.inputs};
-  if (key === OUT_NODE) return {key, io: true, name: 'Sorties de la méthode', position: m.layout.out, inputs: m.outputs, outputs: []};
+  if (key === IN_NODE) return {key, io: true, name: ui('Entrées de la méthode'), position: m.layout.in, inputs: [], outputs: m.inputs};
+  if (key === OUT_NODE) return {key, io: true, name: ui('Sorties de la méthode'), position: m.layout.out, inputs: m.outputs, outputs: []};
   return null;
 }
 function nodeByKey(key) { return ioNode(key) || stepByKey(key); }
@@ -104,15 +104,15 @@ function nodeWarnings(step) {
 function executorDetail(step) {
   if (step.executor === 'profile') {
     const p = methodProfiles().find(x => x.id === step.profile_id) || (teamsState.profiles || []).find(x => x.id === step.profile_id);
-    return p ? (p.icon ? p.icon + ' ' : '') + p.name : 'profil à choisir';
+    return p ? (p.icon ? p.icon + ' ' : '') + p.name : ui('profil à choisir');
   }
   if (step.executor === 'connector') return agentName(step.connector) + (step.model ? ' · ' + step.model : '');
-  return 'choisie à l’application';
+  return ui('choisie à l’application');
 }
 function sourceName(source) {
   if (!source) return '';
   const node = nodeByKey(source.step), port = node?.outputs.find(p => p.key === source.port);
-  if (source.step === IN_NODE) return 'entrée « ' + (port?.name || source.port) + ' »';
+  if (source.step === IN_NODE) return ui('entrée « ') + (port?.name || source.port) + ' »';
   return '« ' + (node?.name || source.step) + ' » › ' + (port?.name || source.port);
 }
 function outputWired(nodeKey, portKey) {
@@ -122,7 +122,7 @@ function outputWired(nodeKey, portKey) {
 function nodePinHTML(node, port, side) {
   const id = node.key + ':' + port.key, wired = side === 'in' ? !!port.source : outputWired(node.key, port.key);
   const title = KIND_LABELS[port.kind] + ' · ' + port.name + (port.description ? ' — ' + port.description : '') +
-    (side === 'in' ? (port.source ? '\nReçoit : ' + sourceName(port.source) : '\nNon branchée : glissez une sortie ici.') : '\nGlissez vers une entrée pour la transmettre.');
+    (side === 'in' ? (port.source ? ui('\nReçoit : ') + sourceName(port.source) : ui('\nNon branchée : glissez une sortie ici.')) : ui('\nGlissez vers une entrée pour la transmettre.'));
   return `<span class="me-pin ${side} k-${esc(port.kind)} ${wired ? 'wired' : ''}" data-pin-${side}="${esc(id)}" title="${esc(title)}"><i></i><em>${esc(port.name)}${port.required && node.key === IN_NODE ? ' *' : ''}</em></span>`;
 }
 function nodePinsHTML(node) {
@@ -134,7 +134,7 @@ function nodePinsHTML(node) {
   return rows ? `<div class="me-pins">${html}</div>` : '';
 }
 function orderPins(key) {
-  return `<span class="me-port in" data-port-in="${esc(key)}" title="Ordre : cette tâche attend celles branchées ici"></span>
+  return ui`<span class="me-port in" data-port-in="${esc(key)}" title="Ordre : cette tâche attend celles branchées ici"></span>
     <span class="me-port out" data-port-out="${esc(key)}" title="Ordre : glissez vers une tâche qui doit attendre celle-ci"></span>`;
 }
 function nodeHTML(step) {
@@ -142,24 +142,24 @@ function nodeHTML(step) {
   const warn = warnings.length ? `<span class="me-warn" title="${esc(warnings.map(w => w.message).join('\n'))}">⚠ ${warnings.length}</span>` : '';
   if (step.kind === 'method') {
     const sub = methodEditor.library.find(m => m.id === step.method_id);
-    return `<div class="me-node kind-method ${selected}" data-node="${esc(step.key)}">${orderPins(step.key)}
+    return ui`<div class="me-node kind-method ${selected}" data-node="${esc(step.key)}">${orderPins(step.key)}
       <div class="me-node-head" data-node-drag="${esc(step.key)}"><span class="me-exec">${EXECUTOR_ICONS.method}</span><b>${esc(step.name)}</b>${warn}</div>
       ${nodePinsHTML(step)}
-      <div class="me-node-body"><small>Sous-méthode${sub ? ' · ' + sub.steps.length + ' tâche(s)' : ' absente'}</small><p>${esc(sub?.description || 'Double-cliquez pour l’ouvrir.').slice(0, 140)}</p></div></div>`;
+      <div class="me-node-body"><small>Sous-méthode${sub ? ' · ' + sub.steps.length + ui(' tâche(s)') : ' absente'}</small><p>${esc(sub?.description || ui('Double-cliquez pour l’ouvrir.')).slice(0, 140)}</p></div></div>`;
   }
   const roots = !after(step).length;
   return `<div class="me-node exec-${esc(step.executor)} ${selected}" data-node="${esc(step.key)}">${orderPins(step.key)}
     <div class="me-node-head" data-node-drag="${esc(step.key)}"><span class="me-exec">${EXECUTOR_ICONS[step.executor]}</span><b>${esc(step.name)}</b>${warn}</div>
     ${nodePinsHTML(step)}
     <div class="me-node-body"><small>${esc(EXECUTOR_LABELS[step.executor])} · ${esc(executorDetail(step))}</small>
-      <p>${esc(step.instruction || 'Aucune consigne — cliquez pour l’écrire.').slice(0, 140)}</p>
-      <div class="me-tags">${roots ? '<span>▶ départ</span>' : ''}<span title="${step.receives === 'inputs' ? 'Ne reçoit que ses entrées branchées' : 'Reçoit toute la conversation de la chaîne'}">${step.receives === 'inputs' ? '🔒 entrées seules' : '💬 toute la chaîne'}</span>${step.artifact ? `<span title="Fichier attendu">📄 ${esc(step.artifact)}</span>` : ''}${step.helpers.length ? `<span title="Agents appelables pendant la tâche">＋${step.helpers.length} agent(s)</span>` : ''}</div></div>
+      <p>${esc(step.instruction || ui('Aucune consigne — cliquez pour l’écrire.')).slice(0, 140)}</p>
+      <div class="me-tags">${roots ? ui('<span>▶ départ</span>') : ''}<span title="${step.receives === 'inputs' ? ui('Ne reçoit que ses entrées branchées') : ui('Reçoit toute la conversation de la chaîne')}">${step.receives === 'inputs' ? ui('🔒 entrées seules') : ui('💬 toute la chaîne')}</span>${step.artifact ? ui`<span title="Fichier attendu">📄 ${esc(step.artifact)}</span>` : ''}${step.helpers.length ? ui`<span title="Agents appelables pendant la tâche">＋${step.helpers.length} agent(s)</span>` : ''}</div></div>
   </div>`;
 }
 function ioHTML(key) {
   const node = ioNode(key), selected = methodEditor.selected === key ? 'selected' : '';
-  const hint = key === IN_NODE ? (node.outputs.length > 1 ? 'Donné en appliquant la méthode.' : 'Clic droit : ajouter un contexte, un fichier…')
-    : (node.inputs.length ? 'Ce que la méthode rend.' : 'Déposez ici un fil de sortie.');
+  const hint = key === IN_NODE ? (node.outputs.length > 1 ? ui('Donné en appliquant la méthode.') : ui('Clic droit : ajouter un contexte, un fichier…'))
+    : (node.inputs.length ? ui('Ce que la méthode rend.') : ui('Déposez ici un fil de sortie.'));
   return `<div class="me-node me-io ${key === IN_NODE ? 'io-in' : 'io-out'} ${selected}" data-node="${esc(key)}">
     <div class="me-node-head" data-node-drag="${esc(key)}"><span class="me-exec">${key === IN_NODE ? '▶' : '■'}</span><b>${esc(node.name)}</b></div>
     ${nodePinsHTML(node)}<div class="me-node-body"><small>${esc(hint)}</small></div></div>`;
@@ -227,52 +227,52 @@ function kindSelect(scope, index, kind, locked) {
   return `<select data-me-pin="${scope}:${index}" data-me-pin-field="kind" ${locked ? 'disabled' : ''} aria-label="Type">${Object.entries(KIND_LABELS).map(([k, v]) => `<option value="${k}" ${kind === k ? 'selected' : ''}>${v}</option>`).join('')}</select>`;
 }
 function sourceLine(scope, index, port) {
-  return `<div class="me-source">${port.source ? `← ${esc(sourceName(port.source))} <button type="button" class="text-button" data-me-unwire="${scope}:${index}">débrancher</button>` : '<span class="muted">non branchée</span>'}</div>`;
+  return `<div class="me-source">${port.source ? ui`← ${esc(sourceName(port.source))} <button type="button" class="text-button" data-me-unwire="${scope}:${index}">débrancher</button>` : ui('<span class="muted">non branchée</span>')}</div>`;
 }
 function portsEditor(scope, list, options = {}) {
   const rows = list.map((p, i) => {
     const locked = options.locked || (scope === 'min' && p.key === 'objectif');
-    return `<div class="me-port-item"><div class="me-port-row"><span class="me-kind k-${esc(p.kind)}"></span>
+    return ui`<div class="me-port-item"><div class="me-port-row"><span class="me-kind k-${esc(p.kind)}"></span>
         <input data-me-pin="${scope}:${i}" data-me-pin-field="name" value="${esc(p.name)}" maxlength="80" ${options.locked ? 'disabled' : ''} aria-label="Nom">
         ${kindSelect(scope, i, p.kind, locked)}
-        ${locked ? '<span></span>' : `<button type="button" class="text-button danger" data-me-pin-remove="${scope}:${i}" aria-label="Retirer">✕</button>`}</div>
+        ${locked ? '<span></span>' : ui`<button type="button" class="text-button danger" data-me-pin-remove="${scope}:${i}" aria-label="Retirer">✕</button>`}</div>
       <div class="me-port-extra">
         ${options.sources ? sourceLine(scope, i, p) : ''}
-        ${scope === 'outputs' && p.kind === 'file' ? `<input data-me-pin="${scope}:${i}" data-me-pin-field="path" value="${esc(p.path || '')}" maxlength="400" placeholder="Chemin dans le projet : modele/vaisseau.blend">` : ''}
-        ${options.locked ? '' : `<input data-me-pin="${scope}:${i}" data-me-pin-field="description" value="${esc(p.description || '')}" maxlength="1000" placeholder="${scope === 'min' ? 'Ce que c’est' : scope === 'outputs' ? 'Ce que la tâche doit y mettre' : 'Description (facultative)'}">`}
-        ${scope === 'min' ? `${p.key === 'objectif' ? '' : `<label class="me-check"><input type="checkbox" data-me-pin="${scope}:${i}" data-me-pin-field="required" ${p.required ? 'checked' : ''}> requise pour appliquer</label>`}
+        ${scope === 'outputs' && p.kind === 'file' ? ui`<input data-me-pin="${scope}:${i}" data-me-pin-field="path" value="${esc(p.path || '')}" maxlength="400" placeholder="Chemin dans le projet : modele/vaisseau.blend">` : ''}
+        ${options.locked ? '' : `<input data-me-pin="${scope}:${i}" data-me-pin-field="description" value="${esc(p.description || '')}" maxlength="1000" placeholder="${scope === 'min' ? ui('Ce que c’est') : scope === 'outputs' ? ui('Ce que la tâche doit y mettre') : ui('Description (facultative)')}">`}
+        ${scope === 'min' ? ui`${p.key === 'objectif' ? '' : ui`<label class="me-check"><input type="checkbox" data-me-pin="${scope}:${i}" data-me-pin-field="required" ${p.required ? 'checked' : ''}> requise pour appliquer</label>`}
           <textarea data-me-pin="${scope}:${i}" data-me-pin-field="prepare" rows="2" maxlength="2000" placeholder="Comment la préparer : lu par l’IA ou la personne qui applique la méthode">${esc(p.prepare || '')}</textarea>` : ''}
       </div></div>`;
   }).join('');
-  return `<div class="me-port-list">${rows || '<small class="muted">Aucune.</small>'}</div>`;
+  return `<div class="me-port-list">${rows || ui('<small class="muted">Aucune.</small>')}</div>`;
 }
 function helpersHTML(step, profiles) {
   const list = profiles.filter(p => p.id !== step.profile_id);
-  return `<div class="me-helpers"><b class="me-label">Agents appelables pendant la tâche (6 au plus)</b>
-    <div class="me-helper-list">${list.map(p => `<label><input type="checkbox" data-me-helper="${esc(p.id)}" ${step.helpers.includes(p.id) ? 'checked' : ''}> ${p.icon ? esc(p.icon) + ' ' : ''}${esc(p.name)}</label>`).join('') || '<small class="muted">Aucun autre profil actif.</small>'}</div></div>`;
+  return ui`<div class="me-helpers"><b class="me-label">Agents appelables pendant la tâche (6 au plus)</b>
+    <div class="me-helper-list">${list.map(p => `<label><input type="checkbox" data-me-helper="${esc(p.id)}" ${step.helpers.includes(p.id) ? 'checked' : ''}> ${p.icon ? esc(p.icon) + ' ' : ''}${esc(p.name)}</label>`).join('') || ui('<small class="muted">Aucun autre profil actif.</small>')}</div></div>`;
 }
 function dependsHTML(step) {
   const others = methodEditor.draft.steps.filter(s => s.key !== step.key && !step.depends_on.includes(s.key) && !wouldLoop(s.key, step.key));
-  return `<div><b class="me-label">Attend aussi (ordre, sans rien recevoir)</b><div class="me-deps">${step.depends_on.map(k => `<span class="team-chip">${esc(stepByKey(k)?.name || k)} <button type="button" class="text-button" data-me-undepend="${esc(k)}" aria-label="Retirer">✕</button></span>`).join('') || '<small class="muted">Rien d’autre que ses entrées.</small>'}</div>
-    ${others.length ? `<select data-me-depend><option value="">＋ Attendre une tâche…</option>${others.map(s => `<option value="${esc(s.key)}">${esc(s.name)}</option>`).join('')}</select>` : ''}</div>`;
+  return ui`<div><b class="me-label">Attend aussi (ordre, sans rien recevoir)</b><div class="me-deps">${step.depends_on.map(k => ui`<span class="team-chip">${esc(stepByKey(k)?.name || k)} <button type="button" class="text-button" data-me-undepend="${esc(k)}" aria-label="Retirer">✕</button></span>`).join('') || ui('<small class="muted">Rien d’autre que ses entrées.</small>')}</div>
+    ${others.length ? ui`<select data-me-depend><option value="">＋ Attendre une tâche…</option>${others.map(s => `<option value="${esc(s.key)}">${esc(s.name)}</option>`).join('')}</select>` : ''}</div>`;
 }
 function taskInspectorHTML(step) {
   const profiles = methodProfiles(), connectors = state.data?.connectors || [];
-  return `<div class="me-inspector-head"><span class="me-exec">${EXECUTOR_ICONS[step.executor]}</span><h3>Tâche</h3><button type="button" class="text-button" data-me-select="">Méthode ↩</button></div>
+  return ui`<div class="me-inspector-head"><span class="me-exec">${EXECUTOR_ICONS[step.executor]}</span><h3>Tâche</h3><button type="button" class="text-button" data-me-select="">Méthode ↩</button></div>
     <div class="fields">
       <label>Nom<input data-me-field="name" value="${esc(step.name)}" maxlength="120"></label>
       <label>Description<textarea data-me-field="description" rows="2" maxlength="1000" placeholder="À quoi sert cette tâche : lu par vous et par l’IA qui applique la méthode.">${esc(step.description || '')}</textarea></label>
       <label>Exécutant<select data-me-field="executor">${Object.entries(EXECUTOR_LABELS).map(([k, v]) => `<option value="${k}" ${step.executor === k ? 'selected' : ''}>${v}</option>`).join('')}</select></label>
-      ${step.executor === 'profile' ? `<label>Profil<select data-me-field="profile_id"><option value="">Choisir…</option>${profiles.map(p => `<option value="${esc(p.id)}" ${p.id === step.profile_id ? 'selected' : ''}>${p.icon ? esc(p.icon) + ' ' : ''}${esc(p.name)} · ${esc(agentName(p.connector))}</option>`).join('')}</select><small class="field-help">Ses consignes, son connecteur et son modèle tiennent la tâche.</small></label>` : ''}
-      ${step.executor === 'connector' ? `<div class="two-fields"><label>Connecteur<select data-me-field="connector">${connectors.map(c => `<option value="${esc(c.id)}" ${c.id === step.connector ? 'selected' : ''}>${esc(agentName(c.id))}${c.enabled ? '' : ' · désactivé'}</option>`).join('')}</select></label><label>Modèle<input data-me-field="model" value="${esc(step.model || '')}" list="me-models" placeholder="par défaut"><datalist id="me-models">${(state.data?.models_cache?.[step.connector] || []).map(m => `<option value="${esc(m.id || m)}">`).join('')}</datalist></label></div>` : ''}
-      ${step.executor === 'any' ? '<p class="field-help">L’IA et le modèle seront choisis au moment d’appliquer la méthode : elle reste utilisable par n’importe qui.</p>' : ''}
+      ${step.executor === 'profile' ? ui`<label>Profil<select data-me-field="profile_id"><option value="">Choisir…</option>${profiles.map(p => `<option value="${esc(p.id)}" ${p.id === step.profile_id ? 'selected' : ''}>${p.icon ? esc(p.icon) + ' ' : ''}${esc(p.name)} · ${esc(agentName(p.connector))}</option>`).join('')}</select><small class="field-help">Ses consignes, son connecteur et son modèle tiennent la tâche.</small></label>` : ''}
+      ${step.executor === 'connector' ? ui`<div class="two-fields"><label>Connecteur<select data-me-field="connector">${connectors.map(c => `<option value="${esc(c.id)}" ${c.id === step.connector ? 'selected' : ''}>${esc(agentName(c.id))}${c.enabled ? '' : ui(' · désactivé')}</option>`).join('')}</select></label><label>Modèle<input data-me-field="model" value="${esc(step.model || '')}" list="me-models" placeholder="par défaut"><datalist id="me-models">${(state.data?.models_cache?.[step.connector] || []).map(m => `<option value="${esc(m.id || m)}">`).join('')}</datalist></label></div>` : ''}
+      ${step.executor === 'any' ? ui('<p class="field-help">L’IA et le modèle seront choisis au moment d’appliquer la méthode : elle reste utilisable par n’importe qui.</p>') : ''}
       <div class="me-field"><div class="me-field-head"><span>Consigne${step.attachments?.length ? ' · 📎 ' + step.attachments.length : ''}</span><button type="button" class="text-button" data-mw-open="step">⤢ Ouvrir en grand, avec l’assistant</button></div>
         <textarea data-me-field="instruction" rows="9">${esc(step.instruction)}</textarea><small class="field-help"><code>{objectif}</code> est remplacé par l’objectif donné en appliquant la méthode. Les entrées branchées sont ajoutées après la consigne ; les fichiers joints s’ajoutent en grand.</small></div>
       <label>Ce que reçoit la tâche<select data-me-field="receives"><option value="inputs" ${step.receives === 'inputs' ? 'selected' : ''}>Ses entrées branchées seulement (recommandé)</option><option value="chain" ${step.receives === 'chain' ? 'selected' : ''}>Toute la conversation de la chaîne</option></select></label>
       <div class="me-section"><b class="me-label">Entrées</b>${portsEditor('inputs', step.inputs, {sources: true})}<button type="button" class="secondary" data-me-pin-add="inputs">＋ Entrée</button></div>
       <div class="me-section"><b class="me-label">Sorties</b>${portsEditor('outputs', step.outputs)}<button type="button" class="secondary" data-me-pin-add="outputs">＋ Sortie</button>
         <small class="field-help">Avec plusieurs sorties texte, la tâche les rédige sous « ### Sortie : nom » et chaque entrée branchée ne reçoit que la sienne. Une sortie fichier est vérifiée à la fin de la tâche.</small></div>
-      ${step.artifact ? `<label>Fichier attendu (ancien format)<input data-me-field="artifact" value="${esc(step.artifact)}" maxlength="400"></label>` : ''}
+      ${step.artifact ? ui`<label>Fichier attendu (ancien format)<input data-me-field="artifact" value="${esc(step.artifact)}" maxlength="400"></label>` : ''}
       ${helpersHTML(step, profiles)}
       ${typeof labStepHTML === 'function' ? labStepHTML(step) : ''}
       ${dependsHTML(step)}
@@ -283,14 +283,14 @@ function taskInspectorHTML(step) {
 function methodNodeInspectorHTML(step) {
   const choices = methodEditor.library.filter(m => m.id !== methodEditor.id);
   const sub = methodEditor.library.find(m => m.id === step.method_id);
-  return `<div class="me-inspector-head"><span class="me-exec">${EXECUTOR_ICONS.method}</span><h3>Sous-méthode</h3><button type="button" class="text-button" data-me-select="">Méthode ↩</button></div>
+  return ui`<div class="me-inspector-head"><span class="me-exec">${EXECUTOR_ICONS.method}</span><h3>Sous-méthode</h3><button type="button" class="text-button" data-me-select="">Méthode ↩</button></div>
     <div class="fields">
       <label>Nom du nœud<input data-me-field="name" value="${esc(step.name)}" maxlength="120"></label>
       <label>Méthode appelée<select data-me-field="method_id">${choices.map(m => `<option value="${esc(m.id)}" ${m.id === step.method_id ? 'selected' : ''}>${esc(m.name)}</option>`).join('')}</select></label>
-      ${sub ? `<p class="field-help">${esc(sub.description || 'Sans description.')}${sub.usage ? '<br><b>Mode d’emploi :</b> ' + esc(sub.usage) : ''}</p>` : '<p class="me-warning">⚠ Méthode absente de la bibliothèque.</p>'}
+      ${sub ? `<p class="field-help">${esc(sub.description || ui('Sans description.'))}${sub.usage ? ui('<br><b>Mode d’emploi :</b> ') + esc(sub.usage) : ''}</p>` : ui('<p class="me-warning">⚠ Méthode absente de la bibliothèque.</p>')}
       <button type="button" class="secondary" data-me-open-sub="${esc(step.method_id)}">Ouvrir la sous-méthode</button>
       <div class="me-section"><b class="me-label">Ses entrées</b>${portsEditor('inputs', step.inputs, {sources: true, locked: true})}</div>
-      <div class="me-section"><b class="me-label">Ses sorties</b>${step.outputs.map(p => `<div class="me-source"><span class="me-kind k-${esc(p.kind)}"></span> ${esc(p.name)}</div>`).join('') || '<small class="muted">Elle ne déclare aucune sortie.</small>'}</div>
+      <div class="me-section"><b class="me-label">Ses sorties</b>${step.outputs.map(p => `<div class="me-source"><span class="me-kind k-${esc(p.kind)}"></span> ${esc(p.name)}</div>`).join('') || ui('<small class="muted">Elle ne déclare aucune sortie.</small>')}</div>
       ${dependsHTML(step)}
       ${nodeWarnings(step).map(w => `<p class="me-warning">⚠ ${esc(w.message)}</p>`).join('')}
       <div class="row-actions"><button type="button" class="secondary" data-me-duplicate="${esc(step.key)}">Dupliquer</button><button type="button" class="text-button danger" data-me-delete="${esc(step.key)}">Retirer du graphe</button></div>
@@ -298,18 +298,18 @@ function methodNodeInspectorHTML(step) {
 }
 function ioInspectorHTML(key) {
   const m = methodEditor.draft;
-  if (key === IN_NODE) return `<div class="me-inspector-head"><span class="me-exec">▶</span><h3>Entrées de la méthode</h3><button type="button" class="text-button" data-me-select="">Méthode ↩</button></div>
+  if (key === IN_NODE) return ui`<div class="me-inspector-head"><span class="me-exec">▶</span><h3>Entrées de la méthode</h3><button type="button" class="text-button" data-me-select="">Méthode ↩</button></div>
     <div class="fields"><p class="field-help">Ce qu’on donne en appliquant la méthode. Un contexte peut exister en plusieurs versions — complet, simplifié, spécial : branchez chacune aux tâches qui en ont besoin. Une tâche sans fil n’en reçoit aucune.</p>
       ${portsEditor('min', m.inputs)}
       <div class="row-actions"><button type="button" class="secondary" data-me-pin-add="min" data-kind="context">＋ Contexte</button><button type="button" class="secondary" data-me-pin-add="min" data-kind="text">＋ Texte</button><button type="button" class="secondary" data-me-pin-add="min" data-kind="file">＋ Fichier</button></div></div>`;
-  return `<div class="me-inspector-head"><span class="me-exec">■</span><h3>Sorties de la méthode</h3><button type="button" class="text-button" data-me-select="">Méthode ↩</button></div>
+  return ui`<div class="me-inspector-head"><span class="me-exec">■</span><h3>Sorties de la méthode</h3><button type="button" class="text-button" data-me-select="">Méthode ↩</button></div>
     <div class="fields"><p class="field-help">Ce que la méthode rend. Utilisée comme sous-méthode, ce sont les sorties de son nœud ; en test, ce qui est évalué.</p>
       ${portsEditor('mout', m.outputs, {sources: true})}
       <button type="button" class="secondary" data-me-pin-add="mout">＋ Sortie</button></div>`;
 }
 function methodInspectorHTML() {
   const m = methodEditor.draft, revisions = methodEditor.revisions;
-  return `<div class="me-inspector-head"><h3>Méthode</h3></div>
+  return ui`<div class="me-inspector-head"><h3>Méthode</h3></div>
     <div class="fields">
       <div class="me-field"><div class="me-field-head"><span>Description</span><button type="button" class="text-button" data-mw-open="description">⤢ En grand</button></div><textarea data-me-method="description" rows="3" maxlength="4000" placeholder="Ce que fait la méthode, en quelques lignes.">${esc(m.description)}</textarea></div>
       <div class="me-field"><div class="me-field-head"><span>Mode d’emploi</span><button type="button" class="text-button" data-mw-open="usage">⤢ En grand</button></div><textarea data-me-method="usage" rows="5" maxlength="8000" placeholder="Pour l’IA ou la personne qui applique la méthode : quand l’utiliser, comment préparer ses contextes, ce qu’il faut vérifier avant.">${esc(m.usage || '')}</textarea></div>
@@ -318,14 +318,14 @@ function methodInspectorHTML() {
       <small class="field-help">Chaque tâche pourra finir sa réponse par une section « Proposition d’amélioration », jamais transmise à la suite de la chaîne. Vous les lisez dans « Tests & affinage ». Quelques lignes de plus dans chaque consigne.</small>
       <div class="me-section"><b class="me-label">Entrées et sorties</b><div class="row-actions"><button type="button" class="secondary" data-me-select="${IN_NODE}">Entrées (${m.inputs.length})</button><button type="button" class="secondary" data-me-select="${OUT_NODE}">Sorties (${m.outputs.length})</button></div></div>
       <div class="me-section"><b class="me-label">Prérequis sur la machine</b><p class="field-help">Ce qu’il faut pour que la méthode tourne ailleurs. Un prérequis manquant donne un avertissement, jamais un refus.</p>
-        ${m.requirements.map((r, i) => `<div class="me-requirement"><select data-me-req="${i}" data-me-req-field="kind">${[['software', 'Logiciel'], ['plugin', 'Plugin'], ['connector', 'Connecteur'], ['note', 'À vérifier']].map(([k, v]) => `<option value="${k}" ${r.kind === k ? 'selected' : ''}>${v}</option>`).join('')}</select><input data-me-req="${i}" data-me-req-field="name" value="${esc(r.name)}" placeholder="Blender" maxlength="120"><input data-me-req="${i}" data-me-req-field="executable" value="${esc(r.executable || '')}" placeholder="${r.kind === 'software' ? 'blender ou C:\\…\\blender.exe' : r.kind === 'note' ? '' : 'identifiant'}" maxlength="400" ${r.kind === 'note' ? 'hidden' : ''}><button type="button" class="text-button danger" data-me-req-remove="${i}" aria-label="Retirer">✕</button></div>`).join('')}
+        ${m.requirements.map((r, i) => ui`<div class="me-requirement"><select data-me-req="${i}" data-me-req-field="kind">${[['software', ui('Logiciel')], ['plugin', 'Plugin'], ['connector', ui('Connecteur')], ['note', ui('À vérifier')]].map(([k, v]) => `<option value="${k}" ${r.kind === k ? 'selected' : ''}>${v}</option>`).join('')}</select><input data-me-req="${i}" data-me-req-field="name" value="${esc(r.name)}" placeholder="Blender" maxlength="120"><input data-me-req="${i}" data-me-req-field="executable" value="${esc(r.executable || '')}" placeholder="${r.kind === 'software' ? 'blender ou C:\\…\\blender.exe' : r.kind === 'note' ? '' : 'identifiant'}" maxlength="400" ${r.kind === 'note' ? 'hidden' : ''}><button type="button" class="text-button danger" data-me-req-remove="${i}" aria-label="Retirer">✕</button></div>`).join('')}
         <button type="button" class="secondary" data-me-req-add>＋ Prérequis</button></div>
-      <div class="me-section"><b class="me-label">Agents qui la préfèrent ou doivent l’utiliser</b>${!methodEditor.id ? '<small class="muted">Enregistrez la méthode pour la lier à des agents.</small>'
-        : (methodEditor.agents || []).map(a => `<div class="pm-row"><div class="pm-head"><div><b>${a.icon ? esc(a.icon) + ' ' : ''}${esc(a.name)}</b>${a.archived ? '<small>archivé</small>' : ''}</div>${modeSelect(a.mode, a.profile_id + ':' + methodEditor.id)}</div>${noteBlock('method', a.note, a.note_author, a.note_updated_at, a.profile_id + ':' + methodEditor.id)}</div>`).join('')
-          + `<select data-ma-add><option value="">＋ Lier à un agent…</option>${methodProfiles().filter(p => !(methodEditor.agents || []).some(a => a.profile_id === p.id)).map(p => `<option value="${esc(p.id)}">${p.icon ? esc(p.icon) + ' ' : ''}${esc(p.name)}</option>`).join('')}</select>`}</div>
-      <div class="me-section"><b class="me-label">Versions</b>${!methodEditor.id ? '<small class="muted">Enregistrez la méthode pour garder ses versions.</small>'
-        : revisions ? (revisions.map(r => `<div class="me-revision"><span>v${r.revision} · ${esc(r.source === 'user' ? 'vous' : r.source === 'restore' ? 'retour' : r.source)}${r.note ? ' · ' + esc(r.note) : ''}<small>${esc(new Date(r.created_at).toLocaleString())}</small></span>${r.revision === revisions[0].revision ? '<small class="muted">actuelle</small>' : `<button type="button" class="text-button" data-me-restore="${r.revision}">Rétablir</button>`}</div>`).join('') || '<small class="muted">Aucune.</small>')
-        : '<button type="button" class="secondary" data-me-history>Voir les versions</button>'}</div>
+      <div class="me-section"><b class="me-label">Agents qui la préfèrent ou doivent l’utiliser</b>${!methodEditor.id ? ui('<small class="muted">Enregistrez la méthode pour la lier à des agents.</small>')
+        : (methodEditor.agents || []).map(a => `<div class="pm-row"><div class="pm-head"><div><b>${a.icon ? esc(a.icon) + ' ' : ''}${esc(a.name)}</b>${a.archived ? ui('<small>archivé</small>') : ''}</div>${modeSelect(a.mode, a.profile_id + ':' + methodEditor.id)}</div>${noteBlock('method', a.note, a.note_author, a.note_updated_at, a.profile_id + ':' + methodEditor.id)}</div>`).join('')
+          + ui`<select data-ma-add><option value="">＋ Lier à un agent…</option>${methodProfiles().filter(p => !(methodEditor.agents || []).some(a => a.profile_id === p.id)).map(p => `<option value="${esc(p.id)}">${p.icon ? esc(p.icon) + ' ' : ''}${esc(p.name)}</option>`).join('')}</select>`}</div>
+      <div class="me-section"><b class="me-label">Versions</b>${!methodEditor.id ? ui('<small class="muted">Enregistrez la méthode pour garder ses versions.</small>')
+        : revisions ? (revisions.map(r => `<div class="me-revision"><span>v${r.revision} · ${esc(r.source === 'user' ? ui('vous') : r.source === 'restore' ? ui('retour') : r.source)}${r.note ? ' · ' + esc(r.note) : ''}<small>${esc(new Date(r.created_at).toLocaleString(CYAI_FORMAT_LOCALE))}</small></span>${r.revision === revisions[0].revision ? '<small class="muted">actuelle</small>' : ui`<button type="button" class="text-button" data-me-restore="${r.revision}">Rétablir</button>`}</div>`).join('') || ui('<small class="muted">Aucune.</small>'))
+        : ui('<button type="button" class="secondary" data-me-history>Voir les versions</button>')}</div>
       <p class="field-help">${m.steps.length} nœud(s). <b>Clic droit</b> sur le fond : ajouter une tâche, une sous-méthode, une entrée. Glissez d’une sortie vers une entrée pour brancher ; déposer un fil sur une tâche lui crée l’entrée. Les points de l’en-tête règlent l’ordre seul. Suppr retire ce qui est sélectionné. Une IA peut aussi créer et modifier cette méthode par le MCP CyAI (<code>method_save</code>), avec votre autorisation.</p>
     </div>`;
 }
@@ -344,23 +344,23 @@ function renderWarnings() {
   const box = $('me-warnings');
   if (!box) return;
   const list = methodEditor.warnings, m = methodEditor.draft;
-  box.innerHTML = !methodEditor.id ? '<span class="muted">Enregistrez la méthode pour la vérifier sur cette machine.</span>'
+  box.innerHTML = !methodEditor.id ? ui('<span class="muted">Enregistrez la méthode pour la vérifier sur cette machine.</span>')
     : list.length ? list.map(w => {
       const program = w.level === 'warning' && /^Prérequis « (.+) »$/.exec(w.where) && m?.requirements.find(r => r.kind === 'software' && 'Prérequis « ' + r.name + ' »' === w.where);
-      return `<span class="me-w ${esc(w.level)}">${w.level === 'warning' ? '⚠' : 'ℹ'} <b>${esc(w.where)}</b> : ${esc(w.message)}${program ? ` <button type="button" class="text-button" data-software-path="${esc(program.name)}">Indiquer le chemin…</button>` : ''}</span>`;
+      return `<span class="me-w ${esc(w.level)}">${w.level === 'warning' ? '⚠' : 'ℹ'} <b>${esc(w.where)}</b> : ${esc(w.message)}${program ? ui` <button type="button" class="text-button" data-software-path="${esc(program.name)}">Indiquer le chemin…</button>` : ''}</span>`;
     }).join('')
-    : '<span class="me-w ok">✓ Rien ne manque sur cette machine.</span>';
+    : ui('<span class="me-w ok">✓ Rien ne manque sur cette machine.</span>');
 }
 
 async function renderMethodEditor() {
   if (!teamsState.profiles) teamsState.profiles = (await action('agent_profile_list')).profiles;
   if (state.view !== 'method') return;
   if ($('me-canvas') && methodEditor.mounted === methodEditor.id + ':' + methodEditor.draft.name) return;
-  $('page-title').textContent = 'Éditeur de méthode';
+  $('page-title').textContent = ui('Éditeur de méthode');
   const m = methodEditor.draft, parent = methodEditor.stack[methodEditor.stack.length - 1];
-  $('page').innerHTML = `<div class="method-editor">
+  $('page').innerHTML = ui`<div class="method-editor">
     <header class="me-toolbar">
-      <button type="button" class="secondary" data-me-close>← ${esc(parent ? parent.name : 'Bibliothèque')}</button>
+      <button type="button" class="secondary" data-me-close>← ${esc(parent ? parent.name : ui('Bibliothèque'))}</button>
       <input id="me-name" data-me-method="name" value="${esc(m.name)}" maxlength="120" aria-label="Nom de la méthode">
       <input id="me-category" data-me-method="category" value="${esc(m.category || '')}" maxlength="60" placeholder="Catégorie" aria-label="Catégorie">
       <span id="me-dirty" class="me-dirty" ${methodEditor.dirty ? '' : 'hidden'}>● modifications non enregistrées</span>
@@ -368,7 +368,7 @@ async function renderMethodEditor() {
       <button type="button" class="secondary" data-me-add>＋ Tâche</button>
       <button type="button" class="secondary" data-me-layout title="Ranger les nœuds selon ce qu’ils attendent">Ranger</button>
       <button type="button" class="secondary" data-me-fit title="Tout afficher">Cadrer</button>
-      <button type="button" class="secondary" data-lab-open title="Tests enregistrés avec la méthode, notes, amélioration par une IA, boucle d’affinage, propositions des agents">🧪 Tests & affinage${methodEditor.proposalsNew ? ` <span class="lab-count" title="Propositions d’amélioration à lire">${methodEditor.proposalsNew}</span>` : ''}</button>
+      <button type="button" class="secondary" data-lab-open title="Tests enregistrés avec la méthode, notes, amélioration par une IA, boucle d’affinage, propositions des agents">🧪 Tests & affinage${methodEditor.proposalsNew ? ui` <span class="lab-count" title="Propositions d’amélioration à lire">${methodEditor.proposalsNew}</span>` : ''}</button>
       <button type="button" class="secondary" data-me-export>Exporter</button>
       <button type="button" class="secondary" data-me-apply>Appliquer…</button>
       <button type="button" class="primary" data-me-save>Enregistrer</button>
@@ -463,12 +463,12 @@ function fitView() {
 }
 function addTask(position, wireFrom) {
   const key = nextKey(), previous = !wireFrom && methodEditor.selected && stepByKey(methodEditor.selected);
-  const step = newStep(key, 'Tâche ' + key.slice(1),
+  const step = newStep(key, ui('Tâche ') + key.slice(1),
     position || (previous ? {x: previous.position.x + 320, y: previous.position.y} : {x: 80, y: 80 + methodEditor.draft.steps.length * 40}));
   const source = wireFrom || (previous && previous.kind === 'task' && previous.outputs[0] ? {step: previous.key, port: previous.outputs[0].key} : null);
   if (source) {
     const port = nodeByKey(source.step)?.outputs.find(p => p.key === source.port);
-    step.inputs.push({key: 'e1', name: port?.name || 'Entrée', kind: port?.kind || 'text', description: '', source: {...source}});
+    step.inputs.push({key: 'e1', name: port?.name || ui('Entrée'), kind: port?.kind || 'text', description: '', source: {...source}});
   }
   methodEditor.draft.steps.push(step);
   methodEditor.selected = key; redraw();
@@ -500,9 +500,9 @@ function worldPoint(event) {
 }
 function leaveMethodEditor(then) {
   if (!methodEditor.dirty) { then(); return; }
-  openDialog('Modifications non enregistrées', '<p>Les modifications de cette méthode seront perdues.</p>', async () => {
+  openDialog(ui('Modifications non enregistrées'), ui('<p>Les modifications de cette méthode seront perdues.</p>'), async () => {
     methodEditor.dirty = false; setTimeout(then, 0);
-  }, 'Quitter sans enregistrer');
+  }, ui('Quitter sans enregistrer'));
 }
 function closeMethodEditor() {
   const parent = methodEditor.stack.pop();
@@ -521,9 +521,9 @@ function parsePin(value) { const i = value.lastIndexOf(':'); return {node: value
 function sinkPort(node, port) { return nodeByKey(node)?.inputs.find(p => p.key === port); }
 function connect(source, target) {
   if (target.node === IN_NODE) return;
-  if (target.node === source.step) { toast('Une tâche ne peut pas recevoir sa propre sortie.'); return; }
+  if (target.node === source.step) { toast(ui('Une tâche ne peut pas recevoir sa propre sortie.')); return; }
   if (target.node !== OUT_NODE && source.step !== IN_NODE && wouldLoop(source.step, target.node)) {
-    toast('Ce fil créerait une boucle : une méthode avance, une reprise se pilote sur le board.'); return;
+    toast(ui('Ce fil créerait une boucle : une méthode avance, une reprise se pilote sur le board.')); return;
   }
   const port = sinkPort(target.node, target.port);
   if (!port) return;
@@ -535,7 +535,7 @@ function connectToNode(source, nodeKey) {
   const from = nodeByKey(source.step)?.outputs.find(p => p.key === source.port);
   if (!from || nodeKey === IN_NODE || nodeKey === source.step) return;
   if (nodeKey === OUT_NODE) {
-    const list = methodEditor.draft.outputs, key = slugKey(from.name, list, 'sortie');
+    const list = methodEditor.draft.outputs, key = slugKey(from.name, list, ui('sortie'));
     list.push({key, name: from.name, kind: from.kind, description: '', source: null});
     connect(source, {node: OUT_NODE, port: key});
     return;
@@ -544,8 +544,8 @@ function connectToNode(source, nodeKey) {
   if (!step) return;
   const free = step.inputs.find(p => !p.source && p.kind === from.kind) || (step.kind === 'method' && step.inputs.find(p => !p.source));
   if (free) { connect(source, {node: nodeKey, port: free.key}); return; }
-  if (step.kind === 'method') { toast('Toutes les entrées de cette sous-méthode sont déjà branchées.'); return; }
-  if (step.inputs.length >= 12) { toast('Douze entrées au plus par tâche.'); return; }
+  if (step.kind === 'method') { toast(ui('Toutes les entrées de cette sous-méthode sont déjà branchées.')); return; }
+  if (step.inputs.length >= 12) { toast(ui('Douze entrées au plus par tâche.')); return; }
   const key = pinKey(step.inputs, 'e');
   step.inputs.push({key, name: from.name, kind: from.kind, description: '', source: null});
   connect(source, {node: nodeKey, port: key});
@@ -566,27 +566,27 @@ function removeEdge(id) {
 function menuItems(ctx) {
   const items = [];
   if (ctx.type === 'canvas') {
-    if (ctx.wireFrom) items.push({label: '＋ Nouvelle tâche branchée ici', act: 'task-wired'}, {sep: true});
-    items.push({label: '＋ Tâche ici', act: 'task'});
+    if (ctx.wireFrom) items.push({label: ui('＋ Nouvelle tâche branchée ici'), act: 'task-wired'}, {sep: true});
+    items.push({label: ui('＋ Tâche ici'), act: 'task'});
     const subs = methodEditor.library.filter(m => m.id !== methodEditor.id);
-    items.push({title: 'Sous-méthode ici'}, ...(subs.length ? subs.map(m => ({label: '⧉ ' + m.name, act: 'sub', arg: m.id})) : [{label: 'Aucune autre méthode enregistrée', disabled: true}]));
-    items.push({sep: true}, {label: '＋ Entrée de méthode · contexte', act: 'min', arg: 'context'}, {label: '＋ Entrée de méthode · texte', act: 'min', arg: 'text'},
-      {label: '＋ Entrée de méthode · fichier', act: 'min', arg: 'file'}, {label: '＋ Sortie de méthode', act: 'mout'},
-      {sep: true}, {label: 'Ranger', act: 'layout'}, {label: 'Cadrer', act: 'fit'});
+    items.push({title: ui('Sous-méthode ici')}, ...(subs.length ? subs.map(m => ({label: '⧉ ' + m.name, act: 'sub', arg: m.id})) : [{label: ui('Aucune autre méthode enregistrée'), disabled: true}]));
+    items.push({sep: true}, {label: ui('＋ Entrée de méthode · contexte'), act: 'min', arg: 'context'}, {label: ui('＋ Entrée de méthode · texte'), act: 'min', arg: 'text'},
+      {label: ui('＋ Entrée de méthode · fichier'), act: 'min', arg: 'file'}, {label: ui('＋ Sortie de méthode'), act: 'mout'},
+      {sep: true}, {label: ui('Ranger'), act: 'layout'}, {label: ui('Cadrer'), act: 'fit'});
   } else if (ctx.type === 'node') {
     const step = stepByKey(ctx.key);
-    if (ctx.key === IN_NODE) items.push({label: '＋ Contexte', act: 'min', arg: 'context'}, {label: '＋ Texte', act: 'min', arg: 'text'}, {label: '＋ Fichier', act: 'min', arg: 'file'});
-    else if (ctx.key === OUT_NODE) items.push({label: '＋ Sortie', act: 'mout'});
-    else if (step?.kind === 'method') items.push({label: 'Ouvrir la sous-méthode', act: 'open-sub', arg: step.method_id}, {label: 'Dupliquer', act: 'duplicate'}, {sep: true}, {label: 'Retirer du graphe', act: 'delete', danger: true});
-    else if (step) items.push({label: '⤢ Écrire la consigne en grand', act: 'writer'}, {sep: true}, {label: '＋ Entrée', act: 'node-in'}, {label: '＋ Sortie', act: 'node-out'}, {label: 'Dupliquer', act: 'duplicate'}, {sep: true}, {label: 'Supprimer la tâche', act: 'delete', danger: true});
+    if (ctx.key === IN_NODE) items.push({label: ui('＋ Contexte'), act: 'min', arg: 'context'}, {label: ui('＋ Texte'), act: 'min', arg: 'text'}, {label: ui('＋ Fichier'), act: 'min', arg: 'file'});
+    else if (ctx.key === OUT_NODE) items.push({label: ui('＋ Sortie'), act: 'mout'});
+    else if (step?.kind === 'method') items.push({label: ui('Ouvrir la sous-méthode'), act: 'open-sub', arg: step.method_id}, {label: ui('Dupliquer'), act: 'duplicate'}, {sep: true}, {label: ui('Retirer du graphe'), act: 'delete', danger: true});
+    else if (step) items.push({label: ui('⤢ Écrire la consigne en grand'), act: 'writer'}, {sep: true}, {label: ui('＋ Entrée'), act: 'node-in'}, {label: ui('＋ Sortie'), act: 'node-out'}, {label: ui('Dupliquer'), act: 'duplicate'}, {sep: true}, {label: ui('Supprimer la tâche'), act: 'delete', danger: true});
   } else if (ctx.type === 'pin') {
     const node = nodeByKey(ctx.node), list = ctx.side === 'in' ? node.inputs : node.outputs, port = list.find(p => p.key === ctx.port);
     const fixed = node.kind === 'method' || (ctx.node === IN_NODE && ctx.port === 'objectif');
     if (!port) return items;
     items.push({title: port.name});
-    if (!fixed) items.push({label: 'Renommer…', act: 'pin-rename'}, ...Object.entries(KIND_LABELS).filter(([k]) => k !== port.kind).map(([k, v]) => ({label: 'Type : ' + v, act: 'pin-kind', arg: k})));
-    if (ctx.side === 'in' && port.source) items.push({label: 'Débrancher', act: 'pin-unwire'});
-    if (!fixed) items.push({sep: true}, {label: 'Supprimer la broche', act: 'pin-remove', danger: true});
+    if (!fixed) items.push({label: ui('Renommer…'), act: 'pin-rename'}, ...Object.entries(KIND_LABELS).filter(([k]) => k !== port.kind).map(([k, v]) => ({label: 'Type : ' + v, act: 'pin-kind', arg: k})));
+    if (ctx.side === 'in' && port.source) items.push({label: ui('Débrancher'), act: 'pin-unwire'});
+    if (!fixed) items.push({sep: true}, {label: ui('Supprimer la broche'), act: 'pin-remove', danger: true});
   }
   return items;
 }
@@ -608,10 +608,10 @@ function closeMenu() { const menu = $('me-menu'); if (menu) menu.hidden = true; 
 function pinList(ctx) { const node = nodeByKey(ctx.node); return ctx.side === 'in' ? node.inputs : node.outputs; }
 function addPin(scope, kind) {
   const m = methodEditor.draft, step = stepByKey(methodEditor.selected);
-  if (scope === 'min') { const name = {context: 'Contexte', text: 'Texte', file: 'Fichier'}[kind] || 'Entrée'; m.inputs.push({key: slugKey(name, m.inputs, 'entree'), name, kind: kind || 'text', description: '', required: false, prepare: ''}); }
-  else if (scope === 'mout') m.outputs.push({key: slugKey('Sortie', m.outputs, 'sortie'), name: 'Sortie ' + (m.outputs.length + 1), kind: 'text', description: '', source: null});
-  else if (step && scope === 'inputs') step.inputs.push({key: pinKey(step.inputs, 'e'), name: 'Entrée ' + (step.inputs.length + 1), kind: kind || 'text', description: '', source: null});
-  else if (step && scope === 'outputs') step.outputs.push({key: pinKey(step.outputs, 's'), name: 'Sortie ' + (step.outputs.length + 1), kind: kind || 'text', description: ''});
+  if (scope === 'min') { const name = {context: ui('Contexte'), text: ui('Texte'), file: ui('Fichier')}[kind] || ui('Entrée'); m.inputs.push({key: slugKey(name, m.inputs, 'entree'), name, kind: kind || 'text', description: '', required: false, prepare: ''}); }
+  else if (scope === 'mout') m.outputs.push({key: slugKey(ui('Sortie'), m.outputs, ui('sortie')), name: ui('Sortie ') + (m.outputs.length + 1), kind: 'text', description: '', source: null});
+  else if (step && scope === 'inputs') step.inputs.push({key: pinKey(step.inputs, 'e'), name: ui('Entrée ') + (step.inputs.length + 1), kind: kind || 'text', description: '', source: null});
+  else if (step && scope === 'outputs') step.outputs.push({key: pinKey(step.outputs, 's'), name: ui('Sortie ') + (step.outputs.length + 1), kind: kind || 'text', description: ''});
   redraw();
 }
 function removePin(list, index, nodeKey, side) {
@@ -650,8 +650,8 @@ function runMenu(index) {
     case 'pin-kind': if (port) { port.kind = item.arg; redraw(); } break;
     case 'pin-remove': { const list = pinList(ctx); removePin(list, list.indexOf(port), ctx.node, ctx.side); break; }
     case 'pin-rename':
-      if (port) openDialog('Renommer la broche', `<div class="fields"><label>Nom<input name="name" value="${esc(port.name)}" maxlength="80" required></label><p class="field-help">Les fils restent branchés : ils suivent la broche, pas son nom.</p></div>`,
-        async form => { port.name = String(form.get('name')).trim() || port.name; redraw(); }, 'Renommer');
+      if (port) openDialog(ui('Renommer la broche'), ui`<div class="fields"><label>Nom<input name="name" value="${esc(port.name)}" maxlength="80" required></label><p class="field-help">Les fils restent branchés : ils suivent la broche, pas son nom.</p></div>`,
+        async form => { port.name = String(form.get('name')).trim() || port.name; redraw(); }, ui('Renommer'));
       break;
   }
 }
@@ -740,7 +740,7 @@ document.addEventListener('pointerup', e => {
     const target = document.elementFromPoint(e.clientX, e.clientY)?.closest('[data-node]');
     const to = target && stepByKey(target.dataset.node);
     if (!to || to.key === drag.from || to.depends_on.includes(drag.from)) return;
-    if (wouldLoop(drag.from, to.key)) { toast('Ce lien créerait une boucle : une méthode avance, une reprise se pilote sur le board.'); return; }
+    if (wouldLoop(drag.from, to.key)) { toast(ui('Ce lien créerait une boucle : une méthode avance, une reprise se pilote sur le board.')); return; }
     to.depends_on.push(drag.from);
     redraw();
   } else if (drag.type === 'data') {
@@ -849,7 +849,7 @@ document.addEventListener('change', e => {
   if (d.mePin && d.mePinField === 'required') { const {port} = pinTarget(d.mePin); if (port) { port.required = t.checked; refreshNode(); markDirty(); } }
   if (d.meHelper !== undefined && step) {
     step.helpers = t.checked ? [...step.helpers, d.meHelper].slice(0, 6) : step.helpers.filter(h => h !== d.meHelper);
-    if (t.checked && step.helpers.length >= 6 && !step.helpers.includes(d.meHelper)) toast('Six agents appelables au plus par tâche.');
+    if (t.checked && step.helpers.length >= 6 && !step.helpers.includes(d.meHelper)) toast(ui('Six agents appelables au plus par tâche.'));
     redraw();
   }
   if (t.hasAttribute('data-me-depend') && step && t.value) { step.depends_on.push(t.value); redraw(); }
@@ -866,20 +866,20 @@ async function methodApplyDialog(method) {
   const free = method.steps.filter(s => s.kind !== 'method' && s.executor === 'any');
   const connectors = (state.data?.connectors || []).filter(c => c.enabled);
   const extra = (method.inputs || []).filter(p => p.key !== 'objectif');
-  openDialog('Appliquer · ' + method.name, `<div class="fields">
-    ${method.usage ? `<div class="me-usage"><b>Mode d’emploi</b><p>${esc(method.usage)}</p></div>` : ''}
+  openDialog(ui('Appliquer · ') + method.name, ui`<div class="fields">
+    ${method.usage ? ui`<div class="me-usage"><b>Mode d’emploi</b><p>${esc(method.usage)}</p></div>` : ''}
     <label>Projet<select name="project_id">${projectOptions(state.project)}</select></label>
     <label>Objectif<textarea name="objective" rows="3" maxlength="4000" required placeholder="Ce que la chaîne doit produire, par exemple : un croiseur minier cyberpunk"></textarea></label>
     ${extra.map(p => p.kind === 'file'
-      ? `<label>${esc(p.name)}${p.required ? ' *' : ''}<input name="in:${esc(p.key)}" maxlength="400" placeholder="Chemin dans le projet" ${p.required ? 'required' : ''}>${p.prepare || p.description ? `<small class="field-help">${esc(p.prepare || p.description)}</small>` : ''}</label>`
-      : `<label>${esc(p.name)}${p.kind === 'context' ? ' (contexte)' : ''}${p.required ? ' *' : ''}<textarea name="in:${esc(p.key)}" rows="${p.kind === 'context' ? 5 : 2}" maxlength="50000" placeholder="${esc(p.description || '')}" ${p.required ? 'required' : ''}></textarea>${p.prepare ? `<small class="field-help">Préparation : ${esc(p.prepare)}</small>` : ''}</label>`).join('')}
-    ${extra.some(p => p.kind !== 'file') && connectors.length ? `<details class="me-prepare"><summary>Préparer ces entrées avec une IA…</summary>
+      ? ui`<label>${esc(p.name)}${p.required ? ' *' : ''}<input name="in:${esc(p.key)}" maxlength="400" placeholder="Chemin dans le projet" ${p.required ? 'required' : ''}>${p.prepare || p.description ? `<small class="field-help">${esc(p.prepare || p.description)}</small>` : ''}</label>`
+      : `<label>${esc(p.name)}${p.kind === 'context' ? ' (contexte)' : ''}${p.required ? ' *' : ''}<textarea name="in:${esc(p.key)}" rows="${p.kind === 'context' ? 5 : 2}" maxlength="50000" placeholder="${esc(p.description || '')}" ${p.required ? 'required' : ''}></textarea>${p.prepare ? ui`<small class="field-help">Préparation : ${esc(p.prepare)}</small>` : ''}</label>`).join('')}
+    ${extra.some(p => p.kind !== 'file') && connectors.length ? ui`<details class="me-prepare"><summary>Préparer ces entrées avec une IA…</summary>
       <p class="field-help">Une IA lit le mode d’emploi et la préparation de chaque entrée, puis rédige les entrées à partir de l’objectif et de la matière que vous collez ici. Elle remplit ce formulaire : vous relisez avant d’appliquer. Cela consomme des crédits de l’IA choisie.</p>
       <textarea name="material" rows="4" maxlength="50000" placeholder="Matière brute : brief, notes, extraits…"></textarea>
       <div class="two-fields"><select name="prep_connector" aria-label="IA">${connectors.map(c => `<option value="${esc(c.id)}">${esc(agentName(c.id))}</option>`).join('')}</select><input name="prep_model" placeholder="modèle par défaut" aria-label="Modèle"></div>
       <div class="row-actions"><button type="button" class="secondary" data-me-prepare="${esc(method.id)}">Préparer</button><span id="me-prepare-status" class="field-help"></span></div></details>` : ''}
-    ${free.length && !connectors.length ? '<p class="me-warning">⚠ Aucun connecteur activé : activez-en un dans Connecteurs pour les tâches confiées à n’importe quelle IA.</p>' : ''}
-    ${free.length && connectors.length ? `<div class="two-fields"><label>IA des tâches libres (${free.length})<select name="connector" required>${connectors.map(c => `<option value="${esc(c.id)}">${esc(agentName(c.id))}</option>`).join('')}</select></label><label>Modèle<input name="model" placeholder="par défaut"></label></div>` : ''}
+    ${free.length && !connectors.length ? ui('<p class="me-warning">⚠ Aucun connecteur activé : activez-en un dans Connecteurs pour les tâches confiées à n’importe quelle IA.</p>') : ''}
+    ${free.length && connectors.length ? ui`<div class="two-fields"><label>IA des tâches libres (${free.length})<select name="connector" required>${connectors.map(c => `<option value="${esc(c.id)}">${esc(agentName(c.id))}</option>`).join('')}</select></label><label>Modèle<input name="model" placeholder="par défaut"></label></div>` : ''}
     <label>Tâches simultanées<input name="concurrency" type="number" min="1" max="32" value="1" required></label>
     ${(method.warnings || []).filter(w => w.level === 'warning').map(w => `<p class="me-warning">⚠ <b>${esc(w.where)}</b> : ${esc(w.message)}</p>`).join('')}
     <p class="field-help">La chaîne est préparée dans sa propre conversation et <b>n’est pas lancée</b>. Relisez les instructions et les livrables attendus, puis lancez-la depuis le suivi de mission.</p>
@@ -893,13 +893,13 @@ async function methodApplyDialog(method) {
     state.home = false; state.project = values.project_id;
     toast(r.notice);
     await selectConversation(r.conversation_id);
-  }, 'Préparer la chaîne');
+  }, ui('Préparer la chaîne'));
 }
 // The AI drafts; the form shows what it wrote. Nothing is applied until you press the dialog's button.
 async function prepareMethodInputs(id, button) {
   const form = button.closest('form'), status = $('me-prepare-status'), objective = form.querySelector('[name="objective"]').value.trim();
-  if (!objective) { status.textContent = 'Écrivez d’abord l’objectif.'; return; }
-  button.disabled = true; status.textContent = 'Préparation en cours…';
+  if (!objective) { status.textContent = ui('Écrivez d’abord l’objectif.'); return; }
+  button.disabled = true; status.textContent = ui('Préparation en cours…');
   try {
     const started = await action('method_prepare_inputs', {id, objective, material: form.querySelector('[name="material"]').value,
       connector: form.querySelector('[name="prep_connector"]').value, model: form.querySelector('[name="prep_model"]').value});
@@ -907,9 +907,9 @@ async function prepareMethodInputs(id, button) {
     do { await new Promise(r => setTimeout(r, 1200)); mission = await api('mission/' + started.mission_id); }
     while (!['succeeded', 'failed', 'cancelled', 'interrupted'].includes(mission.status) && $('dialog').open);
     const r = await action('method_prepared_inputs', {id, mission_id: started.mission_id});
-    if (r.status !== 'succeeded') { status.textContent = 'La préparation n’a pas abouti (' + (L.states?.[r.status] || r.status) + ').'; return; }
+    if (r.status !== 'succeeded') { status.textContent = ui('La préparation n’a pas abouti (') + (L.states?.[r.status] || r.status) + ').'; return; }
     Object.entries(r.inputs).forEach(([key, value]) => { const field = form.querySelector(`[name="in:${CSS.escape(key)}"]`); if (field) field.value = value; });
-    status.textContent = Object.keys(r.inputs).length + ' entrée(s) remplie(s) — relisez-les.' + (r.missing.length ? ' Non trouvées dans la réponse : ' + r.missing.join(', ') + '.' : '');
+    status.textContent = Object.keys(r.inputs).length + ui(' entrée(s) remplie(s) — relisez-les.') + (r.missing.length ? ui(' Non trouvées dans la réponse : ') + r.missing.join(', ') + '.' : '');
   } finally { button.disabled = false; }
 }
 function methodFileName(name) { return (name || 'methode').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\w-]+/g, '-').replace(/^-|-$/g, '').toLowerCase() + '.cyai-method.json'; }
@@ -919,9 +919,9 @@ function importMethodFile() {
   input.onchange = async () => {
     const file = input.files[0];
     if (!file) return;
-    if (file.size > 24000000) { fail(new Error('Fichier de méthode trop volumineux (24 Mo au plus).')); return; }
+    if (file.size > 24000000) { fail(new Error(ui('Fichier de méthode trop volumineux (24 Mo au plus).'))); return; }
     const text = await file.text();
-    openDialog('Importer « ' + file.name + ' »', `<div class="fields">
+    openDialog(ui('Importer « ') + file.name + ' »', ui`<div class="fields">
       <label><span><input type="checkbox" name="create_profiles" checked> Créer dans la bibliothèque les profils absents, à partir de l’export</span></label>
       <p class="field-help">Sinon, leurs tâches sont confiées à n’importe quelle IA. Les sous-méthodes incluses sont importées aussi. Tout ce qui manque sur cette machine (connecteur, plugin, logiciel) sera signalé par un avertissement, sans bloquer l’import.</p></div>`,
       async form => {
@@ -929,9 +929,9 @@ function importMethodFile() {
         toast(r.notice);
         setTimeout(async () => {
           await openMethodGraph(r.id);
-          if (r.warnings.length) openDialog('Import · ce qu’il faut savoir', `<ul class="board-history">${r.warnings.map(w => `<li>${w.level === 'warning' ? '⚠' : 'ℹ'} <b>${esc(w.where)}</b> : ${esc(w.message)}</li>`).join('')}</ul>`, null);
+          if (r.warnings.length) openDialog(ui('Import · ce qu’il faut savoir'), `<ul class="board-history">${r.warnings.map(w => `<li>${w.level === 'warning' ? '⚠' : 'ℹ'} <b>${esc(w.where)}</b> : ${esc(w.message)}</li>`).join('')}</ul>`, null);
         }, 0);
-      }, 'Importer');
+      }, ui('Importer'));
   };
   input.click();
 }
@@ -976,12 +976,12 @@ document.addEventListener('click', async e => {
     if (button.hasAttribute('data-me-history')) { methodEditor.revisions = (await action('method_history', {id: methodEditor.id})).revisions; renderInspectorPanel(); }
     if (d.meRestore) {
       const revision = Number(d.meRestore);
-      openDialog('Rétablir la version ' + revision, `<p>La version ${revision} redevient la méthode actuelle, enregistrée comme une nouvelle version. Rien n’est effacé${methodEditor.dirty ? ' — sauf vos modifications non enregistrées' : ''}.</p>`, async () => {
+      openDialog(ui('Rétablir la version ') + revision, ui`<p>La version ${revision} redevient la méthode actuelle, enregistrée comme une nouvelle version. Rien n’est effacé${methodEditor.dirty ? ui(' — sauf vos modifications non enregistrées') : ''}.</p>`, async () => {
         const r = await action('method_restore', {id: methodEditor.id, revision});
         toast(r.notice);
         methodEditor.dirty = false;
         setTimeout(() => openMethodGraph(methodEditor.id, true), 0);
-      }, 'Rétablir');
+      }, ui('Rétablir'));
     }
     if (button.hasAttribute('data-me-req-add')) { methodEditor.draft.requirements.push({kind: 'software', name: '', executable: '', detail: ''}); markDirty(); renderInspectorPanel(); }
     if (d.meReqRemove !== undefined) { methodEditor.draft.requirements.splice(Number(d.meReqRemove), 1); markDirty(); renderInspectorPanel(); }

@@ -16,6 +16,9 @@ def make_server(service, port=8766, token=None):
             pass  # Request bodies, prompts and credentials are never logged.
 
         def send(self, status, body, content_type="application/json; charset=utf-8", cookie=False, embedded=False):
+            if status >= 400 and isinstance(body, dict) and isinstance(body.get('error'), str):
+                from .i18n import language, translate
+                body = {**body, 'error': translate(body['error'], language(service.config))}
             payload = json.dumps(body, ensure_ascii=False).encode() if isinstance(body, (dict, list)) else body
             self.send_response(status)
             self.send_header("Content-Type", content_type)
@@ -121,7 +124,16 @@ def make_server(service, port=8766, token=None):
                         return self.send(404, {"error": "Introuvable."})
                     file = webroot / name
                     mime = {".js": "text/javascript", ".html": "text/html", ".css": "text/css"}[file.suffix]
-                    return self.send(200, file.read_bytes(), mime + "; charset=utf-8", cookie=name == "index.html")
+                    content = file.read_bytes()
+                    if name in {'index.html', 'i18n.js'}:
+                        from .i18n import bootstrap, language, translate_html
+                        if name == 'i18n.js':
+                            content = bootstrap(service.config).encode('utf-8') + content
+                        else:
+                            source = translate_html(content.decode('utf-8'), language(service.config))
+                            source = source.replace('<html lang="fr">', '<html lang="' + language(service.config) + '">')
+                            content = source.encode('utf-8')
+                    return self.send(200, content, mime + "; charset=utf-8", cookie=name == "index.html")
                 if not self.authorized():
                     return self.send(403, {"error": "Accès local non autorisé."})
                 query = {k: v[0] for k, v in parse_qs(urlparse(self.path).query).items()}

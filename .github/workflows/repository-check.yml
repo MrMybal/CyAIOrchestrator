@@ -23,3 +23,10 @@ jobs:
         env:
           GITLEAKS_BINARY: ${{ runner.temp }}/cyai-checks/tools/gitleaks
         run: python3 -m unittest discover -s tests -p test_repository_checks.py -v
+      - name: Test interface localization and browser handlers
+        run: |
+          python3 -m unittest discover -s tests -p test_i18n.py -v
+          node tests/i18n.cjs
+          node tests/ui-async-regressions.cjs
+          node tests/voice-settings-render.cjs
+          node tests/optional-components-ui.cjs
