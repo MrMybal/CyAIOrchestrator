@@ -1,0 +1,70 @@
+__pycache__/
+*.pyc
+.venv/
+.desktop-venv/
+.data/
+config.json
+config.json.before-ollama-*.bak
+*.egg-info/
+build/
+dist/
+test-results/
+
+# Local credentials, application state and editor sessions
+.env
+.env.*
+!.env.example
+.claude/
+.codex/
+.cyrevision/
+*.dpapi
+*.sqlite3
+*.sqlite3-*
+*.db
+*.log
+*.lnk
+
+# Generated desktop packages, installers and audit artifacts
+/build-*/
+/dist-*/
+/releases/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+node_modules/
+
+# User-downloaded models and native runtimes
+/models/
+/runtimes/
+*.gguf
+*.safetensors
+*.onnx
+*.onnx_data
+*.pt
+*.pth
+*.ckpt
+*.fermion
+# FFmpeg is installed into the user's runtime cache on request.
+/cyai/web/cyannota/ffmpeg/*.wasm
+/cyai/web/cyannota/ffmpeg/*.wasm.part[0-9]*
+
+# Development traces and local experiments are retained locally.
+/experiments/
+
+# Accidental local backups, credentials and binary dependencies
+config.json.*
+*.bak
+*.backup
+*.db-*
+*.key
+*.p12
+*.pfx
+*.exe
+*.dll
+*.pyd
+*.whl
+*.msi
+/logs/
+/backups/
+/downloads/

@@ -1,0 +1,117 @@
+"""Isolated JSON-lines worker for Qwen, Chatterbox and Fish. Audio never leaves the PC."""
+import sys, json, base64, os
+from pathlib import Path
+protocol=sys.stdout
+sys.stdout=sys.stderr
+
+def say(data):
+    protocol.write(json.dumps(data, ensure_ascii=True)+'\n'); protocol.flush()
+
+os.environ.setdefault('HF_HUB_DISABLE_XET','1')
+mode, engine = sys.argv[1:3]
+REPOS={
+ 'design':('Qwen/Qwen3-TTS-12Hz-1.7B-VoiceDesign','5ecdb67327fd37bb2e042aab12ff7391903235d3'),
+ 'custom':('Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice','0c0e3051f131929182e2c023b9537f8b1c68adfe'),
+ 'clone':('Qwen/Qwen3-TTS-12Hz-1.7B-Base','fd4b254389122332181a7c3db7f27e918eec64e3'),
+ 'chatterbox':('ResembleAI/chatterbox','5bb1f6ee58e50c3b8d408bc82a6d3740c2db6e18'),
+ 'fish':('fishaudio/s2-pro','1de9996b6be38b745688de084d87a5633f714e4e'),
+}
+def snapshot(key):
+    from huggingface_hub import snapshot_download
+    repo,revision=REPOS[key]
+    patterns=['*.json','*.safetensors','*.txt','*.model','*.tiktoken','*.pth']
+    if key=='chatterbox': patterns=['ve.pt','s3gen.pt','t3_mtl23ls_v2.safetensors','grapheme_mtl_merged_expanded_v1.json','conds.pt','Cangjie5_TC.json']
+    folder=Path(os.environ['HF_HOME']) / 'models' / repo.replace('/','--') / revision
+    if mode!='prepare':
+        if not folder.is_dir(): raise ValueError('Modèle absent : terminez son téléchargement dans Paramètres > Voix.')
+        return str(folder)
+    return snapshot_download(repo, revision=revision, allow_patterns=patterns, local_dir=str(folder))
+try:
+    import truststore
+    truststore.inject_into_ssl()  # Use Windows trusted certificates; TLS verification remains enabled.
+    import torch, numpy as np
+    if engine=='qwen': from qwen_tts import Qwen3TTSModel
+    elif engine=='chatterbox': from chatterbox.mtl_tts import ChatterboxMultilingualTTS
+    elif engine=='fish':
+        from fish_speech.inference_engine import TTSInferenceEngine
+        from fish_speech.models.text2semantic.inference import init_model, generate_long, GenerateResponse, WrappedGenerateResponse
+        from fish_speech.models.dac.inference import load_model as load_decoder
+        from fish_speech.utils.schema import ServeTTSRequest, ServeReferenceAudio
+    else: raise ValueError('Moteur inconnu')
+    if mode=='prepare':
+        for key in ('design','custom','clone') if engine=='qwen' else (engine,): snapshot(key)
+        say({'ok':True,'cuda':torch.cuda.is_available()}); sys.exit(0)
+    if not torch.cuda.is_available(): raise RuntimeError('CUDA indisponible : installez le pilote NVIDIA et le moteur CUDA depuis les options.')
+except Exception as exc:
+    say({'ok':False,'error':str(exc)[-1200:]}); sys.exit(1)
+model=None
+model_variant=None
+base_conds=None
+
+def load(variant):
+    global model, model_variant, base_conds
+    if model is not None and model_variant==variant: return
+    if model is not None:
+        model=None
+        import gc
+        gc.collect(); torch.cuda.empty_cache()
+    if engine=='qwen':
+        model=Qwen3TTSModel.from_pretrained(snapshot(variant), device_map='cuda:0', dtype=torch.bfloat16, attn_implementation='sdpa')
+    elif engine=='chatterbox':
+        model=ChatterboxMultilingualTTS.from_local(Path(snapshot(engine)), 'cuda')
+        base_conds=model.conds
+    else:
+        import queue, threading
+        root=Path(snapshot(engine))
+        # Initialise synchronously so an OOM is returned as an error, not a thread waiting forever.
+        semantic,decode=init_model(root, 'cuda', torch.bfloat16, compile=False)
+        with torch.device('cuda'):
+            semantic.setup_caches(max_batch_size=1,max_seq_len=semantic.config.max_seq_len,dtype=next(semantic.parameters()).dtype)
+        requests=queue.Queue()
+        def consume():
+            while True:
+                item=requests.get()
+                try:
+                    for response in generate_long(model=semantic,decode_one_token=decode,**item.request):
+                        item.response_queue.put(WrappedGenerateResponse(status='success',response=response))
+                except Exception as exc:
+                    item.response_queue.put(WrappedGenerateResponse(status='error',response=exc))
+        decoder=load_decoder(config_name='modded_dac_vq',checkpoint_path=str(root/'codec.pth'),device='cuda')
+        model=TTSInferenceEngine(requests,decoder,torch.bfloat16,False)
+        threading.Thread(target=consume,daemon=True).start()
+    model_variant=variant
+
+def audio(samples,rate):
+    if hasattr(samples,'detach'): samples=samples.detach().float().cpu().numpy()
+    pcm=(np.clip(np.asarray(samples).reshape(-1),-1,1)*32767).astype('<i2').tobytes()
+    say({'audio':base64.b64encode(pcm).decode(),'rate':int(rate)})
+
+say({'ok':True,'ready':True})
+for line in sys.stdin:
+    try:
+        r=json.loads(line); variant=r.get('variant','default'); load(variant)
+        text=r['text']; ref=r.get('reference'); language=r.get('language','fr')
+        with torch.inference_mode():
+            if engine=='qwen':
+                args={'text':text,'language':'French' if language=='fr' else 'English'}
+                if variant=='design': wavs,rate=model.generate_voice_design(**args,instruct=r['instruct'])
+                elif variant=='custom': wavs,rate=model.generate_custom_voice(**args,speaker=r['speaker'],instruct=r.get('instruct',''))
+                else: wavs,rate=model.generate_voice_clone(**args,ref_audio=ref,ref_text=r.get('reference_text') or None,x_vector_only_mode=not bool(r.get('reference_text')))
+                audio(wavs[0],rate)
+            elif engine=='chatterbox':
+                # A default voice must not inherit the previous speaker's conditioning.
+                if not ref: model.conds=base_conds
+                wav=model.generate(text,language_id=language,audio_prompt_path=ref,exaggeration=r['exaggeration'],cfg_weight=r['cfg'],temperature=r['temperature'])
+                audio(wav,model.sr)
+            else:
+                references=[ServeReferenceAudio(audio=Path(ref).read_bytes(),text=r['reference_text'])] if ref else []
+                style=r.get('style','')
+                request=ServeTTSRequest(text=('['+style+'] ' if style else '')+text,references=references,streaming=True,temperature=float(r['temperature']),top_p=float(r['top_p']))
+                for result in model.inference(request):
+                    if result.code=='error': raise RuntimeError(str(result.error))
+                    if result.code=='segment': audio(result.audio[1],result.audio[0])
+        say({'ok':True})
+    except Exception as exc:
+        import traceback
+        traceback.print_exc()
+        say({'ok':False,'error':str(exc)[-1500:]})

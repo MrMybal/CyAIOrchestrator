@@ -1,0 +1,162 @@
+{
+  "schema_version": "draft-0.3",
+  "run_id": null,
+  "started_at": null,
+  "finished_at": null,
+  "agent": {
+    "id": null,
+    "profile_version": null,
+    "preprompt_hash": null,
+    "preprompt_private_ref": null
+  },
+  "model": {
+    "requested": null,
+    "resolved": null,
+    "provider": null,
+    "connector_version": null,
+    "parameters": {},
+    "context_capacity_verified": null
+  },
+  "condition": {
+    "track": "text_no_tools",
+    "profile": "baseline",
+    "tools": [],
+    "memory_refs": [],
+    "provider_instructions_known": null
+  },
+  "battery": {
+    "version": "0.1",
+    "form": "A",
+    "exposed_cases": [],
+    "seeds": []
+  },
+  "approval": {
+    "standard_scope": null,
+    "user_message_ref": null,
+    "deep_approved": false,
+    "deep_scope": null,
+    "estimated_input_tokens": null,
+    "estimated_output_tokens": null,
+    "estimated_cost": null,
+    "currency": null,
+    "user_chosen_cap": null
+  },
+  "interview_observations_unscored": [],
+  "cases": [
+    {
+      "case_id": null,
+      "session_id": null,
+      "attempt_kind": "initial",
+      "raw_turns_private_ref": null,
+      "first_event_ms": null,
+      "duration_ms": null,
+      "input_tokens": null,
+      "output_tokens": null,
+      "transport_status": null,
+      "truncation_or_compaction": null,
+      "automatic_verdict": null,
+      "final_status": "not_run",
+      "criteria": [],
+      "evidence": [],
+      "reviewer": null,
+      "executed_by_contributor_id": null,
+      "judged_by_contributor_ids": [],
+      "started_at": null,
+      "finished_at": null
+    }
+  ],
+  "coverage_by_domain": [],
+  "context_runs": [],
+  "infrastructure_incidents": [],
+  "usage_profile": {
+    "observed_strengths": [],
+    "observed_weaknesses": [],
+    "recommended_roles": [],
+    "supervision": [],
+    "not_evaluated": [],
+    "limitations": []
+  },
+  "preprompt_proposals": [],
+  "validated_memory_proposals": [],
+  "next_experiments": [],
+  "adoption": {
+    "approved": false,
+    "user_message_ref": null,
+    "resulting_profile_version": null
+  },
+  "handoff_guide": {
+    "version": null,
+    "source_report_ids": [],
+    "applies_to": {
+      "resolved_model": null,
+      "provider": null,
+      "profile_version": null,
+      "preprompt_hash": null,
+      "parameters": {},
+      "tools": []
+    },
+    "recommendations": [
+      {
+        "topic": null,
+        "situation": null,
+        "instruction_for_calling_ai": null,
+        "reason": null,
+        "evidence_case_ids": [],
+        "status": "hypothesis",
+        "trial_count": null,
+        "contradictory_evidence": [],
+        "validity_limits": []
+      }
+    ],
+    "recommended_task_scope": [],
+    "context_requirements": [],
+    "verified_context_conditions": [],
+    "output_contract": null,
+    "acceptance_checks": [],
+    "clarification_and_escalation": [],
+    "recovery_instructions": [],
+    "avoid_with_evidence": [],
+    "proposed_model_preprompt": null,
+    "delegation_prompt_template": null,
+    "novel_before_after_examples": [],
+    "untested_dimensions": [],
+    "adoption_approved": false,
+    "provenance": {
+      "authored_by_contributor_ids": [],
+      "reviewed_by_contributor_ids": [],
+      "created_at": null,
+      "updated_at": null,
+      "source_report_revision": null
+    }
+  },
+  "provenance": {
+    "report_created_at": null,
+    "report_updated_at": null,
+    "timestamp_format": "ISO 8601 avec fuseau, exemple : 2026-09-19T14:30:00+02:00",
+    "contributors": [
+      {
+        "contributor_id": null,
+        "agent_name": null,
+        "agent_profile_version": null,
+        "provider": null,
+        "application_or_connector": null,
+        "model_requested": null,
+        "model_resolved": null,
+        "model_identity_source": null,
+        "session_id": null,
+        "roles": [],
+        "contribution_started_at": null,
+        "contribution_finished_at": null,
+        "contribution_summary": null
+      }
+    ],
+    "revision_history": [
+      {
+        "revision": null,
+        "at": null,
+        "contributor_ids": [],
+        "change_summary": null
+      }
+    ]
+  }
+}

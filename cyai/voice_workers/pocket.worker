@@ -1,0 +1,76 @@
+# Pocket TTS worker for CyAI Orchestrator, run by the isolated Python of the voice.
+# Protocol: after loading, one JSON line {"ok": true, ...}; then for each JSON request line
+# {"text", "voice", "file"} it writes a 16-bit WAV to "file" and answers {"ok": true} or {"ok": false, "error"}.
+# "voice" is the name of a published voice (estelle, alba…) or the path of a WAV sample to copy.
+import json
+import base64
+import sys
+import wave
+
+protocol = sys.stdout
+sys.stdout = sys.stderr  # Anything the libraries print must not break the protocol.
+
+
+def say(message):
+    protocol.write(json.dumps(message, ensure_ascii=True) + '\n')
+    protocol.flush()
+
+
+mode = sys.argv[1] if len(sys.argv) > 1 else 'serve'
+language = sys.argv[2] if len(sys.argv) > 2 else 'french_24l'
+try:
+    import torch
+    from pocket_tts import TTSModel
+    model = TTSModel.load_model(language=language)
+except Exception as exc:  # Reported to CyAI as the reason the voice is unavailable.
+    say({'ok': False, 'error': 'Chargement de Pocket TTS impossible : ' + str(exc)[-800:]})
+    sys.exit(1)
+states = {}
+default_temperature = model.temp
+
+
+def state(voice):
+    if voice not in states:
+        states[voice] = model.get_state_for_audio_prompt(voice)
+    return states[voice]
+
+
+def write(path, audio):
+    samples = audio.detach().cpu().float().clamp(-1, 1).mul(32767).to(torch.int16)
+    with wave.open(path, 'wb') as file:
+        file.setnchannels(1)
+        file.setsampwidth(2)
+        file.setframerate(model.sample_rate)
+        file.writeframes(samples.numpy().tobytes())
+
+
+cloning = bool(getattr(model, 'has_voice_cloning', True))
+if mode == 'prepare':
+    state('estelle' if language.startswith('french') else 'alba')
+    say({'ok': True, 'cloning': cloning, 'sample_rate': model.sample_rate})
+    sys.exit(0)
+say({'ok': True, 'ready': True, 'cloning': cloning, 'sample_rate': model.sample_rate})
+for line in sys.stdin:
+    try:
+        request = json.loads(line)
+        temperature = request.get('temperature')
+        if temperature is not None and not 0 <= float(temperature) <= 2:
+            raise ValueError('Température Pocket : entre 0 et 2.')
+        model.temp = default_temperature if temperature is None else float(temperature)
+        if not cloning and request['voice'].lower().endswith('.wav'):
+            raise ValueError('Clonage indisponible avec les poids chargés. Vérifiez les droits Hugging Face dans Paramètres > Voix.')
+        with torch.no_grad():
+            if request.get('stream'):
+                for audio in model.generate_audio_stream(state(request['voice']), request['text']):
+                    pcm = audio.detach().cpu().float().clamp(-1, 1).mul(32767).to(torch.int16).numpy().tobytes()
+                    say({'audio': base64.b64encode(pcm).decode(), 'rate': model.sample_rate})
+            else:
+                audio = model.generate_audio(state(request['voice']), request['text'])
+                write(request['file'], audio)
+        say({'ok': True})
+    except Exception as exc:
+        text = str(exc)
+        if not cloning and 'clon' in text.lower():
+            text = ('La copie de voix demande l’accès au modèle kyutai/pocket-tts : acceptez ses conditions sur Hugging Face, '
+                    'puis indiquez un jeton de lecture dans Paramètres › Voix.')
+        say({'ok': False, 'error': text[-800:]})

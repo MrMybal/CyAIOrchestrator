@@ -1,0 +1,697 @@
+{
+  "rows": [
+    {
+      "model": "gpt-5 (high)",
+      "score": 88.0,
+      "date": "2025-08-23",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openai/gpt-5"
+    },
+    {
+      "model": "gpt-5 (medium)",
+      "score": 86.7,
+      "date": "2025-08-25",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openai/gpt-5"
+    },
+    {
+      "model": "o3-pro (high)",
+      "score": 84.9,
+      "date": "2025-06-28",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model o3-pro"
+    },
+    {
+      "model": "gemini-2.5-pro-preview-06-05 (32k think)",
+      "score": 83.1,
+      "date": "2025-06-06",
+      "variant": "diff-fenced",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.5-pro-preview-06-05 --thinking-tokens 32k"
+    },
+    {
+      "model": "o3 (high)",
+      "score": 81.3,
+      "date": "2025-06-25",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model o3 --reasoning-effort high"
+    },
+    {
+      "model": "gpt-5 (low)",
+      "score": 81.3,
+      "date": "2025-08-25",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openai/gpt-5"
+    },
+    {
+      "model": "grok-4 (high)",
+      "score": 79.6,
+      "date": "2025-07-11",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/x-ai/grok-4"
+    },
+    {
+      "model": "gemini-2.5-pro-preview-06-05 (default think)",
+      "score": 79.1,
+      "date": "2025-06-06",
+      "variant": "diff-fenced",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.5-pro-preview-06-05"
+    },
+    {
+      "model": "o3 (high) + gpt-4.1",
+      "score": 78.2,
+      "date": "2025-06-27",
+      "variant": "architect",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model o3"
+    },
+    {
+      "model": "Gemini 2.5 Pro Preview 05-06",
+      "score": 76.9,
+      "date": "2025-05-07",
+      "variant": "diff-fenced",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.5-pro-preview-05-06"
+    },
+    {
+      "model": "o3",
+      "score": 76.9,
+      "date": "2025-06-25",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model o3"
+    },
+    {
+      "model": "DeepSeek-V3.2-Exp (Reasoner)",
+      "score": 74.2,
+      "date": "2025-10-03",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model deepseek/deepseek-reasoner"
+    },
+    {
+      "model": "Gemini 2.5 Pro Preview 03-25",
+      "score": 72.9,
+      "date": "2025-04-12",
+      "variant": "diff-fenced",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.5-pro-preview-03-25"
+    },
+    {
+      "model": "o4-mini (high)",
+      "score": 72.0,
+      "date": "2025-04-16",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model o4-mini"
+    },
+    {
+      "model": "claude-opus-4-20250514 (32k thinking)",
+      "score": 72.0,
+      "date": "2025-05-25",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model claude-opus-4-20250514"
+    },
+    {
+      "model": "DeepSeek R1 (0528)",
+      "score": 71.4,
+      "date": "2025-06-06",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model deepseek/deepseek-reasoner"
+    },
+    {
+      "model": "claude-opus-4-20250514 (no think)",
+      "score": 70.7,
+      "date": "2025-05-25",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model claude-opus-4-20250514"
+    },
+    {
+      "model": "DeepSeek-V3.2-Exp (Chat)",
+      "score": 70.2,
+      "date": "2025-10-03",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model deepseek/deepseek-chat"
+    },
+    {
+      "model": "claude-3-7-sonnet-20250219 (32k thinking tokens)",
+      "score": 64.9,
+      "date": "2025-02-24",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model anthropic/claude-3-7-sonnet-20250219 --thinking-tokens 32k"
+    },
+    {
+      "model": "DeepSeek R1 + claude-3-5-sonnet-20241022",
+      "score": 64.0,
+      "date": "2025-01-23",
+      "variant": "architect",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --architect --model r1 --editor-model sonnet"
+    },
+    {
+      "model": "o1-2024-12-17 (high)",
+      "score": 61.7,
+      "date": "2024-12-21",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/openai/o1"
+    },
+    {
+      "model": "claude-sonnet-4-20250514 (32k thinking)",
+      "score": 61.3,
+      "date": "2025-05-24",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model claude-sonnet-4-20250514"
+    },
+    {
+      "model": "o3-mini (high)",
+      "score": 60.4,
+      "date": "2025-01-31",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model o3-mini --reasoning-effort high"
+    },
+    {
+      "model": "claude-3-7-sonnet-20250219 (no thinking)",
+      "score": 60.4,
+      "date": "2025-02-24",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model sonnet"
+    },
+    {
+      "model": "Qwen3 235B A22B diff, no think, Alibaba API",
+      "score": 59.6,
+      "date": "2025-05-09",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openai/qwen3-235b-a22b"
+    },
+    {
+      "model": "Kimi K2",
+      "score": 59.1,
+      "date": "2025-07-17",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/moonshotai/kimi-k2"
+    },
+    {
+      "model": "DeepSeek R1",
+      "score": 56.9,
+      "date": "2025-01-20",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model deepseek/deepseek-reasoner"
+    },
+    {
+      "model": "claude-sonnet-4-20250514 (no thinking)",
+      "score": 56.4,
+      "date": "2025-05-24",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model claude-sonnet-4-20250514"
+    },
+    {
+      "model": "DeepSeek V3 (0324)",
+      "score": 55.1,
+      "date": "2025-03-24",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model deepseek/deepseek-chat"
+    },
+    {
+      "model": "gemini-2.5-flash-preview-05-20 (24k think)",
+      "score": 55.1,
+      "date": "2025-05-25",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.5-flash-preview-05-20"
+    },
+    {
+      "model": "Quasar Alpha",
+      "score": 54.7,
+      "date": "2025-04-04",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/openrouter/quasar-alpha"
+    },
+    {
+      "model": "o3-mini (medium)",
+      "score": 53.8,
+      "date": "2025-01-31",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model o3-mini"
+    },
+    {
+      "model": "Grok 3 Beta",
+      "score": 53.3,
+      "date": "2025-04-10",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/x-ai/grok-3-beta"
+    },
+    {
+      "model": "Optimus Alpha",
+      "score": 52.9,
+      "date": "2025-04-10",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/openrouter/optimus-alpha"
+    },
+    {
+      "model": "gpt-4.1",
+      "score": 52.4,
+      "date": "2025-04-14",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gpt-4.1"
+    },
+    {
+      "model": "claude-3-5-sonnet-20241022",
+      "score": 51.6,
+      "date": "2025-01-17",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model claude-3-5-sonnet-20241022"
+    },
+    {
+      "model": "Grok 3 Mini Beta (high)",
+      "score": 49.3,
+      "date": "2025-04-10",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model xai/grok-3-mini-beta --reasoning-effort high"
+    },
+    {
+      "model": "DeepSeek Chat V3 (prev)",
+      "score": 48.4,
+      "date": "2024-12-25",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model deepseek/deepseek-chat"
+    },
+    {
+      "model": "gemini-2.5-flash-preview-04-17 (default)",
+      "score": 47.1,
+      "date": "2025-04-20",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.5-flash-preview-04-17"
+    },
+    {
+      "model": "chatgpt-4o-latest (2025-03-29)",
+      "score": 45.3,
+      "date": "2025-03-29",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model chatgpt-4o-latest"
+    },
+    {
+      "model": "gpt-4.5-preview",
+      "score": 44.9,
+      "date": "2025-02-27",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openai/gpt-4.5-preview"
+    },
+    {
+      "model": "gemini-2.5-flash-preview-05-20 (no think)",
+      "score": 44.0,
+      "date": "2025-05-26",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.5-flash-preview-05-20"
+    },
+    {
+      "model": "gpt-oss-120b (high)",
+      "score": 41.8,
+      "date": "2025-08-06",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/openai/gpt-oss-120b --reasoning-effort high"
+    },
+    {
+      "model": "Qwen3 32B",
+      "score": 40.0,
+      "date": "2025-05-08",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/qwen/qwen3-32b"
+    },
+    {
+      "model": "gemini-exp-1206",
+      "score": 38.2,
+      "date": "2024-12-22",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-exp-1206"
+    },
+    {
+      "model": "Gemini 2.0 Pro exp-02-05",
+      "score": 35.6,
+      "date": "2025-02-25",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.0-pro-exp-02-05"
+    },
+    {
+      "model": "Grok 3 Mini Beta (low)",
+      "score": 34.7,
+      "date": "2025-04-10",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/x-ai/grok-3-mini-beta"
+    },
+    {
+      "model": "o1-mini-2024-09-12",
+      "score": 32.9,
+      "date": "2024-12-22",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model o1-mini"
+    },
+    {
+      "model": "gpt-4.1-mini",
+      "score": 32.4,
+      "date": "2025-04-14",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gpt-4.1-mini"
+    },
+    {
+      "model": "claude-3-5-haiku-20241022",
+      "score": 28.0,
+      "date": "2024-12-21",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model claude-3-5-haiku-20241022"
+    },
+    {
+      "model": "chatgpt-4o-latest (2025-02-15)",
+      "score": 27.1,
+      "date": "2025-02-15",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model chatgpt-4o-latest"
+    },
+    {
+      "model": "QwQ-32B + Qwen 2.5 Coder Instruct",
+      "score": 26.2,
+      "date": "2025-03-07",
+      "variant": "architect",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model fireworks_ai/accounts/fireworks/models/qwq-32b --architect"
+    },
+    {
+      "model": "gpt-4o-2024-08-06",
+      "score": 23.1,
+      "date": "2024-12-30",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gpt-4o-2024-08-06"
+    },
+    {
+      "model": "gemini-2.0-flash-exp",
+      "score": 22.2,
+      "date": "2024-12-22",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.0-flash-exp"
+    },
+    {
+      "model": "qwen-max-2025-01-25",
+      "score": 21.8,
+      "date": "2025-01-28",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "OPENAI_API_BASE=https://dashscope-intl.aliyuncs.com/compatible-mode/v1 aider --model openai/qwen-max-2025-01-25"
+    },
+    {
+      "model": "QwQ-32B",
+      "score": 20.9,
+      "date": "2025-03-06",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model fireworks_ai/accounts/fireworks/models/qwq-32b"
+    },
+    {
+      "model": "gpt-4o-2024-11-20",
+      "score": 18.2,
+      "date": "2024-12-30",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gpt-4o-2024-11-20"
+    },
+    {
+      "model": "gemini-2.0-flash-thinking-exp-01-21",
+      "score": 18.2,
+      "date": "2025-01-21",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gemini/gemini-2.0-flash-thinking-exp-01-21"
+    },
+    {
+      "model": "DeepSeek Chat V2.5",
+      "score": 17.8,
+      "date": "2024-12-21",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model deepseek/deepseek-chat"
+    },
+    {
+      "model": "Qwen2.5-Coder-32B-Instruct",
+      "score": 16.4,
+      "date": "2024-12-26",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openai/Qwen2.5-Coder-32B-Instruct"
+    },
+    {
+      "model": "Llama 4 Maverick",
+      "score": 15.6,
+      "date": "2025-04-06",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model nvidia_nim/meta/llama-4-maverick-17b-128e-instruct"
+    },
+    {
+      "model": "yi-lightning",
+      "score": 12.9,
+      "date": "2024-12-23",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openai/yi-lightning"
+    },
+    {
+      "model": "command-a-03-2025-quality",
+      "score": 12.0,
+      "date": "2025-03-14",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "OPENAI_API_BASE=https://api.cohere.ai/compatibility/v1 aider --model openai/command-a-03-2025-quality"
+    },
+    {
+      "model": "Codestral 25.01",
+      "score": 11.1,
+      "date": "2025-01-13",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model mistral/codestral-latest"
+    },
+    {
+      "model": "openhands-lm-32b-v0.1",
+      "score": 10.2,
+      "date": "2025-04-19",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/all-hands/openhands-lm-32b-v0.1"
+    },
+    {
+      "model": "gpt-4.1-nano",
+      "score": 8.9,
+      "date": "2025-04-14",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gpt-4.1-nano"
+    },
+    {
+      "model": "Qwen2.5-Coder-32B-Instruct",
+      "score": 8.0,
+      "date": "2024-12-22",
+      "variant": "diff",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openai/Qwen/Qwen2.5-Coder-32B-Instruct # via hyperbolic"
+    },
+    {
+      "model": "gemma-3-27b-it",
+      "score": 4.9,
+      "date": "2025-03-15",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model openrouter/google/gemma-3-27b-it"
+    },
+    {
+      "model": "gpt-4o-mini-2024-07-18",
+      "score": 3.6,
+      "date": "2024-12-21",
+      "variant": "whole",
+      "benchmark": "Aider Polyglot",
+      "unit": "% tâches réussies",
+      "source": "https://aider.chat/docs/leaderboards/",
+      "command": "aider --model gpt-4o-mini-2024-07-18"
+    }
+  ],
+  "updated_at": "2026-09-14T13:17:30.472+00:00",
+  "source": "https://aider.chat/docs/leaderboards/",
+  "sha256": "85a50b25953512d18ba4bb0c23c0b8e626fcf9a5b52d287644b8a0b44b9535de"
+}

@@ -1,0 +1,25 @@
+name: Repository checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  repository:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check source selection and all Git refs
+        run: python3 scripts/check_repository.py --download-gitleaks --reports-dir "$RUNNER_TEMP/cyai-checks"
+      - name: Test optional components and package rules
+        run: |
+          python3 -m unittest discover -s tests -p test_optional_components.py -v
+          python3 -m unittest discover -s tests -p test_package_policy.py -v
+      - name: Test repository selection and detection rules
+        env:
+          GITLEAKS_BINARY: ${{ runner.temp }}/cyai-checks/tools/gitleaks
+        run: python3 -m unittest discover -s tests -p test_repository_checks.py -v

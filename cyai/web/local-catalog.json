@@ -1,0 +1,184 @@
+{
+  "models": [
+    {
+      "repo": "Qwen/Qwen3-0.6B-GGUF",
+      "name": "Qwen3 0.6B",
+      "use": "Très léger · essais et tâches simples",
+      "source": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF",
+      "files": [
+        {
+          "name": "Qwen3-0.6B-Q8_0.gguf",
+          "bytes": 639446688
+        }
+      ]
+    },
+    {
+      "repo": "Qwen/Qwen3-4B-GGUF",
+      "name": "Qwen3 4B",
+      "use": "Polyvalent compact",
+      "source": "https://huggingface.co/Qwen/Qwen3-4B-GGUF",
+      "files": [
+        {
+          "name": "Qwen3-4B-Q4_K_M.gguf",
+          "bytes": 2497280256
+        },
+        {
+          "name": "Qwen3-4B-Q5_0.gguf",
+          "bytes": 2823710976
+        },
+        {
+          "name": "Qwen3-4B-Q5_K_M.gguf",
+          "bytes": 2889513184
+        },
+        {
+          "name": "Qwen3-4B-Q6_K.gguf",
+          "bytes": 3306260704
+        },
+        {
+          "name": "Qwen3-4B-Q8_0.gguf",
+          "bytes": 4280404704
+        }
+      ]
+    },
+    {
+      "repo": "Qwen/Qwen3-8B-GGUF",
+      "name": "Qwen3 8B",
+      "use": "Polyvalent · raisonnement",
+      "source": "https://huggingface.co/Qwen/Qwen3-8B-GGUF",
+      "files": [
+        {
+          "name": "Qwen3-8B-Q4_K_M.gguf",
+          "bytes": 5027783488
+        },
+        {
+          "name": "Qwen3-8B-Q5_0.gguf",
+          "bytes": 5720761152
+        },
+        {
+          "name": "Qwen3-8B-Q5_K_M.gguf",
+          "bytes": 5851112224
+        },
+        {
+          "name": "Qwen3-8B-Q6_K.gguf",
+          "bytes": 6725899040
+        },
+        {
+          "name": "Qwen3-8B-Q8_0.gguf",
+          "bytes": 8709518112
+        }
+      ]
+    },
+    {
+      "repo": "Qwen/Qwen3-14B-GGUF",
+      "name": "Qwen3 14B",
+      "use": "Plus exigeant · raisonnement",
+      "source": "https://huggingface.co/Qwen/Qwen3-14B-GGUF",
+      "files": [
+        {
+          "name": "Qwen3-14B-Q4_K_M.gguf",
+          "bytes": 9001752960
+        },
+        {
+          "name": "Qwen3-14B-Q5_0.gguf",
+          "bytes": 10263894400
+        },
+        {
+          "name": "Qwen3-14B-Q5_K_M.gguf",
+          "bytes": 10514569568
+        },
+        {
+          "name": "Qwen3-14B-Q6_K.gguf",
+          "bytes": 12121937248
+        },
+        {
+          "name": "Qwen3-14B-Q8_0.gguf",
+          "bytes": 15698533728
+        }
+      ]
+    },
+    {
+      "repo": "Qwen/Qwen2.5-Coder-7B-Instruct-GGUF",
+      "name": "Qwen2.5 Coder 7B",
+      "use": "Code",
+      "source": "https://huggingface.co/Qwen/Qwen2.5-Coder-7B-Instruct-GGUF",
+      "files": [
+        {
+          "name": "qwen2.5-coder-7b-instruct-fp16.gguf",
+          "bytes": 15237853184
+        },
+        {
+          "name": "qwen2.5-coder-7b-instruct-q2_k.gguf",
+          "bytes": 3015940032
+        },
+        {
+          "name": "qwen2.5-coder-7b-instruct-q3_k_m.gguf",
+          "bytes": 3808391104
+        },
+        {
+          "name": "qwen2.5-coder-7b-instruct-q4_0.gguf",
+          "bytes": 4431390720
+        },
+        {
+          "name": "qwen2.5-coder-7b-instruct-q4_k_m.gguf",
+          "bytes": 4683073536
+        },
+        {
+          "name": "qwen2.5-coder-7b-instruct-q5_k_m.gguf",
+          "bytes": 5444831232
+        },
+        {
+          "name": "qwen2.5-coder-7b-instruct-q6_k.gguf",
+          "bytes": 6254198784
+        },
+        {
+          "name": "qwen2.5-coder-7b-instruct-q8_0.gguf",
+          "bytes": 8098525184
+        }
+      ]
+    },
+    {
+      "repo": "Qwen/Qwen2.5-Coder-14B-Instruct-GGUF",
+      "name": "Qwen2.5 Coder 14B",
+      "use": "Code · plus exigeant",
+      "source": "https://huggingface.co/Qwen/Qwen2.5-Coder-14B-Instruct-GGUF",
+      "files": [
+        {
+          "name": "qwen2.5-coder-14b-instruct-fp16.gguf",
+          "bytes": 29547716032
+        },
+        {
+          "name": "qwen2.5-coder-14b-instruct-q2_k.gguf",
+          "bytes": 5770497408
+        },
+        {
+          "name": "qwen2.5-coder-14b-instruct-q3_k_m.gguf",
+          "bytes": 7339203968
+        },
+        {
+          "name": "qwen2.5-coder-14b-instruct-q4_0.gguf",
+          "bytes": 8517725568
+        },
+        {
+          "name": "qwen2.5-coder-14b-instruct-q4_k_m.gguf",
+          "bytes": 8988110272
+        },
+        {
+          "name": "qwen2.5-coder-14b-instruct-q5_0.gguf",
+          "bytes": 10266553792
+        },
+        {
+          "name": "qwen2.5-coder-14b-instruct-q5_k_m.gguf",
+          "bytes": 10508873152
+        },
+        {
+          "name": "qwen2.5-coder-14b-instruct-q6_k.gguf",
+          "bytes": 12124683712
+        },
+        {
+          "name": "qwen2.5-coder-14b-instruct-q8_0.gguf",
+          "bytes": 15701597632
+        }
+      ]
+    }
+  ]
+}

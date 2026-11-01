@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "CyAIOrchestrator"
+version = "0.2.60"
+description = "Local, persistent multi-agent orchestration"
+requires-python = ">=3.11"
+dependencies = ["jsonschema>=4.23,<5"]
+
+[project.optional-dependencies]
+claude = ["claude-agent-sdk==0.2.152"]
+desktop = ["pywebview==6.2.1"]
+
+[project.gui-scripts]
+cyai-desktop = "cyai.desktop:main"
+
+[project.scripts]
+cyai = "cyai.__main__:main"
+
+[tool.setuptools.package-data]
+cyai = ["piper_catalog.json", "web/*", "web/three/*", "web/cymd/*", "web/cymd/assets/*", "web/cyannota/*", "web/cyannota/assets/*", "web/cyannota/ffmpeg/*.js", "web/cyannota/ffmpeg/*.json", "plugin_bridge.mjs", "voice_workers/*", "evaluation_kit/*"]
+
+[tool.setuptools.packages.find]
+include = ["cyai*"]

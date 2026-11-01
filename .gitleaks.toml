@@ -1,0 +1,13 @@
+title = "CyAI source scanning"
+[extend]
+useDefault = true
+
+# Piper's upstream catalog uses a `key` field for language/speaker/quality IDs.
+# This exception matches that public format in this one JSON file only.
+[[rules]]
+id = "generic-api-key"
+[[rules.allowlists]]
+condition = "AND"
+paths = ['''(^|[/\\])cyai[/\\]piper_catalog\.json$''']
+regexTarget = "match"
+regexes = ['''key"\s*:\s*"[a-z]{2,3}_[A-Z]{2}-[A-Za-z0-9_]+-(?:x_low|low|medium|high)"''']

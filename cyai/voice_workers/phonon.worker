@@ -1,0 +1,40 @@
+# JSON-lines protocol. The application supplies a temporary 16 kHz mono WAV.
+import json
+import os
+from pathlib import Path
+import sys
+protocol = sys.stdout
+sys.stdout = sys.stderr
+def say(data):
+    protocol.write(json.dumps(data, ensure_ascii=True) + '\n')
+    protocol.flush()
+mode = sys.argv[1] if len(sys.argv) > 1 else 'serve'
+model = sys.argv[2] if len(sys.argv) > 2 else 'phonon-2.5'
+try:
+    import fermion
+    cache = Path(os.environ['FERMION_CACHE_DIR'])
+    manifest = cache / 'cyai-models.json'
+    if mode == 'prepare':
+        paths = {}
+        for name in ('phonon-2', 'phonon-2.5'):
+            engine = fermion.load_speech(name)
+            paths[name] = str(engine.path)
+            del engine
+        cache.mkdir(parents=True, exist_ok=True)
+        manifest.write_text(json.dumps(paths), encoding='utf-8')
+        say({'ok': True})
+        sys.exit(0)
+    if model not in ('phonon-2', 'phonon-2.5'): raise ValueError('Modèle Phonon inconnu.')
+    paths = json.loads(manifest.read_text(encoding='utf-8'))
+    engine = fermion.load_speech(paths[model])
+    say({'ok': True, 'sample_rate': 16000, 'model': model})
+except Exception as exc:
+    say({'ok': False, 'error': 'Chargement de Phonon impossible : ' + str(exc)[-800:]})
+    sys.exit(1)
+for line in sys.stdin:
+    try:
+        request = json.loads(line)
+        result = engine.transcribe_detailed(request['file'])
+        say({'ok': True, 'text': result.text, 'truncated': result.truncated})
+    except Exception as exc:
+        say({'ok': False, 'error': str(exc)[-800:]})

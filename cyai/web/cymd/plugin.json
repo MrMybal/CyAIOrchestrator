@@ -1,0 +1,17 @@
+{
+  "id": "cymd",
+  "name": "CyMD",
+  "type": "document",
+  "enabled": false,
+  "version": "0.1.3",
+  "license": "AGPL-3.0-only",
+  "entry": "index.html",
+  "protocol": "cymd.integration",
+  "protocolVersion": 1,
+  "extensions": [
+    ".cymd",
+    ".md",
+    ".markdown"
+  ],
+  "button": "Ouvrir CyMD"
+}

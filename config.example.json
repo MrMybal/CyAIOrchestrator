@@ -1,0 +1,32 @@
+{
+  "port": 8766,
+  "data_dir": ".data",
+  "allowed_roots": [],
+  "context_chars": 48000,
+  "connectors": {
+    "codex": {
+      "executable": "codex",
+      "model": "",
+      "enabled": true
+    },
+    "claude-code": {
+      "executable": "claude",
+      "model": "",
+      "enabled": true
+    },
+    "opencode": {
+      "executable": "opencode",
+      "model": "",
+      "enabled": true
+    },
+    "anthropic": {
+      "model": "",
+      "enabled": true
+    },
+    "ollama": {
+      "base_url": "http://127.0.0.1:11434",
+      "model": "",
+      "enabled": true
+    }
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "verified_on": "2026-09-14",
+  "sources": [
+    {
+      "title": "OpenAI · modèles Codex",
+      "url": "https://learn.chatgpt.com/docs/models"
+    },
+    {
+      "title": "OpenAI · quotas et tarification",
+      "url": "https://learn.chatgpt.com/docs/pricing"
+    }
+  ],
+  "common": [
+    "Tokens, quota inclus et crédits ne sont pas la même mesure. Changer de modèle ne garantit pas un quota indépendant.",
+    "La consommation dépend du modèle, du contexte, du raisonnement, des outils et du cache. Le mode rapide peut consommer davantage de quota.",
+    "Avec la connexion ChatGPT, les tâches locales et cloud utilisent les limites du forfait. Certains modèles, notamment Spark, peuvent avoir un compteur distinct explicitement fourni par le compte. CyAI ne crée pas de quota supplémentaire.",
+    "Avec votre propre clé API, la facturation est séparée de l’abonnement ChatGPT. La disponibilité dépend de la clé et du catalogue du fournisseur.",
+    "Ces informations sont un instantané daté. Actualiser le catalogue du fournisseur vérifie les modèles proposés, mais ne met pas à jour cette documentation."
+  ],
+  "models": {
+    "gpt-5.4": {
+      "availability": "Retiré de Codex avec connexion ChatGPT depuis le 31 août 2026. La disponibilité via API n’est pas concernée.",
+      "replacement": "gpt-5.6-terra",
+      "suggested_use": "À envisager via API pour des tâches ciblées, après comparaison du coût et de la qualité sur vos propres exemples.",
+      "quota": "Aucun quota indépendant garanti. Une utilisation avec clé API est facturée séparément."
+    },
+    "gpt-5.4-mini": {
+      "availability": "Retiré de Codex avec connexion ChatGPT depuis le 31 août 2026. La disponibilité via API n’est pas concernée.",
+      "replacement": "gpt-5.6-luna",
+      "suggested_use": "Ancienne option économique ; privilégier le remplaçant disponible pour la connexion ChatGPT.",
+      "quota": "Ne pas considérer ce modèle comme une réserve de quota supplémentaire."
+    },
+    "gpt-5.6-luna": {
+      "availability": "À vérifier dans le catalogue réel du connecteur et selon votre accès.",
+      "suggested_use": "Classement, extraction, résumés, routage, automatisations et petites modifications ciblées.",
+      "quota": "Candidat à privilégier pour économiser sur les tâches simples ; pas de réserve indépendante garantie."
+    },
+    "gpt-5.6-terra": {
+      "availability": "Remplaçant recommandé par OpenAI pour GPT-5.4 avec connexion ChatGPT.",
+      "suggested_use": "Travail courant, analyse de documents, code et modifications ciblées.",
+      "quota": "Compromis pour le travail quotidien. Comparer la consommation réelle par tâche."
+    },
+    "gpt-5.6-sol": {
+      "availability": "À vérifier dans le catalogue réel du connecteur et selon votre accès.",
+      "suggested_use": "Problèmes ambigus, raisonnement complexe, code difficile et vérifications exigeantes.",
+      "quota": "Réserver aux tâches qui justifient ses capacités ; le coût total dépend aussi de l’effort et de la durée."
+    },
+    "gpt-6-astra": {
+      "availability": "À vérifier dans le catalogue réel du connecteur et selon votre accès.",
+      "suggested_use": "Orchestration complexe, diagnostic difficile et validation finale lorsqu’une capacité supérieure est nécessaire.",
+      "quota": "Éviter de l’utiliser systématiquement pour les tâches simples si la priorité est l’économie."
+    },
+    "gpt-5.3-codex-spark": {
+      "verified_on": "2026-09-15",
+      "availability": "GPT-5.3-Codex-Spark, distinct de GPT-5.3-Codex classique. Aperçu de recherche pour ChatGPT Pro ; vérifier sa présence dans le catalogue réel. Texte et code uniquement, pas de compréhension directe des images.",
+      "suggested_use": "Candidat rapide pour corrections ciblées, petites implémentations, tests et documentation avec consignes précises. Vérifier les résultats. Préférer Sol ou Astra pour architecture globale, diagnostic complexe et validation finale exigeante. Ces recommandations CyAI ne constituent pas une mesure de performance sur ce projet. Ne pas choisir Spark pour analyser directement des images.",
+      "quota": "Un compteur distinct nommé GPT-5.3-Codex-Spark a été observé sur ce compte le 15 septembre 2026, avec fenêtres de 5 heures et hebdomadaire. Ne pas figer le pourcentage disponible : vérifier les compteurs actuels. Ne pas en déduire que GPT-5.3-Codex classique dispose du même quota, ni garantir une exécution si le fournisseur la refuse."
+    }
+  },
+  "selection_notice": "Les usages ci-dessous sont des conseils de répartition CyAI, pas des scores ni des garanties de résultat. Vos préférences restent prioritaires. Le catalogue réel fait foi pour l’accès.",
+  "provider": "OpenAI / Codex",
+  "additional_providers": [
+    {
+      "provider": "Claude / Anthropic",
+      "sources": [
+        {
+          "title": "Anthropic · modèles",
+          "url": "https://platform.claude.com/docs/en/models/overview"
+        },
+        {
+          "title": "Anthropic · abonnement et Agent SDK",
+          "url": "https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan"
+        }
+      ],
+      "common": [
+        "Avec une authentification par abonnement Claude, le SDK, claude -p et les applications tierces utilisent actuellement les limites du forfait. Le changement vers un crédit SDK séparé a été suspendu selon la mise à jour officielle du 15 juin 2026.",
+        "Avec une clé API Anthropic, la consommation est facturée séparément. Changer de modèle ne garantit pas une réserve de quota supplémentaire.",
+        "Un CLI local ne signifie pas un modèle exécuté sur votre PC : les requêtes Claude restent distantes. Les alias opus, sonnet et haiku dépendent de la version du CLI et du compte ; vérifier le modèle réellement résolu."
+      ],
+      "models": {
+        "claude-haiku-4-5-20251001": {
+          "availability": "Présent dans la documentation Anthropic ; accès à vérifier dans le catalogue du connecteur et selon votre compte.",
+          "suggested_use": "Tâches simples, extraction et réponses rapides.",
+          "quota": "Le plus rapide de cette sélection ; candidat économique à évaluer sur vos tâches."
+        },
+        "claude-sonnet-5": {
+          "availability": "Présent dans la documentation Anthropic ; accès à vérifier dans le catalogue du connecteur et selon votre compte.",
+          "suggested_use": "Code courant et tâches demandant un compromis entre rapidité et qualité.",
+          "quota": "Rapide ; choisir selon la qualité observée et la consommation réelle."
+        },
+        "claude-opus-5": {
+          "availability": "Présent dans la documentation Anthropic ; accès à vérifier dans le catalogue du connecteur et selon votre compte.",
+          "suggested_use": "Code complexe et travail agentique exigeant.",
+          "quota": "Latence modérée ; réserver les efforts élevés aux besoins réels."
+        },
+        "claude-fable-5-1": {
+          "availability": "Présent dans la documentation Anthropic ; accès à vérifier dans le catalogue du connecteur et selon votre compte.",
+          "suggested_use": "Raisonnement difficile et missions longues lorsque les évaluations avec Opus sont insuffisantes.",
+          "quota": "Plus lent ; à réserver aux tâches exigeantes."
+        }
+      }
+    }
+  ]
+}

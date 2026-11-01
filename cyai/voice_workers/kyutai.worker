@@ -1,0 +1,109 @@
+# Kyutai STT worker for CyAI Orchestrator, run by the isolated Python of the voice.
+# Protocol: after loading, one JSON line {"ok": true, "sample_rate": 24000}; then JSON requests:
+# {"op": "start"} opens an utterance, {"op": "audio", "pcm": base64 of 16-bit mono at 24 kHz} feeds it,
+# {"op": "end"} closes it and answers {"ok": true, "final": text}. Words are written as {"piece": " mot"} as soon
+# as the model is sure of them, while you are still speaking.
+import base64
+import contextlib
+import json
+import math
+import os
+import sys
+
+# torch.compile needs Triton, which PyTorch does not provide on Windows: moshi then runs its model uncompiled.
+os.environ.setdefault('NO_TORCH_COMPILE', '1')
+
+protocol = sys.stdout
+sys.stdout = sys.stderr  # Anything the libraries print must not break the protocol.
+
+
+def say(message):
+    protocol.write(json.dumps(message, ensure_ascii=True) + '\n')
+    protocol.flush()
+
+
+mode = sys.argv[1] if len(sys.argv) > 1 else 'serve'
+wanted = sys.argv[2] if len(sys.argv) > 2 else 'auto'
+try:
+    import torch
+    import moshi.models
+    device = 'cuda' if wanted in ('auto', 'gpu') and torch.cuda.is_available() else 'cpu'
+    if wanted == 'gpu' and device != 'cuda':
+        raise RuntimeError('Aucune carte graphique CUDA disponible pour PyTorch.')
+    info = moshi.models.loaders.CheckpointInfo.from_hf_repo('kyutai/stt-1b-en_fr')
+    mimi = info.get_mimi(device=device)
+    tokenizer = info.get_text_tokenizer()
+    lm = info.get_moshi(device=device, dtype=torch.bfloat16 if device == 'cuda' else torch.float32)
+    generator = moshi.models.LMGen(lm, temp=0, temp_text=0.0)
+except Exception as exc:
+    say({'ok': False, 'error': 'Chargement de Kyutai STT impossible : ' + str(exc)[-800:]})
+    sys.exit(1)
+prefix = math.ceil(info.stt_config.get('audio_silence_prefix_seconds', 1.0) * mimi.frame_rate)
+suffix = math.ceil(info.stt_config.get('audio_delay_seconds', 5.0) * mimi.frame_rate)
+padding = info.raw_config.get('text_padding_token_id', 3)
+frame = mimi.frame_size
+if mode == 'prepare':
+    say({'ok': True, 'device': device, 'sample_rate': mimi.sample_rate})
+    sys.exit(0)
+say({'ok': True, 'ready': True, 'device': device, 'sample_rate': mimi.sample_rate})
+
+stack, pending, words = None, torch.zeros(0), []
+
+
+def step(chunk):
+    tokens = generator.step(mimi.encode(chunk.to(device)[None, None, :]))
+    if tokens is None:
+        return
+    token = tokens[0, 0, 0].item()
+    if token not in (0, padding):
+        piece = tokenizer.id_to_piece(token).replace('▁', ' ')
+        words.append(piece)
+        say({'piece': piece})
+
+
+# Exactly one answer per utterance, at its "end": an error while listening is kept and reported there, so the
+# next dictation never receives the answer meant for the previous one.
+failure = None
+with torch.no_grad():
+    for line in sys.stdin:
+        op = None
+        try:
+            request = json.loads(line)
+            op = request.get('op')
+            if op == 'start':
+                if stack:
+                    stack.close()
+                stack, pending, words, failure = contextlib.ExitStack(), torch.zeros(0), [], None
+                stack.enter_context(mimi.streaming(1))
+                stack.enter_context(generator.streaming(1))
+                for _ in range(prefix):
+                    step(torch.zeros(frame))
+            elif op == 'audio' and stack:
+                raw = bytearray(base64.b64decode(request['pcm']))
+                samples = torch.frombuffer(raw, dtype=torch.int16).float() / 32768
+                pending = torch.cat([pending, samples])
+                while pending.shape[0] >= frame:
+                    step(pending[:frame])
+                    pending = pending[frame:]
+            elif op == 'end':
+                if failure:
+                    say({'ok': False, 'error': failure})
+                    failure = None
+                    continue
+                if stack:
+                    if pending.shape[0]:
+                        step(torch.nn.functional.pad(pending, (0, frame - pending.shape[0])))
+                    for _ in range(suffix):
+                        step(torch.zeros(frame))
+                    stack.close()
+                    stack = None
+                say({'ok': True, 'final': ''.join(words).strip()})
+                words = []
+        except Exception as exc:
+            if stack:
+                stack.close()
+                stack = None
+            if op == 'end':
+                say({'ok': False, 'error': str(exc)[-800:]})
+            else:
+                failure = str(exc)[-800:]

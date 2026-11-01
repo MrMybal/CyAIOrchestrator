@@ -1,0 +1,14 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const source=fs.readFileSync('cyai/web/app.js','utf8');
+let frames=[],mutate,resize;
+const events={},panel={scrollTop:0,scrollHeight:1000,clientHeight:200,addEventListener:(n,f)=>events[n]=f};
+const jump={},state={view:'chat',followChat:true};
+const context={state,$:id=>id==='messages'?panel:id==='composer-area'?{prepend:b=>Object.assign(jump,b)}:jump,document:{createElement:()=>jump},requestAnimationFrame:f=>(frames.push(f),frames.length),MutationObserver:class{constructor(f){mutate=f}observe(){}},ResizeObserver:class{constructor(f){resize=f}observe(){}}};
+vm.createContext(context);vm.runInContext(source.slice(source.indexOf('let chatScrollFrame=')),context);
+const flush=()=>{for(let i=0;frames.length&&i<20;i++){const batch=frames;frames=[];batch.forEach(f=>f());}};
+mutate();flush();assert.equal(panel.scrollTop,1000);
+events.wheel({deltaY:-1});panel.scrollTop=200;panel.scrollHeight=1500;mutate();flush();assert.equal(panel.scrollTop,200);assert.equal(jump.hidden,false);
+jump.onclick();flush();assert.equal(panel.scrollTop,1500);assert.equal(jump.hidden,true);
+panel.scrollHeight=1900;events.load();flush();assert.equal(panel.scrollTop,1900);
+state.conversation='new';state.followChat=false;vm.runInContext(source.match(/if\(state.scrollConversation!==state.conversation\)\{[^}]+\}/)[0],context);resize();flush();assert.equal(state.followChat,true);assert.equal(panel.scrollTop,1900);
+console.log('Autoscroll: suivi, lecture historique, retour au bas, images et changement de conversation OK');

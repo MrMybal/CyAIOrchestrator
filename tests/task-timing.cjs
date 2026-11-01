@@ -1,0 +1,13 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const source=fs.readFileSync('cyai/web/project.js','utf8');const code=source.slice(source.indexOf('function taskTiming('),source.indexOf('function updateTaskClocks('));const c={};vm.createContext(c);vm.runInContext(code,c);
+const event=(kind,seconds)=>({step_id:'a',kind,created_at:new Date(seconds*1000).toISOString()});
+let m={events:[event('model_settings',10)]},s={id:'a',status:'running'};
+assert.equal(c.taskTiming(m,s,40000).elapsed,30000);
+m.events.push(event('error',50),event('model_settings',100));
+assert.equal(c.taskTiming(m,s,130000).elapsed,30000);assert.equal(c.taskTiming(m,s,130000).total,70000);
+m.events.push(event('step_completed',150));s.status='succeeded';
+assert.equal(c.taskTiming(m,s,900000).elapsed,50000);assert.equal(c.taskTiming(m,s,900000).total,90000);
+assert.equal(c.taskTiming({events:[]},s),null);
+assert.equal(c.taskTiming({events:[event('model_settings',10)]},{id:'a',status:'interrupted'}).incomplete,true);
+assert.equal(c.durationText(3661000),'1 h 1 min 1 s');
+console.log('Durations: running, completed, retries, missing events and formatting OK');

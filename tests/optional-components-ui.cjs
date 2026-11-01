@@ -1,0 +1,13 @@
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
+const source=fs.readFileSync('cyai/web/local-models.js','utf8');
+const elements=new Map(['optional-components','local-jobs','download-summary'].map(id=>[id,{innerHTML:'',textContent:'',classList:{toggle(){}}}]));
+const calls=[];
+const c=vm.createContext({console,$:id=>elements.get(id),esc:value=>String(value??''),htmlIfChanged:(id,html)=>elements.get(id).innerHTML=html,notifiedLocalJobs:new Set(),toast(){},fail(error){throw error;},submitLocalJob:async(...args)=>calls.push(args),document:{addEventListener:(name,fn)=>c.click=fn}});
+vm.runInContext(source.slice(source.indexOf('function paintLocalJobs('),source.indexOf('async function submitLocalJob(')),c);
+const info={jobs:[],logs:[],components:[{id:'ffmpeg',name:'FFmpeg',description:'Video codec',bytes:32232419,installed:false}]};
+c.info=info;vm.runInContext('paintLocalJobs(info)',c);assert.match(elements.get('optional-components').innerHTML,/Télécharger/);assert.match(elements.get('optional-components').innerHTML,/30.7 Mo/);
+info.jobs=[{id:'job',name:'Composant · ffmpeg',status:'running',received:10,total:100}];vm.runInContext('paintLocalJobs(info)',c);assert.match(elements.get('optional-components').innerHTML,/disabled/);assert.match(elements.get('optional-components').innerHTML,/Téléchargement en cours/);assert.match(elements.get('local-jobs').innerHTML,/<progress/);
+info.jobs=[];info.components[0].installed=true;vm.runInContext('paintLocalJobs(info)',c);assert.match(elements.get('optional-components').innerHTML,/Installé/);
+const start=source.indexOf("document.addEventListener('click',async");const end=source.indexOf('\nfunction ',start);vm.runInContext(source.slice(start,end<0?undefined:end),c);
+const button={dataset:{componentInstall:'ffmpeg'},hasAttribute:()=>false};
+(async()=>{await c.click({target:{closest:()=>button}});assert.equal(calls.length,1);assert.equal(calls[0][1],'component_install');assert.equal(calls[0][2].id,'ffmpeg');console.log('PASS: optional-component button, queued/running feedback, progress and installed state.');})().catch(error=>{console.error(error);process.exitCode=1;});
