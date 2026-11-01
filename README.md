@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="cyai/web/cyai-logo.png" alt="CyAI Orchestrator logo" width="160">
+</p>
+
 # CyAI Orchestrator
 
 A local Windows application for working with AI agents, conversations and background missions in one project workspace. CyAI combines a desktop interface, persistent SQLite history, provider connectors, local models and an MCP server.
