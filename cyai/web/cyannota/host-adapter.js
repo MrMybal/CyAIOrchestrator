@@ -1,1 +1,0 @@
-if(window.parent!==window)Object.defineProperty(window,'opener',{value:window.parent,configurable:true});

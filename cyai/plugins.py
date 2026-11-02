@@ -5,6 +5,7 @@ from pathlib import Path
 import secrets
 import threading
 import atexit
+from copy import deepcopy
 import shutil
 import subprocess
 import urllib.request
@@ -16,15 +17,25 @@ from .store import uid, now
 from .security import scoped_path
 
 
+CYAICODEX_READ_TOOLS = ['get_context','search_skills','get_skill','search_images','get_image','view_image','get_setup_guide','search_methods','get_method']
+CYTASK_READ_TOOLS = ['cytask_agent_context','cytask_list_projects','cytask_list_tasks','cytask_get_task','cytask_list_agents','cytask_list_notifications']
 DEFAULTS = [
-    {'id':'cymd','name':'CyMD','type':'document','enabled':True,'button':'Ouvrir CyMD'},
-    {'id':'cyannota','name':'CyAnnota','type':'annotation','enabled':True,'button':'Annoter une image',
-     'executable':r'C:\Program Files\CyAnnota\CyAnnota.exe'},
-    {'id':'cyaicodex','name':'CyAICodex','type':'mcp','enabled':False,'button':'Consulter les méthodes',
-     'transport':'http','url':'http://127.0.0.1:8765/mcp','read_tools':['get_context','search_methods','get_method']},
+    {'id':'cymd','name':'CyMD','type':'document','enabled':True,'button':'Ouvrir CyMD','source_repo':'CyMD','version':'0.1.4'},
+    {'id':'cyannota','name':'CyAnnota','type':'annotation','enabled':True,'button':'Annoter des médias','source_repo':'CyAnnota','version':'0.4.4'},
+    {'id':'cyaicodex','name':'CyAICodex','type':'mcp','enabled':False,'button':'Consulter les skills et images',
+     'source_repo':'CyAICodex','transport':'http','url':'http://127.0.0.1:8765/mcp','web_url':'http://127.0.0.1:8765/',
+     'read_tools':CYAICODEX_READ_TOOLS,'project_tab':True,
+     'instructions':'At the start of a task, consult CyAICodex: get_context, search_skills, then get_skill. Respect its connection scope. Images are available through search_images, get_image and view_image. Save or update library content only when the user requests it.'},
+    {'id':'cytask','name':'CyTask','type':'mcp','enabled':False,'button':'Consulter CyTask','source_repo':'CyTask',
+     'transport':'stdio','command':shutil.which('node') or 'node',
+     'args':[str(Path(__file__).with_name('integrations')/'cytask'/'integrations/mcp/cytask-mcp.mjs')],
+     'env':{'CYTASK_URL':'http://127.0.0.1:8080'},'token_env':'CYTASK_TOKEN','read_tools':CYTASK_READ_TOOLS,'project_tab':True,
+     'instructions':'CyTask provides task hierarchy, agent context and durable notifications. Discover cytask_* tools. Writes follow the conversation approval policy; server-side token permissions still apply.'}]
+LEGACY_DEFAULTS = [
     {'id':'cyprojectcodex','name':'CyProjectCodex','type':'mcp','enabled':False,'button':'Bible du projet',
      'transport':'stdio','command':'node','args':[],
      'read_tools':['list_projects','get_project','search_elements'],'project_parameter':'projectId'}]
+
 
 
 class MCPProcess(JsonProcess):
@@ -41,11 +52,21 @@ class Plugins:
     def __init__(self, service):
         self.service = service
         self.config = service.config
-        self.config.setdefault('plugins', {p['id']: dict(p) for p in DEFAULTS})
-        self.config['plugins'].setdefault('cymd', dict(DEFAULTS[0]))
-        for identifier in ('cyaicodex','cyprojectcodex'):
-            if identifier in self.config['plugins']:
-                self.config['plugins'][identifier].setdefault('project_tab', True)
+        self.config.setdefault('plugins', {})
+        for entry in DEFAULTS:
+            self.config['plugins'].setdefault(entry['id'],deepcopy(entry))
+        for entry in DEFAULTS[:2]:
+            self.config['plugins'][entry['id']].update(version=entry['version'],source_repo=entry['source_repo'])
+        codex=self.config['plugins']['cyaicodex']
+        if set(codex.get('read_tools',[])) <= {'get_context','search_methods','get_method'}:
+            codex['read_tools']=list(CYAICODEX_READ_TOOLS)
+        codex.setdefault('source_repo','CyAICodex')
+        codex.setdefault('project_tab',True)
+        if not codex.get('instructions'):codex['instructions']=DEFAULTS[2]['instructions']
+        if codex.get('button')=='Consulter les méthodes':codex['button']='Consulter les skills et images'
+        if 'cyprojectcodex' in self.config['plugins']:
+            self.config['plugins']['cyprojectcodex'].setdefault('project_tab',True)
+        self.persistence_lock=threading.RLock()
         self.grants = {}
         self.cytools_sessions = {}
         self.cytools_lock = threading.RLock()
@@ -79,11 +100,14 @@ class Plugins:
         if not root.is_absolute() or not root.is_dir():raise ValueError('Dossier absolu du CyTool requis.')
         import hashlib
         plugin_id='cytool-'+hashlib.sha256(identifier.encode()).hexdigest()[:20]
-        if plugin_id in self.config['plugins']:raise ValueError('Ce CyTool est déjà enregistré. Utilisez sa configuration.')
+        existing=self.config['plugins'].get(plugin_id,{})
+        if existing and not data.get('replace'):raise ValueError('Ce CyTool est déjà enregistré. Utilisez sa configuration.')
         return self.save({'manifest':{'id':plugin_id,'name':manifest.get('name') or identifier,'type':'mcp','transport':'stdio',
-            'command':command,'args':args,'env':data.get('env',{}),'cwd':str(root),'enabled':True,'cytools':True,'cytools_id':identifier,
+            'command':command,'args':args,'env':data.get('env',{}),'cwd':str(root),'cytools':True,'cytools_id':identifier,
+            'version':manifest.get('version',''),'description':manifest.get('description',''),'source_repo':data.get('source_repo',''),
             'instructions':'CyTools : op_* retourne un jobId. Suivre cy_get_job et son champ state jusqu’à Completed, Failed ou Cancelled ; transmettre progression et erreurs. Failed est un échec métier. Ne pas relancer une opération après une perte de connexion sans vérifier les jobs existants.',
-            'read_tools':['cy_describe','cy_status','cy_list_jobs','cy_get_job','cy_events','cy_can_run'], 'projects':{}}})
+            'read_tools':['cy_describe','cy_status','cy_list_jobs','cy_get_job','cy_events','cy_can_run'], 'projects':existing.get('projects',{}),
+            'enabled':existing.get('enabled',True)}})
 
     def cytools_rpc(self, p, method, params):
         with self.cytools_lock:
@@ -91,7 +115,7 @@ class Plugins:
         with entry['lock']:
             rpc=entry['rpc']
             if rpc is None:
-                rpc=MCPProcess(executable(p['command'])+p.get('args',[]),p['cwd'],Control(0,lambda _:False,lambda *_:None),env={**os.environ,**p.get('env',{})})
+                rpc=MCPProcess(executable(p['command'])+p.get('args',[]),p['cwd'],Control(0,lambda _:False,lambda *_:None),env=self.process_env(p))
                 entry['rpc']=rpc
                 try:
                     rpc.request('initialize',{'protocolVersion':'2025-06-18','capabilities':{},'clientInfo':{'name':'CyAI-CyTools','version':'1'}})
@@ -109,11 +133,25 @@ class Plugins:
                     rpc.close()
                 raise
 
+    def process_env(self,p):
+        env={**os.environ,**p.get('env',{})}
+        if p.get('token_env'):
+            token=self.service.engine.secrets.get('plugin:'+p['id'])
+            if isinstance(token,str) and token:env[p['token_env']]=token
+        return env
+
     def persist(self):
-        self.service.config_path.write_text(json.dumps(self.config,ensure_ascii=False,indent=2),encoding='utf-8')
+        with self.persistence_lock:
+            path=self.service.config_path
+            temporary=path.with_name(path.name+'.'+secrets.token_hex(6)+'.tmp')
+            try:
+                temporary.write_text(json.dumps(self.config,ensure_ascii=False,indent=2),encoding='utf-8')
+                os.replace(temporary,path)
+            finally:temporary.unlink(missing_ok=True)
 
     def list(self, project=None):
-        return [{**p, 'binding': p.get('projects',{}).get(project,{})} for p in self.config['plugins'].values()]
+        from .extension_catalog import legacy_replacement
+        return [{**p,'binding':p.get('projects',{}).get(project,{}),'legacy_replacement':legacy_replacement(p)} for p in self.config['plugins'].values()]
 
     def save(self, data):
         p = dict(data['manifest'])
@@ -162,6 +200,13 @@ class Plugins:
             if p.get('transport')!='stdio' or not Path(p.get('cwd','')).is_absolute() or not Path(p['cwd']).is_dir():
                 raise ValueError('CyTools : dossier absolu existant et transport stdio requis.')
             if not p.get('args') or p['args'][-1]!='mcp':raise ValueError('Les arguments CyTools doivent se terminer par mcp.')
+        token_env=p.get('token_env') or ('CYTASK_TOKEN' if p.get('id')=='cytask' else 'CYTOOLS_TOKEN' if p.get('cytools') else '')
+        if token_env:
+            import re
+            if not re.fullmatch('[A-Z][A-Z0-9_]{0,79}',token_env):raise ValueError('Nom de variable de jeton invalide.')
+            p['token_env']=token_env
+            p['env']=dict(p.get('env',{}))
+            if p['env'].get(token_env):data={**data,'token':p['env'].pop(token_env)}
         p.pop('token',None)
         self.close_cytools(p['id'])
         self.config['plugins'][p['id']] = p
@@ -185,7 +230,7 @@ class Plugins:
             result=self.cytools_rpc(p,method,params)
         elif p['transport']=='stdio':
             args=executable(p['command'])+p.get('args',[])
-            rpc=MCPProcess(args,p.get('cwd') or str(self.service.config_path.parent),Control(25,lambda _:False,lambda *_:None),env={**os.environ,**p.get('env',{})})
+            rpc=MCPProcess(args,p.get('cwd') or str(self.service.config_path.parent),Control(25,lambda _:False,lambda *_:None),env=self.process_env(p))
             try:
                 rpc.request('initialize',{'protocolVersion':'2025-06-18','capabilities':{},'clientInfo':{'name':'cyai-plugins','version':'1'}})
                 rpc.send({'method':'notifications/initialized'})
@@ -202,8 +247,8 @@ class Plugins:
                 req=urllib.request.Request(p['url'],data=json.dumps(payload).encode(),headers=headers)
                 with urllib.request.build_opener(NoRedirect).open(req,timeout=20) as response:
                     if response.headers.get('Mcp-Session-Id'):headers['Mcp-Session-Id']=response.headers['Mcp-Session-Id']
-                    raw=response.read(2000001)
-                    if len(raw)>2000000:raise ValueError('Réponse MCP trop grande.')
+                    raw=response.read(16*1024**2+1)
+                    if len(raw)>16*1024**2:raise ValueError('Réponse MCP trop grande.')
                     if not raw:return {}
                     text=raw.decode('utf-8')
                     if 'text/event-stream' in response.headers.get('Content-Type',''):
@@ -257,27 +302,15 @@ class Plugins:
                             block['text']=json.dumps(value,ensure_ascii=False)
                     except (ValueError,TypeError):pass
         serialized=json.dumps(result,ensure_ascii=False)
-        if len(serialized)>100000:raise ValueError('Résultat trop volumineux ; utilisez une recherche plus précise.')
+        if len(serialized)>(16*1024**2 if any(b.get('type')=='image' for b in result.get('content',[])) else 100000):raise ValueError('Résultat trop volumineux ; utilisez une recherche plus précise.')
         return result
 
     def web_url(self, id):
         p=self.config['plugins'].get(id)
         if not p:raise ValueError('Plugin inconnu.')
-        url=p.get('web_url') or {'cyaicodex':'http://127.0.0.1:8765/','cyprojectcodex':'http://127.0.0.1:4310/'}.get(id,'')
+        url=p.get('web_url') or {'cyaicodex':'http://127.0.0.1:8765/','cytask':p.get('env',{}).get('CYTASK_URL','http://127.0.0.1:8080/'),'cyprojectcodex':'http://127.0.0.1:4310/'}.get(id,'')
         parsed=urllib.parse.urlparse(url)
         if parsed.scheme not in {'http','https'} or not parsed.hostname or parsed.username or parsed.password:raise ValueError('Adresse web invalide.')
-        if id=='cyaicodex' and parsed.scheme=='http' and parsed.hostname in {'127.0.0.1','localhost'} and parsed.port==8765:
-            import sqlite3
-            from contextlib import closing
-            if not p.get('web_data_dir'):raise ValueError('Renseignez le dossier de données CyAICodex dans les options du plugin.')
-            directory=Path(p['web_data_dir'])
-            database=directory/'methodes.sqlite3'
-            if not database.is_file():raise ValueError('Renseignez le dossier de données CyAICodex dans les options du plugin pour ouvrir sa session web.')
-            with closing(sqlite3.connect(database.resolve().as_uri()+'?mode=ro',uri=True)) as db:
-                row=db.execute("SELECT value FROM settings WHERE key='admin_token'").fetchone()
-            if not row:raise ValueError('Session web CyAICodex introuvable.')
-            # Same local application and its existing bootstrap flow; never expose this credential to an agent.
-            return {'url':urllib.parse.urlunparse(parsed._replace(fragment='token='+urllib.parse.quote(row[0],safe='')))}
         return {'url':url}
 
     def create_project(self, data):
@@ -310,6 +343,7 @@ class Plugins:
     def context(self, project):
         result=[]
         for p in self.list(project):
+            if p.get('legacy_replacement'):continue
             if p.get('enabled') and p['binding'].get('enabled',True) is not False and p.get('instructions'):
                 result.append({'plugin':p['name'], 'content':p['instructions'][:8000]})
             if p.get('enabled') and p['binding'].get('enabled',True) is not False and p['binding'].get('auto_memory'):
@@ -373,6 +407,7 @@ class Plugins:
             if params['name']=='list_plugins':
                 value=[]
                 for p in self.list(project):
+                    if p.get('legacy_replacement'):continue
                     if p.get('enabled') and p['type']=='mcp' and p['binding'].get('enabled',True) is not False:
                         try:value.append({'id':p['id'],'name':p['name'],**self.catalog(p['id'])})
                         except Exception as e:value.append({'id':p['id'],'error':str(e)})

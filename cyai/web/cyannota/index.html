@@ -2,17 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' http://127.0.0.1:5174 ws://127.0.0.1:5174; worker-src 'self' blob:;"
-    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="./cyannota-logo.png" />
-    <title>CyAnnota</title>
-    <script type="module" crossorigin src="./assets/index-DDALjVPn.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BFfe1ASm.css">
+    <meta name="description" content="Annotate images, videos and 3D models locally in your browser. CyAnnota is free, open source, and currently in beta." />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' blob: data: https://api.github.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self';" />
+    <link rel="icon" href="/cyannota/cyannota-logo.png" />
+    <link rel="license" href="/cyannota/LICENSE" />
+    <link rel="alternate" type="application/zip" href="/cyannota/source.zip" title="CyAnnota source code" />
+    <title>CyAnnota — Images, videos and 3D annotations</title>
+    <script type="module" crossorigin src="/cyannota/assets/index-mmcCk1fl.js"></script>
+    <link rel="stylesheet" crossorigin href="/cyannota/assets/index-BXqUjObP.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
+    <noscript>Enable JavaScript to use CyAnnota. Your media is processed locally in your browser.</noscript>
+
   </body>
 </html>

@@ -74,10 +74,10 @@ class AnalyticsModelsTests(unittest.TestCase):
         params=next(p for m,p in calls if m=='turn/start')
         self.assertEqual(params['effort'],'ultra');self.assertEqual(params['serviceTier'],'priority')
 
-    def test_web_bootstrap_only_uses_local_application_token(self):
+    def test_web_link_does_not_read_legacy_admin_database(self):
         import sqlite3
         db=sqlite3.connect(self.root/'methodes.sqlite3');db.execute('CREATE TABLE settings(key,value)');db.execute("INSERT INTO settings VALUES('admin_token','local-bootstrap')");db.commit();db.close()
         p=self.s.config['plugins']['cyaicodex'];p['web_data_dir']=str(self.root);p['web_url']='http://127.0.0.1:8765/'
-        self.assertTrue(self.s.plugins.web_url('cyaicodex')['url'].endswith('#token=local-bootstrap'))
+        self.assertEqual(self.s.plugins.web_url('cyaicodex')['url'],'http://127.0.0.1:8765/')
         p['web_url']='https://example.org/'
         self.assertNotIn('local-bootstrap',self.s.plugins.web_url('cyaicodex')['url'])

@@ -19,6 +19,8 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p test_optional_components.py -v
           python3 -m unittest discover -s tests -p test_package_policy.py -v
+          python3 -m unittest discover -s tests -p test_extension_catalog.py -v
+          python3 -m unittest discover -s tests -p test_cytask_bridge.py -v
       - name: Test repository selection and detection rules
         env:
           GITLEAKS_BINARY: ${{ runner.temp }}/cyai-checks/tools/gitleaks

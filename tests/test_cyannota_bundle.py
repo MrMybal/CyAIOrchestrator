@@ -10,7 +10,7 @@ class CyAnnotaBundleTests(unittest.TestCase):
     """CyAnnota 0.3.10 refused every pasted or dropped image in a CyAI session. The shipped copy must not."""
 
     def test_the_shipped_bundle_lets_cyai_sessions_import_images(self):
-        entry = re.search(r'src="\./assets/(index-[\w-]+\.js)"', (WEB / "index.html").read_text(encoding="utf-8")).group(1)
+        entry = re.search(r'src="(?:\./|/cyannota/)assets/(index-[\w-]+\.js)"', (WEB / "index.html").read_text(encoding="utf-8")).group(1)
         bundle = (WEB / "assets" / entry).read_text(encoding="utf-8")
         guards = re.findall(r"if\(([^()]{0,80})\)return \w+\(\w+\(`The media linked to `", bundle)
         self.assertTrue(guards, "le garde-fou du média lié a changé de forme : revérifier le collage d’images dans CyAnnota")

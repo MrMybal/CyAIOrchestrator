@@ -13,7 +13,7 @@ async function openAnnotationEditor(){
  async function receive(event){
   const m=event.data;if(event.origin!==location.origin||event.source!==frame.contentWindow||m?.source!=='cyannota'||m.session!==session||m.protocol!=='cyannota.integration')return;
   if(m.type==='ready'){
-   frame.contentWindow.postMessage({source:'cyai',type:file?'open-media':'open-workspace',protocol:'cyannota.integration',protocolVersion:2,session,attachmentId:attachment,title:file?.name,mediaKind,file:file||new File([],"workspace.cyannota",{type:"application/x-cyannota"}),document:documentValue,locale:'fr',exportAudience:'ai',exportContainer:'zip',includeOriginalVideos:false,resultMode:'archive',closeOnSend:false,maximumResultBytes:256*1024**2,maximumDocumentBytes:10000000},location.origin);frame.focus();
+   frame.contentWindow.postMessage({source:'cyai',type:file?'open-media':'open-workspace',protocol:'cyannota.integration',protocolVersion:2,session,attachmentId:attachment,title:file?.name,mediaKind,file:file||new File([],"workspace.cyannota",{type:"application/x-cyannota"}),document:documentValue,locale:CYAI_LOCALE,exportAudience:'ai',exportContainer:'zip',includeOriginalVideos:false,resultMode:'archive',closeOnSend:false,maximumResultBytes:256*1024**2,maximumDocumentBytes:10000000},location.origin);frame.focus();
   }
   if(m.attachmentId!==attachment)return;
   if(m.type==='integration-closed'&&!saving)modal.close();

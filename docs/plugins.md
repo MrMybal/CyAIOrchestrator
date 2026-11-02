@@ -1,45 +1,35 @@
-# Plugins CyAI Orchestrator
+# Plugins, CyTools and MCP
 
-Les extensions sont déclaratives : leur configuration ajoute des boutons et une source MCP. Aucun JavaScript tiers n’est injecté dans l’interface. Les plugins sont gérés depuis **Plugins**, puis associés à un projet depuis son onglet **Plugins**.
+Configure integrations in **Settings → Plugins** and enable them for each project. **Settings → CyTools** contains standalone tools rather than project tabs. Only enabled plugins declaring a project view appear in the project navigation.
 
-## Plugins livrés
+## Current integrations
 
-- **CyAnnota** : le bouton avec son logo ouvre l’éditeur web directement dans la conversation. Collez directement une image avec Ctrl+V (ou utilisez les outils d’ouverture de CyAnnota), annotez-la, puis utilisez **Sauver dans CyAI**. Les corrections sont enregistrées et sélectionnées pour le prochain message ; le bouton **Reprendre** permet de continuer un document sauvegardé. Le bundle CyAnnota 0.3.10 est inclus, avec la licence AGPL-3.0 et les sources téléchargeables depuis la configuration du plugin. Aucun serveur CyAnnota séparé n’est nécessaire. Le mode Windows externe et l’import d’archives restent disponibles. Les images originales restent sous `.cyai-annotations` dans le projet ; les agents reçoivent leurs chemins et le document structuré des corrections. Les API textuelles ne reçoivent pas automatiquement de blocs visuels.
-- **CyAICodex** : serveur MCP HTTP local, méthodes `get_context`, `search_methods`, `get_method` et ressources annoncées. Créez une connexion de lecture dans CyAICodex et renseignez son jeton dans le plugin. Ce jeton est stocké dans le coffre DPAPI, pas dans le manifeste.
-- **CyProjectCodex** : serveur MCP stdio local. Activez-le, puis associez le projet CyAI à un projet de la bible. Les lectures des IA sont forcées sur cette association. La mémoire structurée automatique est facultative et limitée à 16 000 caractères ; sinon utilisez les recherches et lectures à la demande. Le contenu externe reste une donnée de référence, distincte de la mémoire manuellement validée.
+- [CyAnnota](https://github.com/MrMybal/CyAnnota): embedded image, video and 3D annotation editor, version 0.4.4. Its `cyannota.integration` version 2 protocol delivers an archive to the originating conversation. The bundled source archive identifies the upstream commit and web build recipe. FFmpeg WASM remains an optional download.
+- [CyMD](https://github.com/MrMybal/CyMD): official embedded plugin 0.1.4, using `cymd.integration` version 1. Save creates a new conversation attachment and keeps the original. Both editors follow the CyAI interface language and include their licences and source archives.
+- [CyAICodex](https://github.com/MrMybal/CyAICodex): `get_context`, `search_skills`, `get_skill`, `search_images`, `get_image` and `view_image`, plus compatibility method names. Create a scoped connection in CyAICodex and paste its token or generated MCP configuration. Streamable HTTP defaults to `http://127.0.0.1:8765/mcp`; stdio configurations are supported. Opening its Web application uses its own session flow rather than reading its database.
+- [CyTask](https://github.com/MrMybal/CyTask): the official dependency-free MCP bridge for Node.js 22 or later and JavaScript SDK are bundled with their source and licence. Set the CyTask server URL and an agent/API token. Read tools browse projects, tasks, agents and notifications; task creation, updates and agent calls follow the conversation approval policy when assigned to an agent. Server-side token permissions still apply. This connects to an existing CyTask server; downloading its desktop application does not configure a server or create an account.
 
-Les plugins MCP sont exposés comme deux outils (`list_plugins`, `read_plugin`) à Codex et Claude Code, et comme outils équivalents à l’API Anthropic. Les autres connecteurs peuvent recevoir une référence jointe manuellement depuis « Consulter », ainsi que la mémoire structurée automatique. Les appels des plugins ne permettent pas les outils d’écriture des bibliothèques livrées.
+## Official CyTools
 
-## Manifeste personnalisé
+| Tool | Repository | Purpose |
+| --- | --- | --- |
+| AudioStudio | [CyTools_AudioStudio](https://github.com/MrMybal/CyTools_AudioStudio) | Audio editing, effects, music, voices and transcription |
+| AudioLibrary | [CyTools_AudioLibrary](https://github.com/MrMybal/CyTools_AudioLibrary) | Local sound libraries, analysis and semantic search |
+| AIChat | [CyTools_AIChat](https://github.com/MrMybal/CyTools_AIChat) | Local/cloud chat engines and speech |
+| PersonaRP | [CyTools_PersonaRP](https://github.com/MrMybal/CyTools_PersonaRP) | Persistent roleplay characters and voices |
+| Storyboard | [CyTools_Storyboard](https://github.com/MrMybal/CyTools_Storyboard) | Storyboards, previs and image generation |
+| MeshStudio | [CyTools_MeshStudio](https://github.com/MrMybal/CyTools_MeshStudio) | Mesh reconstruction, remeshing, UVs, textures and workflows |
 
-Importer un fichier JSON dans **Plugins → Installer un manifeste**. Il est installé désactivé. Son activation autorise le lancement de sa commande MCP locale : n’activez que vos extensions de confiance. Les outils déclarés doivent réellement être des lectures.
+Settings reads are offline. **Check GitHub releases** queries stable releases; **Download and connect** verifies the published SHA-256 and installs a Windows portable package in the user's CyAI data directory. It does not launch the GUI, run an operation, install engines or download model weights. Updates keep previous tool directories, project bindings and enabled/disabled state. Configure any required permissions or credentials in the tool itself.
 
-```json
-{
-  "id": "ma-bibliotheque",
-  "name": "Ma bibliothèque",
-  "type": "mcp",
-  "button": "Consulter ma bibliothèque",
-  "enabled": false,
-  "transport": "stdio",
-  "command": "node",
-  "args": ["D:/MesOutils/bibliotheque/mcp.mjs"],
-  "read_tools": ["search", "get_entry"]
-}
-```
+**Add installed folder** detects `app/CyTool.json` or `CyTool.json`, explicit `mcp.json` configurations, and portable or virtual-environment Python runtimes. Detection never executes the manifest's `executable` text. Inferred MCP commands use a separate `data/jobs-cyai` store. An explicit MCP configuration can instead connect to the tool's shared service.
 
-Pour HTTP : `transport: "http"`, `url: "http://127.0.0.1:PORT/mcp"`, sans `command` ni `args`. Les redirections sont refusées pour ne pas transmettre un jeton ailleurs. Le transport attend des réponses JSON ou SSE bornées et supporte les sessions MCP HTTP.
+Operations use `op_<operationId>` and return jobs. Keep the MCP session alive and poll `cy_get_job` until `Completed`, `Failed` or `Cancelled`; a successful poll is not proof that the job succeeded. Assign a tool pack to an agent before expecting its operation tools to be available. Read tools can run directly; other operations use the conversation's approval policy.
 
-Les boutons utilisent le libellé `button`. Le champ optionnel `project_parameter` nomme l’argument de projet à imposer aux outils (exemple : `projectId`). Les associations se trouvent sous `projects` dans la configuration locale. L’injection automatique utilise `get_project` ; elle est conçue pour les bibles structurées exposant ce contrat.
+## Previous registrations
 
-Les archives d’annotations sont limitées à 50 Mo et 500 entrées. La sauvegarde JSON de l’historique conserve les consignes et références, mais les images importées restent dans le dossier du projet : sauvegardez aussi ce dossier.
+Older split tools and CyProjectCodex are no longer added as defaults. Existing configurations are preserved under **Previous registrations · compatibility**, with replacements indicated where known. Custom MCP integrations are kept. Connect the replacement and update agent tool assignments before retiring an older registration; operation identifiers are not silently renamed.
 
-## Claude local
+## Custom MCP integrations
 
-CyAI utilise un CLI natif choisi dans la configuration du connecteur, puis un `claude.exe` local détecté, puis celui fourni avec le SDK. Le même chemin est utilisé pour le statut, l’ouverture du CLI et les échanges. **Utiliser le CLI local** réutilise une authentification valide ; sinon il ouvre le CLI interactif sans déclencher `auth login`. Vous pouvez vous authentifier dedans avec `/login` si nécessaire. Ce parcours officiel peut alors ouvrir votre navigateur.
-
-La session d’une fenêtre Claude déjà ouverte n’est pas importée. CyAI ne lit pas ses jetons ni son stockage privé. L’ancien CLI npm 1.0.56 présent sur cette machine ne constitue pas un exécutable natif compatible avec le SDK actuel ; le CLI natif intégré sert de repli.
-
-## Activation et vues
-
-La page globale configure la connexion ou le type d’éditeur. Dans **Projet → Plugins**, les boutons activent ou désactivent uniquement l’usage pour ce projet. CyAICodex et CyProjectCodex ajoutent des onglets au projet et des entrées dans sa mémoire. L’association à une bible et l’ajout automatique restent des options propres au projet.
+Use **Settings → MCP** to register a local server or **Plugins → Install manifest** for a declarative CyAI manifest. The configuration declares transport, command/arguments or a local HTTP endpoint, allowed read tools and optional project tabs. Importing MCP configuration does not itself run a process. Imported CyTask/CyTools token variables are stored in the Windows vault and injected only when their process starts. No third-party JavaScript is injected into the CyAI interface.

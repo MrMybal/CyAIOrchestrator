@@ -35,6 +35,8 @@ class Service:
         from .plugins import Plugins
         self.plugins = Plugins(self)
         self.engine.plugins = self.plugins
+        from .extension_catalog import ExtensionCatalog
+        self.extensions = ExtensionCatalog(self)
         from .optional_components import OptionalComponents
         self.components = OptionalComponents(self)
         if 'local' in self.engine.connectors:
@@ -113,7 +115,7 @@ class Service:
         return {"local_info":local_info,"resources":self.resources.get(),"projects": self.store.rows("SELECT * FROM projects ORDER BY favorite DESC,position,created_at"),
                 "conversations": self.store.rows("SELECT * FROM conversations WHERE internal_parent_id IS NULL ORDER BY favorite DESC,position,created_at DESC"),
                 "missions": self.store.rows("SELECT id,conversation_id,title,status,created_at,updated_at FROM missions ORDER BY created_at DESC LIMIT 200"),
-                "connectors": connectors, "plugins":self.plugins.list(), "approvals": approvals, "allowed_roots": [str(p) for p in self.engine.policy.roots],
+                "connectors": connectors, "plugins":self.plugins.list(), "extension_catalog":self.extensions.state(), "approvals": approvals, "allowed_roots": [str(p) for p in self.engine.policy.roots],
                 "mcp_jobs":self.store.rows("SELECT id,action,status,result,created_at,conversation_id FROM mcp_jobs ORDER BY created_at DESC LIMIT 100"), "approval_default":self.engine.approval_default, "access_default":self.engine.access_default, "models_cache":self.catalogs, "model_ratings":self.config.get("model_ratings",{}), "settings": self.config.get("settings", {}), "categories": self.config.get("categories", []), "data_dir":str(self.store.path.parent), "pending_data_dir":self.config.get("pending_data_dir", ""), "storage_error":self.config.get("storage_error", ""), "context_chars": self.engine.context_chars, "version": __import__("cyai").__version__}
 
     def memory(self, project_id):
@@ -390,6 +392,10 @@ class Service:
         if action == 'preview_cymd':
             from .media import document_preview
             return document_preview(self,data)
+        if action == 'extension_state':return {'items':self.extensions.state()}
+        if action == 'extension_check':return self.extensions.check(data.get('id'))
+        if action == 'extension_install':return self.extensions.install(data['id'])
+        if action == 'extension_open_download':return self.extensions.open_download(data['id'])
         if action == 'cytool_detect':
             from .cytool_discovery import discover
             return discover(data['folder'])

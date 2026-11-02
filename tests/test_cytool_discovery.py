@@ -36,4 +36,4 @@ class DiscoveryTests(unittest.TestCase):
             (root/'mcp.json').write_text('invalid')
             result=discover(tmp)
             self.assertIn('invalide',result['warnings'][0])
-            self.assertEqual(result['args'],[str(root/'tool.py'),'mcp'])
+            self.assertEqual(result['args'],[str(root/'tool.py'),'--data-dir',str(root/'data/jobs-cyai'),'mcp'])

@@ -1,5 +1,8 @@
 {
-  "version": "0.4.0",
-  "source": "CyAnnota_Project/desktop/dist/renderer",
-  "index_sha256": "622cc8280d06cdb66ee6726be4c191dfeae0635151e61aaed1a9c5a059cfc0a3"
+  "version": "0.4.4",
+  "repository": "https://github.com/MrMybal/CyAnnota",
+  "commit": "59d5e86f7e3df7dafd895b4f96e03e29097bc692",
+  "protocol": "cyannota.integration",
+  "protocolVersion": 2,
+  "source_sha256": "43001fcee26975bcf6f4a51b4021e8bf3a8548abad7912495d316fe6e6a0d244"
 }

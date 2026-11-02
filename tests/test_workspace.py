@@ -47,6 +47,9 @@ class WorkspaceTests(unittest.TestCase):
             with self.assertRaises(ValueError):scoped_workspace(self.root,str(other/'.env'),[directory])
             self.assertEqual(json.loads(self.s.conversation(self.c)['workdirs']),[str(other.resolve())])
     def test_plugin_toggle_preserves_binding_and_other_project(self):
+        from copy import deepcopy
+        from cyai.plugins import LEGACY_DEFAULTS
+        self.s.config['plugins']['cyprojectcodex']=deepcopy(LEGACY_DEFAULTS[0])
         self.s.plugins.rpc=Mock(return_value={'content':[{'type':'text','text':json.dumps({'projects':[{'id':'bible','name':'Bible'}]})}]})
         self.s.plugins.bind({'id':'cyprojectcodex','project_id':self.p,'external_project_id':'bible','auto_memory':True,'enabled':True})
         self.s.plugins.bind({'id':'cyprojectcodex','project_id':self.p,'enabled':False})

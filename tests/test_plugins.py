@@ -3,7 +3,8 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import Mock
-from cyai.plugins import Plugins
+from cyai.plugins import Plugins, LEGACY_DEFAULTS
+from copy import deepcopy
 
 
 class PluginTests(unittest.TestCase):
@@ -11,7 +12,8 @@ class PluginTests(unittest.TestCase):
         self.tmp=tempfile.TemporaryDirectory()
         self.service=Mock(config={},config_path=Path(self.tmp.name)/'config.json')
         self.plugins=Plugins(self.service)
-        self.p=self.plugins.config['plugins']['cyprojectcodex']
+        self.p=deepcopy(LEGACY_DEFAULTS[0])
+        self.plugins.config['plugins']['cyprojectcodex']=self.p
         self.p['enabled']=True
         self.p['projects']={'local':{'external_project_id':'external','enabled':True}}
     def tearDown(self):self.tmp.cleanup()
