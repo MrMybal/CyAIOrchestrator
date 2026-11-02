@@ -10,6 +10,7 @@ from package_policy import payload_problem
 # The Python SDK is small. Its native CLI is a user-installed optional component.
 sdk_data, sdk_binaries, sdk_imports = collect_all('claude_agent_sdk')
 data = collect_data_files('cyai') + sdk_data
+data += [(str(root / 'LICENSE'), '.'), (str(root / 'README.md'), '.')]
 data = [(source, target) for source, target in data if not payload_problem(target + '/' + Path(source).name)]
 binaries = [(source, target) for source, target in sdk_binaries if not payload_problem(target + '/' + Path(source).name)]
 

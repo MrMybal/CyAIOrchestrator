@@ -139,3 +139,11 @@ Repository-check reports are written under ignored `test-results/repository-chec
 The shared translation catalogue is `cyai/locales/en.json`; French source messages are stable keys. Use `ui('…')` or tagged `ui` templates for application-owned interface text. Template values stay opaque and are inserted after translation. Add an English entry for each new source message, preserve numbered placeholders, and keep user content outside translation calls. See [docs/localization.md](docs/localization.md).
 
 Architecture and implementation details: [docs/architecture.md](docs/architecture.md), [docs/connectors.md](docs/connectors.md) and [VALIDATION.md](VALIDATION.md).
+
+## License
+
+Copyright (C) 2026 MrMybal.
+
+CyAI Orchestrator is free software licensed under the **GNU Affero General Public License, version 3 only** (`AGPL-3.0-only`). You may redistribute and modify it under those terms. It is provided without warranty; see [LICENSE](LICENSE) for the complete terms.
+
+Third-party libraries, bundled plugins and downloadable models retain their respective licenses and notices.
