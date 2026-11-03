@@ -8,6 +8,27 @@ A local Windows application for working with AI agents, conversations and backgr
 
 The interface starts in **English**. **French** is also available under **Settings → Appearance → Interface language**. The choice is saved on this computer and applies to the web interface and Windows notification-area menu. Changing it preserves conversation drafts and does not stop background tasks. Model responses, user documents and project names keep their original language.
 
+## Screenshots
+
+A demonstration workspace with sample conversations and task data.
+
+**Project conversations and team members**
+
+![CyAI Orchestrator conversation with project channels, an AI response, team members and the message composer](docs/screenshots/conversation.png)
+
+<details>
+<summary>Task board and CyTools catalogue</summary>
+
+**Task assignments and review**
+
+![Project task board with assigned work, progress columns and a card awaiting review](docs/screenshots/task-board.png)
+
+**Official CyTools catalogue**
+
+![CyTools settings with AudioStudio, AudioLibrary, AIChat, PersonaRP, Storyboard and MeshStudio](docs/screenshots/cytools.png)
+
+</details>
+
 ## Windows desktop application
 
 Build the desktop application with PowerShell:
