@@ -1,0 +1,1336 @@
+{
+  "language": "en",
+  "schema": 1,
+  "labels": {
+    "title": "Documentation",
+    "offline": "Available offline",
+    "back": "Back to workspace",
+    "search": "Search the entire guide",
+    "searchPlaceholder": "Topic, action, error…",
+    "clear": "Clear search",
+    "chapters": "chapters",
+    "noResults": "No chapter matches. Try another word or clear the search.",
+    "contents": "Guide contents",
+    "article": "Documentation chapter",
+    "language": "English by default · Français in Settings → Appearance.",
+    "note": "Keep in mind",
+    "enlarge": "Click to enlarge",
+    "related": "Related chapters",
+    "navigation": "Previous and next chapters",
+    "zoomOut": "Zoom out",
+    "zoomIn": "Zoom in",
+    "close": "Close preview"
+  },
+  "groups": {
+    "basics": "Getting started",
+    "workspace": "Your workspace",
+    "automation": "Agents & background work",
+    "media": "Files, media & integrations",
+    "models": "Models & speech",
+    "maintenance": "Settings & maintenance"
+  },
+  "chapters": [
+    {
+      "id": "start",
+      "group": "basics",
+      "title": "Start here",
+      "summary": "One workspace for conversations, agents and background missions.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "CyAI Orchestrator is a local Windows application. It brings provider connectors, project context, reusable agent profiles, media and execution history into one interface. An agent can use only the capabilities actually exposed by its connector and assigned tools. This guide is bundled with CyAI; reading it does not call an AI or require an Internet connection."
+        },
+        {
+          "type": "heading",
+          "text": "Your first conversation"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Open Settings → Connectors, configure a provider and check its connection.",
+            "Use ＋ in the project rail to select an existing folder and name the project.",
+            "Open a conversation, choose the agent and model in the composer, then describe the desired result.",
+            "Read the response and inspect execution details. Use the board or logs for background work."
+          ]
+        },
+        {
+          "type": "image",
+          "file": "conversation-en.png",
+          "alt": "Project conversation and team panel",
+          "caption": "Sample workspace: project rail, channels, conversation, composer and team. Messages and models are demonstration data."
+        },
+        {
+          "type": "heading",
+          "text": "Find your way around"
+        },
+        {
+          "type": "list",
+          "items": [
+            "The narrow left rail keeps projects, agents, logs, settings and this guide within reach.",
+            "The next column contains the selected project’s conversations, spaces and sections.",
+            "The main panel displays the selected page. The right icons toggle members and conversation details.",
+            "Search filters all chapters including their full text. Click images to open a larger preview with zoom."
+          ]
+        },
+        {
+          "type": "action",
+          "tab": "connectors",
+          "text": "Open connector settings"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "install",
+            "projects",
+            "chat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "install",
+      "group": "basics",
+      "title": "Installation & lifecycle",
+      "summary": "Install, start, update and close the application.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Download the Windows installer from the project’s GitHub Releases and run it. For portable versions, keep the entire directory including _internal.",
+            "Ensure Microsoft Edge WebView2 is available. Open CyAI from its shortcut. English is the default unless a language was already saved.",
+            "Configure a connector or install a local engine and model. Large model weights and optional runtimes are downloaded separately."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Closing the desktop window hides it in the Windows notification area. Double-click its tray icon to reopen it. Quit stops the service started by that instance, with confirmation when work is active. A separately started service remains independent. Closing a browser tab does not stop the service or its missions."
+        },
+        {
+          "type": "paragraph",
+          "text": "Application data is separate from program files. Stop work and create a backup before updating; back up project folders separately. Install the new version and check the sidebar version. The Windows executable is currently unsigned."
+        },
+        {
+          "type": "note",
+          "text": "Source mode requires Python 3.11+. Start with python -m cyai, or python -m cyai.desktop for the desktop window. The default service address is http://127.0.0.1:8766. A changed port also changes client URLs."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "downloads",
+            "backups",
+            "settings"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "group": "workspace",
+      "title": "Projects & direct messages",
+      "summary": "Choose where files belong and which context is shared.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Click ＋ in the rail, choose the folder and name the project. Add a colour or icon if useful.",
+            "Open its assistant to describe an existing project or prepare instructions, memory and team.",
+            "Create conversations by workstream. Organize categories, favourites and archives from their menus."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Location",
+            "Contents"
+          ],
+          "rows": [
+            [
+              "Project",
+              "Conversations, shared memory, instructions, team, board, media, spaces and enabled plugins."
+            ],
+            [
+              "Direct message",
+              "Independent conversation with its own workspace and attachments; no inherited project memory or plugin bindings."
+            ],
+            [
+              "Project folder",
+              "Real working files. These are separate from the SQLite conversation history."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Registering a folder does not automatically send all its files to every model. The context selection, tool access and provider’s own session determine what the agent receives."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "context",
+            "agents",
+            "spaces"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "connectors",
+      "group": "basics",
+      "title": "Connectors & models",
+      "summary": "Connect an account, API or local engine.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Open Settings → Connectors. Enable the integration and configure its model, executable or endpoint.",
+            "For a native CLI, install it and authenticate with the provider. For an API, enter the key in the dedicated field.",
+            "Check the connection, refresh its model catalogue if needed, then choose the connector and model in the composer."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Connector",
+            "Behaviour"
+          ],
+          "rows": [
+            [
+              "Codex",
+              "App Server, native sessions, streaming and supported tool approvals."
+            ],
+            [
+              "Claude Code",
+              "Local CLI/SDK; sessions are separate from Claude Desktop. CLI is an optional download."
+            ],
+            [
+              "OpenCode",
+              "Local server; approved file tools, with shell/delegation restricted by this adapter."
+            ],
+            [
+              "Anthropic API / OpenRouter",
+              "API key and model required. Tools depend on the adapter; generation alone is not a full native agent."
+            ],
+            [
+              "Ollama / CyAI local",
+              "Local generation. CyAI local uses a downloaded llama.cpp runtime and GGUF model."
+            ],
+            [
+              "Other native adapters",
+              "Command Code, CodeBuddy, Antigravity and Devin need their own CLI setup. Antigravity and Devin do not prepare orchestrator plans in this integration."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Installed or configured does not mean verified. A ChatGPT or Claude subscription does not automatically provide API credit. Quotas, available models and reasoning/speed settings depend on the provider."
+        },
+        {
+          "type": "action",
+          "tab": "connectors",
+          "text": "Open connectors"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "local-models",
+            "permissions",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chat",
+      "group": "workspace",
+      "title": "Conversations & queued messages",
+      "summary": "Send text, files and follow-up instructions.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Open a conversation and choose connector/model. Describe the result and attach relevant files.",
+            "By default Enter sends and Shift+Enter adds a line. Attachments can be sent without text.",
+            "During a response, add a follow-up to the queue. Send now interrupts the current response to send that message immediately.",
+            "Stop cancels active work. Review the output and changed files before retrying."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Drafts and selected attachments follow their own conversation within the window session. Text typed after a send remains in the composer when the send is acknowledged. Message actions let you quote, copy, read aloud, propose memory or branch the history. Rename, export and archive are in the conversation toolbar."
+        },
+        {
+          "type": "note",
+          "text": "Branching copies history up to a message. It does not restore project files or undo earlier commands. Stop, rename and archive do not reverse existing file changes either."
+        },
+        {
+          "type": "action",
+          "tab": "context",
+          "text": "Open messaging preferences"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "files",
+            "permissions",
+            "backups"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "group": "workspace",
+      "title": "Context, memory & usage",
+      "summary": "Understand what reaches the model and what counters mean.",
+      "blocks": [
+        {
+          "type": "diagram",
+          "layout": "pipeline",
+          "title": "A request’s context",
+          "labels": [
+            "You",
+            "Conversation",
+            "Selected context",
+            "Connector",
+            "Response & trace"
+          ],
+          "caption": "CyAI combines the instruction, selected history, validated memory and attachments. The connector delivers the request and returns results and events."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Inspect context before sending. Select specific messages or attachments when relevant.",
+            "Put stable decisions in shared memory; review and validate proposed entries.",
+            "For a long conversation, review its summary/compaction options. A fresh native session changes what the provider retains."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Display",
+            "Interpretation"
+          ],
+          "rows": [
+            [
+              "Input / output tokens",
+              "Reported request usage, not guaranteed remaining context."
+            ],
+            [
+              "Context limit",
+              "Provider-reported capacity or local configuration where available. Unknown capacity stays unknown."
+            ],
+            [
+              "Remaining subscription quota",
+              "Only available when supplied by the connector. Missing does not mean zero."
+            ],
+            [
+              "Local context / RAM",
+              "Configured context and available measurements. A larger context generally needs more memory."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "The preview describes CyAI’s selection. Native providers may add their own history, instructions or transport restrictions. Inspect the transmitted trace before blaming a model for missing context."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "background",
+            "local-models",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "permissions",
+      "group": "automation",
+      "title": "Permissions & launch decisions",
+      "summary": "Choose a policy and understand its scope.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "Conversation authorization can inherit the global policy or override it. Automatic approval authorizes supported tool requests on your behalf within the configured scope. Manual approval waits for your decision. Native providers may enforce additional access rules."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Choose the conversation policy and check its working folders/access scope.",
+            "For orchestration, review and explicitly launch the plan. A tool policy does not launch every future campaign.",
+            "If work waits, inspect the exact pending request in execution details. For a native CLI refusal, check its provider configuration and logs."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Some native permission requests cannot be relayed by an adapter. They are reported as unsupported; automatic approval cannot create missing capabilities. Cancellation ends the attempt but does not undo completed actions."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "orchestration",
+            "mcp",
+            "troubleshooting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "orchestration",
+      "group": "automation",
+      "title": "Plans, missions & parallel work",
+      "summary": "Turn a goal into dependent tasks and follow execution.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Create an orchestrator conversation with a connector supporting planning.",
+            "Describe objective, deliverables, constraints and checks. Request independent branches for parallel work.",
+            "Review steps, connector/model assignments, dependencies, concurrency and time settings; then approve launch.",
+            "Follow execution details. After interruption, check existing changes before retrying unsuccessful steps."
+          ]
+        },
+        {
+          "type": "diagram",
+          "layout": "parallel",
+          "title": "Parallel branches and review",
+          "labels": [
+            "Goal",
+            "Plan & approval",
+            "Website",
+            "3D assets",
+            "Documentation",
+            "Final review"
+          ],
+          "caption": "Independent branches can run concurrently after launch. Final review waits for its successful prerequisites."
+        },
+        {
+          "type": "paragraph",
+          "text": "A manually composed mission can also have multiple steps. A successful step means that execution completed, not that the deliverable was accepted. Retry preserves successful steps. Coordinate file ownership when branches write to the same project."
+        },
+        {
+          "type": "note",
+          "text": "The integrated local engine handles one generation at a time. Concurrency cannot make it serve simultaneous model requests. A mission timeout includes waiting and approvals, not just generation."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "board",
+            "background",
+            "permissions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agents",
+      "group": "automation",
+      "title": "Agent library & teams",
+      "summary": "Reuse profiles with explicit project assignments.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Open the agent library from the rail. Create a profile: name, role, instructions, connector, model and assigned tools.",
+            "In the project Team section, create a team. Assign a manager, leads and members as needed; consultants provide specialist expertise.",
+            "Define responsibilities and hierarchy. Resolve the indicated issues, then mark the composition ready.",
+            "Open the member’s conversation or assign task cards on the board."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "An assignment pins a profile revision. Editing the library creates a new revision without silently replacing existing assignments. Use revision preview/adoption to update deliberately. Local overrides belong to that assignment. Templates can reuse a team composition across projects."
+        },
+        {
+          "type": "note",
+          "text": "Presence reflects execution: idle, running, waiting for approval or connector unavailable. An agent is not permanently online. Declared skills describe a profile; they are not verified competence."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "board",
+            "methods",
+            "extensions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "board",
+      "group": "automation",
+      "title": "Task board & delegation",
+      "summary": "Separate assignment, execution, report and acceptance.",
+      "blocks": [
+        {
+          "type": "image",
+          "file": "task-board-en.png",
+          "alt": "Task assignments and review columns",
+          "caption": "Sample cards illustrate workflow, not benchmark results."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Create the team, then add a board card with objective, owner, file scope, dependencies and acceptance criteria.",
+            "Move it to Ready when prerequisites are satisfied. Start its agent from the card or use the delegation controller.",
+            "Inspect the run’s report, changed files, executed checks and limitations. A returned report needs review.",
+            "Accept reviewed results or request corrections. The user or an eligible reviewer records that decision."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "State",
+            "Meaning"
+          ],
+          "rows": [
+            [
+              "To prepare / Ready",
+              "Define scope and dependencies before launch."
+            ],
+            [
+              "In progress / Awaiting information",
+              "Work started or needs information. Open its card for available pause, stop and consultation actions."
+            ],
+            [
+              "In review / To correct",
+              "Report awaiting review, or changes requested."
+            ],
+            [
+              "Done / Failed / Cancelled",
+              "Final decision recorded. Done follows acceptance, not a success sentence."
+            ]
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The controller preview lists eligible actions. Advancing one step performs one pass; automatic mode keeps advancing according to its configured policy. Monitor active runs, reviews and waits. Stop the controller explicitly to prevent further delegation. A card colour alone does not prove an agent is running."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "agents",
+            "orchestration",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "methods",
+      "group": "automation",
+      "title": "Methods, tests & revisions",
+      "summary": "Build and evaluate reusable procedures.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Open Methods from the agent library. Define purpose, ordered steps and supporting resources.",
+            "Attach a method to a profile with usage notes. Preserve revisions when changing a tested procedure.",
+            "Create a test with objective, inputs and expected result. Choose exact connector/model settings and launch the authorized run.",
+            "Inspect output and traces, record a rating with its source, then review improvement proposals before adopting them."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The editor and laboratory distinguish method revisions, test cases, individual runs and improvement proposals. Controlled loops have configured limits and stop conditions. Stop when the objective is met or another iteration is no longer justified. Personal model ratings remain separate from published benchmarks."
+        },
+        {
+          "type": "note",
+          "text": "Technical success is not a quality score. Compare identical inputs, revisions, variants and grading rules. Keep answers out of candidate prompts. A transport failure cannot be graded as model quality."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "background",
+            "context",
+            "agents"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "background",
+      "group": "automation",
+      "title": "Background evaluations",
+      "summary": "Run isolated trials without filling the conversation list.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Define corpus, expected outputs and scoring rules. Select exact model variants.",
+            "Prepare independent candidate runs in isolated background workspaces; do not reuse candidate history.",
+            "Authorize campaign launch. Follow its controlling conversation, cards or logs; hide background cards to reclaim space.",
+            "Wait for terminal states and distinguish completed, failed, cancelled and untested cases before comparing scores."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "For large-context tests, inspect the content delivered through the connector. Record corpus size, model identifier, provider context information and transport errors. A short pilot does not measure massive-context performance. If tools are forbidden, check actual tool traces before grading."
+        },
+        {
+          "type": "note",
+          "text": "A launch acknowledgement or mission identifier is not a completed test. Automatic follow-up must be configured in the chain/controller or an active orchestrating run; recording a result alone does not guarantee an idle conversation wakes up."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "methods",
+            "orchestration",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spaces",
+      "group": "workspace",
+      "title": "Spaces & whiteboards",
+      "summary": "Organize notes and links beside your conversations.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Use ＋ in Spaces to create a named whiteboard.",
+            "Add notes, choose colours and move them by their grip. Drag a link handle to another note to connect them.",
+            "Pan or zoom the canvas, edit note text and wait for Saved.",
+            "If another window or agent changes the board, reload when a conflict is reported."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Whiteboards save automatically with version checks to avoid silently overwriting concurrent changes. Notes and arrows organize ideas; they do not execute a mission. Use orchestration or the task board for dependencies that must control execution."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "projects",
+            "board",
+            "backups"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "files",
+      "group": "media",
+      "title": "Attachments, images & video",
+      "summary": "Send files and open previews inside CyAI.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Use ＋ in the composer or supported paste/drop controls. Check the name and preview.",
+            "Send the attachment alone or with an instruction. Selected files belong to that conversation’s draft.",
+            "Click a supported image/video for an in-app preview. Enlarge or zoom images; use video playback controls.",
+            "Right-click the file or use its menu for File Explorer, external opening and copying a local link. Unsupported types can open with Windows."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Attachments keep their metadata and stored content. An unreadable format should not be mistaken for an absent file. Interpretation depends on the model’s modalities, connector and file tools. A local link is not a public URL another computer can download."
+        },
+        {
+          "type": "note",
+          "text": "If a preview reports a path outside the conversation’s folders, check its actual location and registered working folders. Attach/import the file or register the intended folder. A broken preview is not proof of delivery to an AI."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "viewer-3d",
+            "cyannota",
+            "cymd"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "viewer-3d",
+      "group": "media",
+      "title": "3D viewer & PBR",
+      "summary": "Inspect geometry, backgrounds, lighting and materials.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Click a supported GLB/glTF, OBJ, STL or PLY attachment or local link.",
+            "Drag to orbit, wheel to zoom and right-drag to pan. Recenter fits the model; Wireframe exposes topology.",
+            "Choose a dark, grey, white, midnight blue or studio background. Compare Studio PBR, Soft, Contrast and Daylight lighting.",
+            "Adjust exposure and light rotation. Use Open with Windows or File Explorer for another application."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Embedded GLB/glTF textures and supported PBR materials are preserved with studio environment lighting. Self-contained GLB is the most convenient preview format. OBJ is loaded as geometry only: companion MTL materials are not loaded. STL/PLY use the viewer’s material and available vertex colours. External glTF resources may not be accessible through the attachment."
+        },
+        {
+          "type": "note",
+          "text": "Preview controls do not rewrite the asset. The viewer is for inspection, not full modelling or conversion. Missing textures or unsupported extensions may require the authoring application."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "files",
+            "cyannota",
+            "extensions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cyannota",
+      "group": "media",
+      "title": "CyAnnota visual annotations",
+      "summary": "Annotate images, videos and 3D models.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Enable CyAnnota in Settings → Plugins. Open it from the conversation toolbar or a compatible attachment.",
+            "Import the media/model in the embedded editor. Add the annotations, notes or views needed for your instruction.",
+            "Save through the CyAI integration and wait for confirmation that the archive reached the conversation.",
+            "Send that attachment to the agent with the requested task."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The embedded editor follows CyAI’s language and supports image, video and 3D annotations. Its optional video codec is downloaded separately in Downloads; image and 3D features do not need it. Saved files remain attached to the originating conversation even if you navigate elsewhere during saving."
+        },
+        {
+          "type": "note",
+          "text": "Keep the archive for editable annotations. An ordinary exported image does not replace the annotation project. The receiving model needs a connector and tools able to access the archive and its visual information."
+        },
+        {
+          "type": "action",
+          "tab": "plugins",
+          "text": "Open plugins"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "downloads",
+            "files"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cymd",
+      "group": "media",
+      "title": "CyMD documents",
+      "summary": "Edit Markdown inside CyAI and save to the conversation.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Enable CyMD and open its editor from the conversation toolbar or a compatible attachment.",
+            "Write/edit Markdown with its editing and preview controls. It follows the English/French interface preference.",
+            "Save to CyAI and wait for confirmation. A new attachment is created; the original is preserved.",
+            "Review the saved document, then send it if needed for the next request."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The embedded editor is different from a Windows file association. Open externally uses the application associated with the extension. Saving to a conversation does not automatically overwrite an unrelated file in the project folder."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "files",
+            "extensions",
+            "backups"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "extensions",
+      "group": "media",
+      "title": "Plugins & CyTools",
+      "summary": "Distinguish project views from tools assigned to agents.",
+      "blocks": [
+        {
+          "type": "image",
+          "file": "cytools-en.png",
+          "alt": "Official CyTools catalogue",
+          "caption": "Standalone applications; engines and model weights remain separate downloads."
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Integration",
+            "Usage"
+          ],
+          "rows": [
+            [
+              "Plugins",
+              "Configure globally, enable per project. Only enabled plugins declaring a project view become tabs."
+            ],
+            [
+              "CyTools",
+              "AudioStudio, AudioLibrary, AIChat, PersonaRP, Storyboard and MeshStudio; assign tool packs to profiles or assignments."
+            ],
+            [
+              "CyAICodex",
+              "Scoped token or MCP configuration for shared skills and visual references."
+            ],
+            [
+              "CyTask",
+              "Existing server URL and agent/API token; its bundled MCP bridge needs Node.js 22+. Downloading the desktop app does not create a server account."
+            ]
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Add installed folder detects CyTool.json, app/CyTool.json, explicit MCP configurations and supported portable/virtual-environment Python runtimes.",
+            "For an official download, check GitHub releases then Download and connect. Follow Downloads. This installs the portable package, not its model weights.",
+            "Configure and enable the integration, assign tools to the agent and test a small operation. Keep the session open while following its job."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "A job identifier means asynchronous work. A successful status query does not mean the operation succeeded: follow Completed, Failed or Cancelled. Previous registrations remain in the collapsed compatibility section."
+        },
+        {
+          "type": "action",
+          "tab": "cytools",
+          "text": "Open CyTools"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "mcp",
+            "downloads",
+            "agents"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mcp",
+      "group": "media",
+      "title": "Local MCP servers & AI access",
+      "summary": "Register tools, expose them deliberately and follow their jobs.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "In Settings → MCP, register an existing server, such as Blender, with its transport and command/arguments or HTTP endpoint. Import a supported configuration where available.",
+            "Check the required software/runtime and credentials. Registering the configuration alone does not prove the server works.",
+            "Expose the integration to the intended project/profile and tool assignment. Read-only and write tools follow their declared permissions and the conversation policy.",
+            "Run a small tool call and inspect MCP operations in Logs. Follow asynchronous jobs to a terminal state."
+          ]
+        },
+        {
+          "type": "diagram",
+          "layout": "pipeline",
+          "title": "An MCP operation",
+          "labels": [
+            "Agent",
+            "Exposed tool",
+            "Permissions",
+            "MCP server",
+            "Job / result"
+          ],
+          "caption": "The agent sees assigned tools. Supported requests pass through their permission policy, reach the server and return a result or a job to follow."
+        },
+        {
+          "type": "paragraph",
+          "text": "CyAI also exposes its own MCP bridge to the running local service. Generate client configuration in MCP settings, select project scope and read/write access, and use the generated command in the external agent. The bridge requires CyAI’s service to be running. Scope prevents a project client from implicitly accessing every project."
+        },
+        {
+          "type": "note",
+          "text": "Installing Blender or finding an MCP folder does not automatically expose its tools to an active session. Check registration, assignment, server availability and the session’s refreshed tool list. Never paste credential values into a conversation to configure a server."
+        },
+        {
+          "type": "action",
+          "tab": "mcp",
+          "text": "Open MCP settings"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "extensions",
+            "permissions",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "local-models",
+      "group": "models",
+      "title": "Local models & memory",
+      "summary": "Install a runtime, choose a GGUF and configure its context.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Open Settings → Local models. Choose the llama.cpp runtime appropriate to the CPU/GPU, or configure a separate Ollama connector.",
+            "Download a compatible GGUF from the catalogue/Hugging Face repository or import an existing model. Wait for installation to complete.",
+            "Configure CPU/GPU/hybrid execution, GPU layers, threads and context. Per-model overrides can replace global defaults.",
+            "Start the installed model, follow its loading state, then select CyAI local and the model in the composer. Stop/unload it to release memory when finished."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Context is a configured local token capacity, distinct from generated output length. The model’s architecture and runtime still constrain usable context. A larger context can need substantially more KV-cache memory. Check actual load/generation errors rather than assuming a file size equals required RAM or VRAM."
+        },
+        {
+          "type": "note",
+          "text": "Resource estimates are guidance. Orange indicates limited available margin; it is not by itself a ban on trying to load. Red indicates that total VRAM is below the stated estimate, not proof of every runtime’s behaviour. Actual loading can still fail. The integrated engine serves one request at a time."
+        },
+        {
+          "type": "action",
+          "tab": "local",
+          "text": "Open local models"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "downloads",
+            "context",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "group": "models",
+      "title": "Dictation, speech & voices",
+      "summary": "Configure speech engines and choose when the microphone is active.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Open Settings → Voice. Choose a transcription engine, language and optional microphone/device settings. Install only the runtime and model you need.",
+            "For speech output, choose Windows voices or a local synthesis engine such as Piper. Install a voice, choose its speaker where supported and test it.",
+            "Use the microphone button for dictation: review the recognized text before sending.",
+            "Direct discussion sends recognized phrases, reads replies and reopens the microphone for the next phrase. Click again to stop this mode. Reading responses aloud can be toggled independently."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Option",
+            "Use"
+          ],
+          "rows": [
+            [
+              "Whisper / Phonon",
+              "Optional speech-to-text engines. Phonon-2 is English; Phonon-2.5 supports French and other languages. Runtime and weights are separate downloads."
+            ],
+            [
+              "Piper",
+              "Lightweight local synthesis. The catalogue lists languages, quality levels and speaker variants; multi-speaker models share model files."
+            ],
+            [
+              "Other voice engines",
+              "Hardware, languages, voice cloning and resource needs depend on the chosen engine. Check its card and actual loading state."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "The microphone and automatic reading start disabled. Browser/Windows device permission is still required. Test with a short phrase before relying on hands-free mode. Transcription can be imperfect; recording permission does not guarantee a model is installed."
+        },
+        {
+          "type": "action",
+          "tab": "voice",
+          "text": "Open voice settings"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "downloads",
+            "local-models",
+            "troubleshooting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "downloads",
+      "group": "models",
+      "title": "Downloads & optional components",
+      "summary": "Follow installation state without bundling large models.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Start a model, engine, voice or tool download from its settings card. The catalogue selection alone does not download it.",
+            "Open Downloads to inspect queued/running jobs, received bytes, totals when known and errors.",
+            "Wait for completion and verification, then return to the feature to load or use the component.",
+            "If a download fails, inspect the specific job, destination, disk space and network before retrying."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "On-demand components include the optional Claude Code native CLI and CyAnnota FFmpeg codec. CyTools portable packages are distinct from their own engines and model weights. A downloaded application may still need account setup, authentication or a running server. Settings read cached catalogues; checking a remote release is an explicit action."
+        },
+        {
+          "type": "note",
+          "text": "Known totals and checksums depend on the official source. Do not treat an unknown size as zero or an installation acknowledgement as a completed download. Model/engine licences can differ from CyAI’s licence."
+        },
+        {
+          "type": "action",
+          "tab": "downloads",
+          "text": "Open downloads"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "extensions",
+            "local-models",
+            "voice"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "group": "maintenance",
+      "title": "Settings, language & folders",
+      "summary": "Customize the interface and locate application data.",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Category",
+            "Controls"
+          ],
+          "rows": [
+            [
+              "Models & preferences",
+              "Personal model ratings, provider catalogues and orchestration preferences."
+            ],
+            [
+              "Appearance",
+              "English/French language, themes and visual preferences."
+            ],
+            [
+              "Connectors / MCP / Plugins / CyTools",
+              "Provider and integration setup, separate from local inference models."
+            ],
+            [
+              "Folders / Backup",
+              "Data storage, backup destinations and migration options."
+            ],
+            [
+              "Context & AI",
+              "Conversation/context preferences, including Enter-to-send behaviour."
+            ],
+            [
+              "Windows application",
+              "Desktop integration and lifecycle preferences."
+            ]
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Open Appearance and choose English or Français, then save. English is the default for unsupported/missing preferences.",
+            "Language changes reload the interface while preserving drafts; background service work continues. This guide and bundled editors follow the selected language.",
+            "For a storage change, use the folder settings and follow the restart instructions. Do not manually move a database while its service is using it."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Model replies, user documents and project names keep their own language. External plugins may have separate language settings. Global preferences and per-conversation/per-model overrides are different; check both when a value appears not to apply."
+        },
+        {
+          "type": "action",
+          "tab": "appearance",
+          "text": "Open language and appearance"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "context",
+            "backups",
+            "reference"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "diagnostics",
+      "group": "maintenance",
+      "title": "Logs, resources & usage",
+      "summary": "Inspect execution evidence and measurements over time.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Open Logs from the rail. Select Journal, RAW, MCP operations, Connectors or Resources in its vertical navigation.",
+            "Filter the journal by source, level or text. Open the relevant operation rather than inferring success from its title.",
+            "Use RAW for structured events and MCP operations for application tool calls and returned results.",
+            "In Resources, inspect CPU, RAM, GPU, VRAM and disk history where available. Export relevant diagnostics for troubleshooting."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Connector status distinguishes disabled, configured, installed, operational and error states. Measurements can be missing depending on Windows/GPU counters. CyAI process memory, local-model memory and total system usage are different quantities. The composer shows provider usage and quota only when supplied."
+        },
+        {
+          "type": "note",
+          "text": "Unknown readings are not zero. Exported diagnostics may contain project prompts, paths or provider output; review the export before sharing it. An MCP poll may succeed while the underlying job is still running or has failed."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "troubleshooting",
+            "context",
+            "mcp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "backups",
+      "group": "maintenance",
+      "title": "History, exports & backups",
+      "summary": "Preserve conversations without confusing them with project files.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Use history search for recorded messages, including archived conversations. Filter by project, provider, dates or status.",
+            "Export a conversation when you need its messages and mission records. Archive keeps it searchable; deleting is a separate action.",
+            "In Settings → Backup, export a portable backup or restore an existing one after reviewing the replacement confirmation.",
+            "Back up project folders separately. For a full local data-directory copy, stop the service first."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Included or separate",
+            "What to expect"
+          ],
+          "rows": [
+            [
+              "SQLite/application history",
+              "Recorded conversations, missions, references and application records."
+            ],
+            [
+              "Portable backup",
+              "Does not include credentials, project working files or provider-native session storage. Check media references and keep original files where needed."
+            ],
+            [
+              "Restore",
+              "Replaces local history after confirmation; a prior copy is kept. It does not roll project folders back."
+            ],
+            [
+              "Credentials",
+              "Windows DPAPI ties supported stored credentials to the Windows user. A copied data folder is not a portable login."
+            ]
+          ]
+        },
+        {
+          "type": "action",
+          "tab": "backup",
+          "text": "Open backup settings"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "files",
+            "projects",
+            "troubleshooting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "group": "maintenance",
+      "title": "Troubleshooting",
+      "summary": "Identify the failed stage before retrying an operation.",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Symptom",
+            "What to check"
+          ],
+          "rows": [
+            [
+              "Settings keep loading",
+              "Wait for the visible loading state, then retry that section. Check Logs for its actual error; model discovery and downloads are separate operations."
+            ],
+            [
+              "No response from an agent",
+              "Enabled connector, verified authentication, exact model, native executable/endpoint and last provider error. A CLI subscription is different from API credit."
+            ],
+            [
+              "Waiting for authorization",
+              "Conversation policy, pending request, access scope and native-provider rules. Inspect execution details."
+            ],
+            [
+              "MCP tools absent",
+              "Registered integration, active project binding, assigned agent tool pack, server availability and current session’s tool list."
+            ],
+            [
+              "Path outside conversation folders",
+              "File existence, original attachment, registered work folders and correct local link. Attach/import or register the intended folder."
+            ],
+            [
+              "Model fails to load",
+              "Runtime compatibility, actual memory, GPU offload, context configuration and loading log. Orange estimates are guidance."
+            ],
+            [
+              "No dictation or speech",
+              "Device permission, selected engine/voice, completed download, language support and whether recording/reading is enabled."
+            ],
+            [
+              "A successful tool returned no final result",
+              "Look for a job/mission identifier and inspect its terminal status; follow-up queries are not the underlying result."
+            ],
+            [
+              "Background tests do not continue",
+              "Check the campaign graph/controller and active orchestrating run. A finished pilot does not automatically launch an unspecified next batch."
+            ],
+            [
+              "3D materials are missing",
+              "Embedded textures and supported GLB/glTF extensions. OBJ loads geometry without MTL; external companion resources may be unavailable."
+            ],
+            [
+              "Context test omitted late information",
+              "Verify the complete delivered corpus and transport trace before concluding the model failed at that context size."
+            ],
+            [
+              "Interrupted or failed mission",
+              "Inspect its error and existing file effects. Review the retry options; cancellation does not roll changes back."
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Prepare a useful diagnostic"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Record the CyAI version, connector, exact model, action and timestamp.",
+            "Open the relevant log/event and preserve its error, job identifier and status. Remove private information before sharing.",
+            "Use Diagnose with AI to prepare a message in the conversation. Review and send it yourself; preparing it does not silently relaunch the failed work."
+          ]
+        },
+        {
+          "type": "related",
+          "topics": [
+            "diagnostics",
+            "permissions",
+            "backups"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reference",
+      "group": "maintenance",
+      "title": "Shortcuts & glossary",
+      "summary": "A quick reference for everyday actions and terms.",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Action",
+            "Default control"
+          ],
+          "rows": [
+            [
+              "Send message",
+              "Enter, when Enter-to-send is enabled."
+            ],
+            [
+              "New line",
+              "Shift+Enter."
+            ],
+            [
+              "File actions",
+              "Right-click a file or use its accessible menu."
+            ],
+            [
+              "3D camera",
+              "Drag: orbit. Wheel: zoom. Right-drag: pan."
+            ],
+            [
+              "Close a preview",
+              "Its close control or Escape. Escape also leaves global settings/library/documentation when no dialog is open."
+            ],
+            [
+              "Guide images",
+              "Click to enlarge; − / ＋ zoom, percentage button resets the fit, Escape closes."
+            ],
+            [
+              "Guide navigation",
+              "Search filters all chapter text. Tab and Enter activate chapter buttons. Previous/next buttons follow the full guide."
+            ],
+            [
+              "Print a guide chapter",
+              "Use the browser/system print command where available; the print stylesheet focuses on the current article."
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Term",
+            "Meaning"
+          ],
+          "rows": [
+            [
+              "Connector",
+              "Adapter connecting CyAI to a provider, native CLI or local engine."
+            ],
+            [
+              "Model",
+              "The exact inference model/variant selected through that connector."
+            ],
+            [
+              "Profile / assignment",
+              "Reusable agent definition / revision pinned to a project team."
+            ],
+            [
+              "Mission / step",
+              "Recorded execution / one part of its configured plan."
+            ],
+            [
+              "Task / report / acceptance",
+              "Work card / submitted evidence / explicit review decision."
+            ],
+            [
+              "Context / shared memory",
+              "Information provided for a request / stable project entries selected for reuse."
+            ],
+            [
+              "Plugin / CyTool / MCP",
+              "Integration / standalone tool application / protocol exposing operations and resources."
+            ],
+            [
+              "Job identifier",
+              "A reference used to follow asynchronous work, not proof of completion."
+            ],
+            [
+              "GGUF / PBR",
+              "Local model file format / physically based material rendering."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "This guide describes the bundled CyAI features. Provider models, external servers and separately updated applications may change independently. Use their current settings and returned capabilities rather than assuming every integration supports the same workflow."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "start",
+            "settings",
+            "troubleshooting"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -2382,5 +2382,10 @@
   "Parcourir les tâches et agents": "Browse tasks and agents",
   "Parcourir les ressources MCP": "Browse MCP resources",
   "Dans CyTask, créez un membre agent ou un jeton API, puis indiquez son serveur et son jeton ici. Node.js 22 ou plus récent est requis pour le pont MCP.": "Create an agent member or API token in CyTask, then enter its server address and token here. Node.js 22 or later is required for the MCP bridge.",
-  "Enregistré dans CyAI": "Registered in CyAI"
+  "Enregistré dans CyAI": "Registered in CyAI",
+  "Documentation": "Documentation",
+  "Chargement de la documentation…": "Loading documentation…",
+  "Impossible de charger la documentation.": "Could not load documentation.",
+  "Documentation invalide.": "Invalid documentation.",
+  "Documentation introuvable.": "Documentation not found."
 }

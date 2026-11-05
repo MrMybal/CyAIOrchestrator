@@ -29,6 +29,10 @@ A demonstration workspace with sample conversations and task data.
 
 </details>
 
+## In-app documentation
+
+Open **? Documentation** in the left rail or from Settings. The bundled guide works offline, follows the interface language (**English** by default, **French** available) and includes 27 chapters, localized screenshots with zoom, workflow diagrams, full-text chapter search and links to relevant settings. It covers setup, conversations, context, permissions, teams, missions, evaluations, files, 3D, plugins, MCP, local models, speech, diagnostics and backups.
+
 ## Windows desktop application
 
 Build the desktop application with PowerShell:
@@ -151,6 +155,7 @@ Key settings include `port`, `data_dir`, `allowed_roots`, `context_chars`, provi
 ```powershell
 python -m unittest discover -s tests -v
 node tests/i18n.cjs
+node tests/help.cjs
 node tests/ui-async-regressions.cjs
 python scripts/check_repository.py --download-gitleaks
 ```

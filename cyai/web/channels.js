@@ -3,8 +3,9 @@
 // Every channel opens an existing view; presence comes from project_channels and never says "online".
 const shell = {channels: {}, fetchedAt: {}, loading: false, profiles: [], profilesAt: 0};
 // Views that open over everything, like Discord's settings.
-const OVERLAY_VIEWS = ['settings', 'agents', 'method', 'logs'];
+const OVERLAY_VIEWS = ['settings', 'agents', 'method', 'logs', 'help'];
 L.views.home = ui('Accueil');
+L.views.help = ui('Documentation');
 const CHANNEL_ICONS = {assistant: '✦', conversation: '#', orchestrator: '◈', agent: '@', board: '▦', team: '⚑', overview: '◎', memory: '◇',
   pins: '✦', media: '▣', skills: '✎', plugins: '⊞', plugin: '⧉', settings: '⚙', whiteboard: '▢', graph: '⌘'};
 const OVERVIEW_TABS = ['overview', 'usage', 'history', 'statistics'];
@@ -31,7 +32,7 @@ function railHTML(home) {
     <div class="rail-sep"></div>
     <div class="rail-projects">${groups.join('<div class="rail-sep"></div>')}</div>
     <button class="rail-item rail-add" data-shell-action="new-project" title="Ajouter un projet" aria-label="Ajouter un projet">＋</button>
-    <div class="rail-tools"><button class="rail-tool" data-new-window title="Ouvrir une nouvelle fenêtre de CyAI" aria-label="Ouvrir une nouvelle fenêtre de CyAI">⧉</button>${[['agents', '☰', ui('Bibliothèque d’agents')], ['logs', '≡', 'Logs'], ['settings', '⚙', ui('Données & paramètres')]]
+    <div class="rail-tools"><button class="rail-tool" data-new-window title="Ouvrir une nouvelle fenêtre de CyAI" aria-label="Ouvrir une nouvelle fenêtre de CyAI">⧉</button>${[['agents', '☰', ui('Bibliothèque d’agents')], ['logs', '≡', 'Logs'], ['settings', '⚙', ui('Données & paramètres')], ['help', '?', ui('Documentation')]]
       .map(([view, glyph, label]) => `<button class="rail-tool ${state.view === view ? 'selected' : ''}" data-view="${view}" title="${label}" aria-label="${label}">${glyph}</button>`).join('')}</div>`;
 }
 
@@ -108,7 +109,7 @@ function renderShell() {
   const overlay = OVERLAY_VIEWS.includes(state.view);
   document.querySelector('.app').classList.add('shell');
   document.querySelector('.app').classList.toggle('overlay-open', overlay);
-  $('settings-close').hidden = !overlay || ['method','logs','agents'].includes(state.view);
+  $('settings-close').hidden = !overlay || ['method','logs','agents','help'].includes(state.view);
   if (!overlay) shell.lastView = state.view;
   htmlIfChanged('home-list', homeListHTML());
   const home = shellHome(), project = state.data.projects.find(p => p.id === state.project);
@@ -149,7 +150,7 @@ function topbarGlyph() {
     const tab = state.projectTab || 'overview';
     return OVERVIEW_TABS.includes(tab) ? CHANNEL_ICONS.overview : CHANNEL_ICONS[tab.startsWith('plugin:') ? 'plugin' : tab] || '#';
   }
-  return {agents: '☰', logs: '≡', settings: '⚙', search: '⌕', memory: '◇', home: '✉', space: '▢'}[state.view] || '#';
+  return {help: '?', agents: '☰', logs: '≡', settings: '⚙', search: '⌕', memory: '◇', home: '✉', space: '▢'}[state.view] || '#';
 }
 
 // Settings and the library open over everything, like Discord; Échap or ✕ goes back to where the user was.

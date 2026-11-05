@@ -1,0 +1,1336 @@
+{
+  "language": "fr",
+  "schema": 1,
+  "labels": {
+    "title": "Documentation",
+    "offline": "Disponible hors ligne",
+    "back": "Retour à l’espace de travail",
+    "search": "Rechercher dans tout le guide",
+    "searchPlaceholder": "Sujet, action, erreur…",
+    "clear": "Effacer la recherche",
+    "chapters": "chapitres",
+    "noResults": "Aucun chapitre ne correspond. Essayez un autre mot ou effacez la recherche.",
+    "contents": "Sommaire du guide",
+    "article": "Chapitre de documentation",
+    "language": "Anglais par défaut · Français dans Paramètres → Apparence.",
+    "note": "À retenir",
+    "enlarge": "Cliquer pour agrandir",
+    "related": "Chapitres associés",
+    "navigation": "Chapitres précédent et suivant",
+    "zoomOut": "Dézoomer",
+    "zoomIn": "Zoomer",
+    "close": "Fermer l’aperçu"
+  },
+  "groups": {
+    "basics": "Premiers pas",
+    "workspace": "Votre espace de travail",
+    "automation": "Agents et arrière-plan",
+    "media": "Fichiers, médias et intégrations",
+    "models": "Modèles et voix",
+    "maintenance": "Réglages et maintenance"
+  },
+  "chapters": [
+    {
+      "id": "start",
+      "group": "basics",
+      "title": "Bien démarrer",
+      "summary": "Un espace commun pour les conversations, les agents et les missions en arrière-plan.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "CyAI Orchestrator est une application Windows locale. Elle réunit connecteurs, contexte du projet, profils réutilisables, médias et historique. Un agent dispose des capacités réellement exposées par son connecteur et ses outils attribués. Ce guide est livré avec CyAI : sa lecture n’appelle aucune IA et ne nécessite pas Internet."
+        },
+        {
+          "type": "heading",
+          "text": "Votre première conversation"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Ouvrez Paramètres → Connecteurs, configurez un fournisseur et vérifiez sa connexion.",
+            "Utilisez ＋ dans la barre des projets pour choisir un dossier existant et nommer le projet.",
+            "Ouvrez une conversation, choisissez agent et modèle dans la saisie, puis décrivez le résultat souhaité.",
+            "Lisez la réponse et les détails d’exécution. Utilisez le board ou les logs pour les travaux en arrière-plan."
+          ]
+        },
+        {
+          "type": "image",
+          "file": "conversation-fr.png",
+          "alt": "Conversation de projet et panneau des membres",
+          "caption": "Espace de démonstration : projets, salons, conversation, saisie et équipe. Messages et modèles sont des exemples."
+        },
+        {
+          "type": "heading",
+          "text": "Se repérer"
+        },
+        {
+          "type": "list",
+          "items": [
+            "La barre étroite à gauche donne accès aux projets, agents, logs, paramètres et à ce guide.",
+            "La colonne suivante contient conversations, espaces et rubriques du projet.",
+            "Le panneau principal affiche la page choisie. Les icônes de droite affichent membres ou détails.",
+            "La recherche filtre les chapitres et leur contenu. Cliquez sur les images pour les agrandir et zoomer."
+          ]
+        },
+        {
+          "type": "action",
+          "tab": "connectors",
+          "text": "Ouvrir les connecteurs"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "install",
+            "projects",
+            "chat"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "install",
+      "group": "basics",
+      "title": "Installation et cycle de vie",
+      "summary": "Installer, démarrer, mettre à jour et fermer l’application.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Téléchargez l’installateur Windows depuis les Releases GitHub du projet et lancez-le. En portable, conservez tout le dossier, y compris _internal.",
+            "Vérifiez la présence de Microsoft Edge WebView2. Ouvrez le raccourci CyAI. L’anglais est utilisé par défaut, sauf préférence déjà enregistrée.",
+            "Configurez un connecteur ou installez moteur et modèle locaux. Les poids des modèles et moteurs facultatifs se téléchargent séparément."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Fermer la fenêtre masque CyAI dans la zone de notification Windows. Un double-clic sur l’icône la rouvre. Quitter arrête le service lancé par cette instance, avec confirmation si un travail est actif. Un service lancé séparément reste indépendant. Fermer un onglet navigateur n’arrête ni le service ni ses missions."
+        },
+        {
+          "type": "paragraph",
+          "text": "Les données sont séparées du programme. Arrêtez les travaux et créez une sauvegarde avant mise à jour ; sauvegardez séparément les dossiers de projets. Installez la version et vérifiez le numéro dans la barre latérale. L’exécutable Windows n’est actuellement pas signé."
+        },
+        {
+          "type": "note",
+          "text": "Le mode source nécessite Python 3.11+. Lancez python -m cyai, ou python -m cyai.desktop pour la fenêtre. Adresse par défaut : http://127.0.0.1:8766. Changer le port change aussi les adresses des clients."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "downloads",
+            "backups",
+            "settings"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "projects",
+      "group": "workspace",
+      "title": "Projets et messages privés",
+      "summary": "Choisir l’emplacement des fichiers et le contexte partagé.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Cliquez sur ＋, choisissez le dossier et nommez le projet. Ajoutez une couleur ou icône si utile.",
+            "Ouvrez son assistant pour présenter le projet ou préparer consignes, mémoire et équipe.",
+            "Créez des conversations par sujet. Organisez catégories, favoris et archives dans leurs menus."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Emplacement",
+            "Contenu"
+          ],
+          "rows": [
+            [
+              "Projet",
+              "Conversations, mémoire, consignes, équipe, board, médias, espaces et plugins actifs."
+            ],
+            [
+              "Message privé",
+              "Conversation indépendante avec espace et pièces jointes propres ; pas de mémoire ni plugins hérités d’un autre projet."
+            ],
+            [
+              "Dossier du projet",
+              "Fichiers de travail réels, distincts de l’historique SQLite."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Enregistrer un dossier ne transmet pas automatiquement tous ses fichiers aux modèles. Contexte sélectionné, accès aux outils et session native déterminent ce que reçoit l’agent."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "context",
+            "agents",
+            "spaces"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "connectors",
+      "group": "basics",
+      "title": "Connecteurs et modèles",
+      "summary": "Connecter un compte, une API ou un moteur local.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Ouvrez Paramètres → Connecteurs. Activez l’intégration et renseignez modèle, exécutable ou adresse.",
+            "Pour un CLI natif, installez-le et authentifiez-vous. Pour une API, entrez la clé dans le champ dédié.",
+            "Vérifiez la connexion, actualisez si besoin le catalogue, puis choisissez connecteur et modèle dans la saisie."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Connecteur",
+            "Fonctionnement"
+          ],
+          "rows": [
+            [
+              "Codex",
+              "App Server, sessions natives, streaming et autorisations d’outils prises en charge."
+            ],
+            [
+              "Claude Code",
+              "CLI/SDK local ; sessions distinctes de Claude Desktop. CLI en téléchargement facultatif."
+            ],
+            [
+              "OpenCode",
+              "Serveur local ; outils de fichiers approuvés, shell/délégation restreints dans cet adaptateur."
+            ],
+            [
+              "API Anthropic / OpenRouter",
+              "Clé API et modèle requis. Outils selon l’adaptateur ; la génération seule ne constitue pas un agent natif complet."
+            ],
+            [
+              "Ollama / CyAI local",
+              "Génération locale. CyAI local utilise un moteur llama.cpp et un modèle GGUF téléchargés."
+            ],
+            [
+              "Autres adaptateurs natifs",
+              "Command Code, CodeBuddy, Antigravity et Devin demandent leur CLI. Antigravity et Devin ne préparent pas les plans d’orchestration dans cette intégration."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Installé ou configuré ne signifie pas connexion vérifiée. Un abonnement ChatGPT ou Claude ne fournit pas automatiquement du crédit API. Quotas, modèles et réglages de raisonnement/vitesse dépendent du fournisseur."
+        },
+        {
+          "type": "action",
+          "tab": "connectors",
+          "text": "Ouvrir les connecteurs"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "local-models",
+            "permissions",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chat",
+      "group": "workspace",
+      "title": "Conversations et file d’attente",
+      "summary": "Envoyer texte, fichiers et consignes complémentaires.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Choisissez connecteur/modèle, décrivez le résultat et joignez les fichiers utiles.",
+            "Par défaut, Entrée envoie et Maj+Entrée ajoute une ligne. Les pièces jointes peuvent être envoyées seules.",
+            "Pendant une réponse, ajoutez un message à la file. Envoyer maintenant interrompt la réponse pour transmettre ce message directement.",
+            "Arrêter annule le travail actif. Vérifiez sortie et fichiers modifiés avant de reprendre."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Brouillons et pièces jointes suivent leur conversation dans la session de la fenêtre. Le texte tapé après un envoi reste dans la saisie lors de sa confirmation. Les actions permettent de citer, copier, lire, proposer en mémoire ou créer une branche. La barre de conversation permet de renommer, exporter et archiver."
+        },
+        {
+          "type": "note",
+          "text": "Une branche copie l’historique jusqu’au message choisi. Elle ne restaure pas les fichiers et n’annule pas les commandes passées. Arrêter, renommer et archiver n’annulent pas non plus les modifications."
+        },
+        {
+          "type": "action",
+          "tab": "context",
+          "text": "Ouvrir les préférences de saisie"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "files",
+            "permissions",
+            "backups"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "context",
+      "group": "workspace",
+      "title": "Contexte, mémoire et consommation",
+      "summary": "Comprendre ce qui arrive au modèle et ce que mesurent les compteurs.",
+      "blocks": [
+        {
+          "type": "diagram",
+          "layout": "pipeline",
+          "title": "Contexte d’une demande",
+          "labels": [
+            "Vous",
+            "Conversation",
+            "Contexte choisi",
+            "Connecteur",
+            "Réponse et trace"
+          ],
+          "caption": "CyAI combine consigne, historique choisi, mémoire validée et pièces jointes. Le connecteur transmet la demande et retourne réponses et événements."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Inspectez le contexte avant l’envoi. Sélectionnez les messages ou fichiers pertinents.",
+            "Conservez les décisions stables en mémoire ; relisez et validez les propositions.",
+            "Pour une longue conversation, examinez résumé et compaction. Une nouvelle session native change ce que conserve le fournisseur."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Affichage",
+            "Interprétation"
+          ],
+          "rows": [
+            [
+              "Tokens entrée / sortie",
+              "Consommation rapportée, pas une garantie de contexte restant."
+            ],
+            [
+              "Limite de contexte",
+              "Capacité fournie ou configuration locale disponible. Une capacité inconnue reste inconnue."
+            ],
+            [
+              "Quota restant",
+              "Disponible seulement si le connecteur le transmet. Une absence ne signifie pas zéro."
+            ],
+            [
+              "Contexte local / RAM",
+              "Contexte configuré et mesures disponibles. Un contexte plus grand demande généralement plus de mémoire."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "L’aperçu décrit la sélection de CyAI. Les fournisseurs natifs peuvent ajouter historique, instructions ou contraintes de transport. Vérifiez la trace transmise avant d’attribuer une omission au modèle."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "background",
+            "local-models",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "permissions",
+      "group": "automation",
+      "title": "Autorisations et lancement",
+      "summary": "Choisir une politique et comprendre son périmètre.",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "text": "La conversation peut hériter de la politique globale ou la remplacer. Le mode automatique autorise à votre place les outils pris en charge dans le périmètre configuré. Le mode manuel attend votre décision. Le fournisseur natif peut imposer des règles supplémentaires."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Choisissez la politique et vérifiez dossiers de travail et accès.",
+            "Pour une orchestration, relisez puis lancez explicitement le plan. La politique des outils ne lance pas toutes les campagnes futures.",
+            "Si un travail attend, consultez la demande dans les détails. Pour un refus natif, vérifiez réglages et logs du fournisseur."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Certaines demandes natives ne peuvent pas être relayées. Elles sont signalées comme non prises en charge ; le mode automatique ne crée pas une capacité absente. Une annulation termine la tentative sans annuler ses effets passés."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "orchestration",
+            "mcp",
+            "troubleshooting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "orchestration",
+      "group": "automation",
+      "title": "Plans, missions et travail parallèle",
+      "summary": "Transformer un objectif en tâches et suivre leur exécution.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Créez une conversation orchestrateur avec un connecteur compatible.",
+            "Décrivez objectif, livrables, contraintes et vérifications. Demandez des branches indépendantes pour le parallèle.",
+            "Relisez étapes, connecteurs/modèles, dépendances, concurrence et durée ; autorisez ensuite le lancement.",
+            "Suivez les détails. Après interruption, vérifiez les effets existants avant la reprise des étapes non réussies."
+          ]
+        },
+        {
+          "type": "diagram",
+          "layout": "parallel",
+          "title": "Branches parallèles et revue",
+          "labels": [
+            "Objectif",
+            "Plan et accord",
+            "Site web",
+            "Assets 3D",
+            "Documentation",
+            "Revue finale"
+          ],
+          "caption": "Après lancement, les branches indépendantes peuvent tourner ensemble. La revue finale attend la réussite de ses prérequis."
+        },
+        {
+          "type": "paragraph",
+          "text": "Une mission manuelle peut aussi contenir plusieurs étapes. Une étape réussie signifie exécution terminée, pas livrable accepté. La reprise conserve les étapes réussies. Coordonnez les fichiers si les branches écrivent dans le même projet."
+        },
+        {
+          "type": "note",
+          "text": "Le moteur local intégré traite une génération à la fois. La concurrence ne lui permet pas des requêtes simultanées. La durée limite inclut attentes et autorisations, pas seulement la génération."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "board",
+            "background",
+            "permissions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agents",
+      "group": "automation",
+      "title": "Bibliothèque d’agents et équipes",
+      "summary": "Réutiliser les profils avec des affectations explicites.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Ouvrez la bibliothèque. Créez un profil : nom, rôle, consignes, connecteur, modèle et outils.",
+            "Dans Équipe, créez l’équipe. Affectez chef de projet, leads et membres ; les consultants apportent leur expertise.",
+            "Définissez responsabilités et hiérarchie. Résolvez les problèmes signalés, puis déclarez l’équipe prête.",
+            "Ouvrez la conversation du membre ou attribuez-lui des cartes sur le board."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Une affectation fige une révision. Modifier le profil crée une révision sans remplacer les affectations existantes. Utilisez aperçu et adoption pour les mettre à jour. Les surcharges locales appartiennent à l’affectation. Les modèles d’équipe réutilisent une composition entre projets."
+        },
+        {
+          "type": "note",
+          "text": "La présence reflète l’exécution : repos, travail, attente ou connecteur indisponible. Un agent n’est pas constamment en ligne. Les compétences déclarées décrivent un profil, pas une capacité vérifiée."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "board",
+            "methods",
+            "extensions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "board",
+      "group": "automation",
+      "title": "Board et délégation",
+      "summary": "Distinguer affectation, exécution, compte rendu et acceptation.",
+      "blocks": [
+        {
+          "type": "image",
+          "file": "task-board-fr.png",
+          "alt": "Affectations et colonnes de revue",
+          "caption": "Les cartes illustrent le fonctionnement, pas des résultats de benchmark."
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Créez l’équipe, puis une carte : objectif, responsable, fichiers, dépendances et critères.",
+            "Placez-la en Prête quand les prérequis sont satisfaits. Lancez l’agent depuis sa fiche ou avec l’automate.",
+            "Examinez compte rendu, fichiers, vérifications et limites. Un rapport doit être relu.",
+            "Acceptez le résultat vérifié ou demandez des corrections. L’utilisateur ou un responsable habilité décide."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "État",
+            "Sens"
+          ],
+          "rows": [
+            [
+              "À préparer / Prête",
+              "Définir périmètre et dépendances avant lancement."
+            ],
+            [
+              "En cours / En attente d’informations",
+              "Travail commencé ou information manquante. Consultez la fiche pour pause, arrêt ou demande d’avis."
+            ],
+            [
+              "En revue / À corriger",
+              "Rapport à examiner ou correction demandée."
+            ],
+            [
+              "Terminée / Échouée / Annulée",
+              "Décision finale. Terminée suit une acceptation, pas une phrase de succès."
+            ]
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "L’aperçu de l’automate liste les actions possibles. Avancer une étape effectue un passage ; le mode automatique poursuit selon sa politique. Surveillez exécutions, revues et attentes. Arrêtez l’automate pour empêcher de nouvelles délégations. La couleur d’une carte ne prouve pas qu’un agent travaille."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "agents",
+            "orchestration",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "methods",
+      "group": "automation",
+      "title": "Méthodes, tests et révisions",
+      "summary": "Construire et évaluer des procédures réutilisables.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Ouvrez Méthodes depuis la bibliothèque. Définissez objectif, étapes et ressources.",
+            "Associez la méthode à un profil avec des notes. Préservez les révisions des procédures testées.",
+            "Créez un test : objectif, entrées, résultat attendu. Choisissez les réglages exacts et lancez l’essai autorisé.",
+            "Examinez sortie et traces, notez avec la source, puis relisez les améliorations avant adoption."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Éditeur et laboratoire distinguent révisions, cas de test, exécutions et propositions d’amélioration. Les boucles contrôlées ont leurs limites et conditions d’arrêt. Arrêtez quand l’objectif est atteint ou qu’une itération ne se justifie plus. Les notes personnelles restent distinctes des benchmarks publiés."
+        },
+        {
+          "type": "note",
+          "text": "Une réussite technique n’est pas une note de qualité. Comparez mêmes entrées, révisions, variantes et règles. Gardez les corrigés hors des prompts candidats. Un échec de transport ne mesure pas la qualité du modèle."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "background",
+            "context",
+            "agents"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "background",
+      "group": "automation",
+      "title": "Évaluations en arrière-plan",
+      "summary": "Lancer des essais isolés sans remplir la liste des conversations.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Définissez corpus, réponses et notation. Choisissez les variantes exactes.",
+            "Préparez des exécutions indépendantes dans les espaces cachés ; ne réutilisez pas l’historique des candidats.",
+            "Autorisez le lancement. Suivez conversation de pilotage, cartes ou logs ; masquez les cartes pour gagner de la place.",
+            "Attendez les états finaux et distinguez cas terminés, échoués, annulés et non testés avant comparaison."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Pour les grands contextes, vérifiez le contenu livré par le connecteur. Conservez taille, identifiant du modèle, contexte annoncé et erreurs. Un petit pilote ne mesure pas le contexte massif. Si les outils sont interdits, examinez leurs traces avant notation."
+        },
+        {
+          "type": "note",
+          "text": "Un accusé de lancement ou identifiant n’est pas un test terminé. La poursuite doit être configurée dans la chaîne, l’automate ou une exécution active ; enregistrer un résultat ne garantit pas le réveil d’une conversation inactive."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "methods",
+            "orchestration",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "spaces",
+      "group": "workspace",
+      "title": "Espaces et tableaux blancs",
+      "summary": "Organiser notes et liens à côté des conversations.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Utilisez ＋ dans Espaces pour créer un tableau nommé.",
+            "Ajoutez des notes, choisissez couleurs et positions avec les poignées. Tirez un connecteur vers une autre note pour les relier.",
+            "Déplacez ou zoomez le canevas, modifiez le texte et attendez Enregistré.",
+            "Si une fenêtre ou un agent modifie le tableau, rechargez lorsqu’un conflit est signalé."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Les tableaux s’enregistrent automatiquement avec contrôle de version pour éviter l’écrasement de modifications concurrentes. Notes et flèches organisent les idées, sans exécuter de mission. Utilisez orchestration ou board pour les dépendances exécutables."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "projects",
+            "board",
+            "backups"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "files",
+      "group": "media",
+      "title": "Pièces jointes, images et vidéos",
+      "summary": "Transmettre les fichiers et consulter leurs aperçus dans CyAI.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Utilisez ＋ ou les commandes de collage/dépôt prises en charge. Vérifiez nom et aperçu.",
+            "Envoyez le fichier seul ou avec une consigne. Les fichiers sélectionnés appartiennent au brouillon de la conversation.",
+            "Cliquez pour l’aperçu intégré. Agrandissez ou zoomez les images et utilisez la lecture vidéo.",
+            "Le clic droit ou menu propose Explorateur, ouverture externe et copie du lien. Les formats non pris en charge peuvent s’ouvrir avec Windows."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Les pièces jointes conservent métadonnées et contenu. Un format non interprété ne doit pas être confondu avec un fichier absent. La lecture dépend des modalités, du connecteur et des outils. Un lien local n’est pas une adresse publique pour un autre ordinateur."
+        },
+        {
+          "type": "note",
+          "text": "Si l’aperçu indique un chemin hors des dossiers de la conversation, vérifiez emplacement et dossiers de travail. Joignez/importez le fichier ou enregistrez le dossier voulu. Un aperçu cassé ne prouve pas la transmission à l’IA."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "viewer-3d",
+            "cyannota",
+            "cymd"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "viewer-3d",
+      "group": "media",
+      "title": "Vue 3D et PBR",
+      "summary": "Inspecter géométrie, fonds, éclairages et matériaux.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Cliquez sur une pièce jointe ou un lien GLB/glTF, OBJ, STL ou PLY.",
+            "Glissez pour tourner, utilisez la molette pour zoomer et le clic droit pour déplacer. Recentrer recadre ; Filaire montre la topologie.",
+            "Choisissez fond sombre, gris, blanc, bleu nuit ou studio. Comparez Studio PBR, Doux, Contrasté et Lumière du jour.",
+            "Réglez exposition et rotation de lumière. Ouvrir avec Windows et Explorateur donnent accès à un autre logiciel."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Textures intégrées GLB/glTF et matériaux PBR pris en charge sont conservés avec un éclairage d’environnement. Un GLB autonome facilite l’aperçu. OBJ est chargé en géométrie seule : les matériaux MTL associés ne sont pas chargés. STL/PLY utilisent le matériau du visualiseur et les couleurs de sommets disponibles. Les ressources externes glTF peuvent être inaccessibles."
+        },
+        {
+          "type": "note",
+          "text": "Les commandes d’aperçu ne réécrivent pas le fichier. Cette vue sert à l’inspection, pas à la modélisation complète. Textures absentes ou extensions non gérées peuvent nécessiter le logiciel d’origine."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "files",
+            "cyannota",
+            "extensions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cyannota",
+      "group": "media",
+      "title": "Annotations visuelles CyAnnota",
+      "summary": "Annoter images, vidéos et modèles 3D.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Activez CyAnnota dans Paramètres → Plugins. Ouvrez-le depuis la conversation ou une pièce jointe compatible.",
+            "Importez média/modèle dans l’éditeur et ajoutez repères, notes ou vues utiles.",
+            "Enregistrez via l’intégration et attendez confirmation du transfert de l’archive dans la conversation.",
+            "Envoyez-la à l’agent avec la tâche attendue."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "L’éditeur suit la langue de CyAI et gère images, vidéos et annotations 3D. Le codec vidéo facultatif se télécharge dans Téléchargements ; image et 3D n’en ont pas besoin. Les fichiers restent rattachés à la conversation d’origine même après navigation."
+        },
+        {
+          "type": "note",
+          "text": "Conservez l’archive pour les annotations éditables. Une image exportée ne remplace pas le projet d’annotation. Le modèle doit pouvoir accéder à l’archive et à ses informations visuelles."
+        },
+        {
+          "type": "action",
+          "tab": "plugins",
+          "text": "Ouvrir les plugins"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "downloads",
+            "files"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cymd",
+      "group": "media",
+      "title": "Documents CyMD",
+      "summary": "Éditer le Markdown dans CyAI et enregistrer dans la conversation.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Activez CyMD et ouvrez l’éditeur depuis la barre ou une pièce jointe compatible.",
+            "Modifiez le Markdown et ses aperçus. Il suit la préférence anglais/français.",
+            "Enregistrez et attendez confirmation. Une nouvelle pièce jointe est créée ; l’original est conservé.",
+            "Vérifiez le document puis envoyez-le si nécessaire."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "L’éditeur intégré est distinct de l’association Windows. Ouvrir en externe utilise le logiciel associé à l’extension. Enregistrer dans la conversation ne remplace pas automatiquement un fichier distinct du projet."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "files",
+            "extensions",
+            "backups"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "extensions",
+      "group": "media",
+      "title": "Plugins et CyTools",
+      "summary": "Distinguer vues de projet et outils attribués aux agents.",
+      "blocks": [
+        {
+          "type": "image",
+          "file": "cytools-fr.png",
+          "alt": "Catalogue officiel CyTools",
+          "caption": "Applications autonomes ; moteurs et poids se téléchargent séparément."
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Intégration",
+            "Utilisation"
+          ],
+          "rows": [
+            [
+              "Plugins",
+              "Configuration globale, activation par projet. Seuls les plugins actifs déclarant une vue deviennent des onglets."
+            ],
+            [
+              "CyTools",
+              "AudioStudio, AudioLibrary, AIChat, PersonaRP, Storyboard et MeshStudio ; attribuez leurs outils aux profils/affectations."
+            ],
+            [
+              "CyAICodex",
+              "Jeton limité au périmètre voulu ou configuration MCP pour skills et références visuelles."
+            ],
+            [
+              "CyTask",
+              "Serveur existant et jeton d’agent/API ; pont MCP avec Node.js 22+. Télécharger le logiciel ne crée pas de compte serveur."
+            ]
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Ajouter un dossier installé détecte CyTool.json, app/CyTool.json, configurations MCP et moteurs Python portables/environnements pris en charge.",
+            "Vérifiez les releases puis Télécharger et connecter. Suivez Téléchargements. Le paquet est installé, pas ses modèles.",
+            "Configurez, activez et attribuez les outils à l’agent. Testez une opération et gardez sa session ouverte pendant le suivi du job."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Un identifiant de job signale un travail asynchrone. Une requête de statut réussie ne prouve pas la réussite de l’opération : suivez Completed, Failed ou Cancelled. Les anciennes intégrations restent dans la section de compatibilité."
+        },
+        {
+          "type": "action",
+          "tab": "cytools",
+          "text": "Ouvrir CyTools"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "mcp",
+            "downloads",
+            "agents"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mcp",
+      "group": "media",
+      "title": "Serveurs MCP locaux et accès IA",
+      "summary": "Enregistrer les outils, les exposer et suivre leurs jobs.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Dans Paramètres → MCP, enregistrez le serveur, par exemple Blender, avec transport et commande/arguments ou adresse HTTP. Importez une configuration compatible si disponible.",
+            "Vérifiez logiciels, moteur et identifiants. L’enregistrement seul ne prouve pas une connexion fonctionnelle.",
+            "Exposez l’intégration au projet/profil et à ses outils. Lectures et écritures suivent permissions déclarées et politique de la conversation.",
+            "Testez un petit appel et consultez Opérations MCP dans Logs. Suivez les jobs jusqu’à leur état final."
+          ]
+        },
+        {
+          "type": "diagram",
+          "layout": "pipeline",
+          "title": "Une opération MCP",
+          "labels": [
+            "Agent",
+            "Outil exposé",
+            "Autorisations",
+            "Serveur MCP",
+            "Job / résultat"
+          ],
+          "caption": "L’agent voit les outils attribués. Les appels pris en charge suivent les autorisations, atteignent le serveur et retournent un résultat ou un job à suivre."
+        },
+        {
+          "type": "paragraph",
+          "text": "CyAI expose aussi son pont MCP vers le service local actif. Générez la configuration client, choisissez projets et accès lecture/écriture et utilisez la commande fournie dans l’agent externe. Le service CyAI doit être actif. Le périmètre évite l’accès implicite à tous les projets."
+        },
+        {
+          "type": "note",
+          "text": "Installer Blender ou trouver un dossier MCP n’expose pas automatiquement ses outils à une session active. Vérifiez enregistrement, attribution, serveur et liste d’outils actualisée. Utilisez les champs de configuration dédiés pour les identifiants."
+        },
+        {
+          "type": "action",
+          "tab": "mcp",
+          "text": "Ouvrir les réglages MCP"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "extensions",
+            "permissions",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "local-models",
+      "group": "models",
+      "title": "Modèles locaux et mémoire",
+      "summary": "Installer un moteur, choisir un GGUF et régler son contexte.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Ouvrez Paramètres → Modèles locaux. Choisissez le moteur llama.cpp adapté au CPU/GPU ou configurez Ollama séparément.",
+            "Téléchargez un GGUF compatible depuis le catalogue/dépôt Hugging Face ou importez un modèle existant. Attendez la fin.",
+            "Réglez CPU/GPU/hybride, couches GPU, threads et contexte. Les réglages par modèle peuvent remplacer les valeurs globales.",
+            "Chargez le modèle, suivez son état puis choisissez CyAI local dans la saisie. Arrêtez/déchargez le moteur pour libérer la mémoire."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Le contexte est une capacité locale configurée en tokens, distincte de la longueur de sortie. Architecture et moteur contraignent toujours le contexte utilisable. Un contexte plus grand peut demander beaucoup plus de mémoire de cache KV. Examinez les erreurs réelles plutôt que d’assimiler taille du fichier et RAM/VRAM requise."
+        },
+        {
+          "type": "note",
+          "text": "Les estimations sont indicatives. Orange signale une marge faible sans interdire à lui seul le chargement. Rouge indique une VRAM totale inférieure à l’estimation, sans prouver le comportement de tous les moteurs. Le chargement réel peut échouer. Le moteur intégré traite une demande à la fois."
+        },
+        {
+          "type": "action",
+          "tab": "local",
+          "text": "Ouvrir les modèles locaux"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "downloads",
+            "context",
+            "diagnostics"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "voice",
+      "group": "models",
+      "title": "Dictée, synthèse et voix",
+      "summary": "Configurer les moteurs et contrôler l’activation du micro.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Ouvrez Paramètres → Voix. Choisissez moteur de transcription, langue et réglages micro disponibles. Installez les seuls composants nécessaires.",
+            "Pour la synthèse, choisissez voix Windows ou moteur local comme Piper. Installez une voix, choisissez son locuteur si disponible et testez-la.",
+            "Le micro sert à dicter : relisez le texte reconnu avant envoi.",
+            "La discussion directe envoie les phrases, lit les réponses et rouvre le micro. Recliquez pour l’arrêter. La lecture des réponses peut être activée séparément."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Option",
+            "Utilisation"
+          ],
+          "rows": [
+            [
+              "Whisper / Phonon",
+              "Transcription facultative. Phonon-2 est anglais ; Phonon-2.5 gère français et autres langues. Moteur et poids se téléchargent séparément."
+            ],
+            [
+              "Piper",
+              "Synthèse locale légère. Le catalogue indique langues, qualités et locuteurs ; les modèles multi-locuteurs partagent leurs fichiers."
+            ],
+            [
+              "Autres moteurs",
+              "Matériel, langues, clonage et mémoire dépendent du moteur. Consultez sa fiche et son état réel."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Micro et lecture automatique démarrent désactivés. L’autorisation navigateur/Windows reste nécessaire. Testez une phrase courte avant le mode mains libres. La transcription peut être imparfaite ; autoriser le micro n’installe pas le modèle."
+        },
+        {
+          "type": "action",
+          "tab": "voice",
+          "text": "Ouvrir les réglages voix"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "downloads",
+            "local-models",
+            "troubleshooting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "downloads",
+      "group": "models",
+      "title": "Téléchargements et composants",
+      "summary": "Suivre les installations sans embarquer les grands modèles.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Lancez le téléchargement depuis la fiche du modèle, moteur, voix ou outil. Une sélection seule ne télécharge rien.",
+            "Ouvrez Téléchargements pour voir files, progression, octets, total disponible et erreurs.",
+            "Attendez fin et vérification, puis revenez à la fonctionnalité pour utiliser le composant.",
+            "En cas d’échec, vérifiez job, destination, espace disque et réseau avant reprise."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Les composants à la demande incluent le CLI Claude Code et le codec FFmpeg CyAnnota. Les paquets CyTools sont distincts de leurs moteurs et poids. Une application téléchargée peut demander compte, authentification ou serveur actif. Les réglages lisent les catalogues en cache ; vérifier une release distante est une action explicite."
+        },
+        {
+          "type": "note",
+          "text": "Totaux et empreintes dépendent de la source officielle. Une taille inconnue n’est pas zéro ; un accusé d’installation n’est pas une fin de téléchargement. Les licences des modèles/moteurs peuvent différer de celle de CyAI."
+        },
+        {
+          "type": "action",
+          "tab": "downloads",
+          "text": "Ouvrir les téléchargements"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "extensions",
+            "local-models",
+            "voice"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "settings",
+      "group": "maintenance",
+      "title": "Paramètres, langue et dossiers",
+      "summary": "Personnaliser l’interface et situer les données.",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Catégorie",
+            "Réglages"
+          ],
+          "rows": [
+            [
+              "Modèles et préférences",
+              "Notes personnelles, catalogues et préférences d’orchestration."
+            ],
+            [
+              "Apparence",
+              "Langue anglais/français, thèmes et préférences visuelles."
+            ],
+            [
+              "Connecteurs / MCP / Plugins / CyTools",
+              "Fournisseurs et intégrations, distincts des modèles locaux."
+            ],
+            [
+              "Dossiers / Sauvegarde",
+              "Stockage, sauvegardes et migration."
+            ],
+            [
+              "Contexte et IA",
+              "Préférences de conversation/contexte, dont l’envoi par Entrée."
+            ],
+            [
+              "Application Windows",
+              "Intégration et cycle de vie du bureau."
+            ]
+          ]
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Dans Apparence, choisissez English ou Français et enregistrez. L’anglais est utilisé si la préférence est absente/invalide.",
+            "Le changement recharge l’interface en conservant les brouillons ; le service continue. Ce guide et les éditeurs intégrés suivent la langue.",
+            "Pour changer le stockage, utilisez Dossiers et les consignes de redémarrage. Ne déplacez pas manuellement une base en cours d’utilisation."
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Réponses, documents et noms de projets conservent leur langue. Les plugins externes peuvent gérer leur propre langue. Réglages globaux et surcharges par conversation/modèle sont distincts : vérifiez les deux."
+        },
+        {
+          "type": "action",
+          "tab": "appearance",
+          "text": "Ouvrir langue et apparence"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "context",
+            "backups",
+            "reference"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "diagnostics",
+      "group": "maintenance",
+      "title": "Logs, ressources et consommation",
+      "summary": "Consulter traces et mesures dans le temps.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Ouvrez Logs. Choisissez Journal, RAW, Opérations MCP, Connecteurs ou Ressources dans les onglets verticaux.",
+            "Filtrez par source, niveau ou texte. Examinez l’opération plutôt que de conclure à partir de son titre.",
+            "RAW donne les événements structurés ; Opérations MCP montre appels d’outils et résultats.",
+            "Dans Ressources, consultez historique CPU, RAM, GPU, VRAM et disque disponible. Exportez les diagnostics utiles."
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "Les connecteurs distinguent désactivé, configuré, installé, opérationnel et erreur. Des mesures peuvent manquer selon les compteurs Windows/GPU. Mémoire du processus CyAI, du modèle local et utilisation système sont différentes. La saisie affiche consommation et quota seulement si fournis."
+        },
+        {
+          "type": "note",
+          "text": "Une mesure inconnue n’est pas zéro. Un export peut contenir consignes, chemins ou réponses : relisez-le avant partage. Un appel de suivi MCP peut réussir alors que le job continue ou a échoué."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "troubleshooting",
+            "context",
+            "mcp"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "backups",
+      "group": "maintenance",
+      "title": "Historique, exports et sauvegardes",
+      "summary": "Préserver les conversations sans les confondre avec les fichiers du projet.",
+      "blocks": [
+        {
+          "type": "steps",
+          "items": [
+            "Recherchez les messages, y compris archivés, avec les filtres projet, fournisseur, dates ou état.",
+            "Exportez la conversation pour ses messages et missions. Archiver conserve la recherche ; supprimer est distinct.",
+            "Dans Sauvegarde, exportez ou restaurez après lecture de la confirmation de remplacement.",
+            "Sauvegardez séparément les dossiers de projets. Arrêtez le service avant copie complète du dossier de données."
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Inclus ou distinct",
+            "À prévoir"
+          ],
+          "rows": [
+            [
+              "Historique SQLite",
+              "Conversations, missions, références et enregistrements de l’application."
+            ],
+            [
+              "Sauvegarde portable",
+              "N’inclut ni identifiants, ni fichiers de travail, ni sessions natives. Vérifiez références médias et conservez les originaux utiles."
+            ],
+            [
+              "Restauration",
+              "Remplace l’historique après accord ; une copie préalable est conservée. Ne restaure pas les dossiers de projets."
+            ],
+            [
+              "Identifiants",
+              "DPAPI lie les identifiants pris en charge au compte Windows. Copier les données ne transfère pas une connexion."
+            ]
+          ]
+        },
+        {
+          "type": "action",
+          "tab": "backup",
+          "text": "Ouvrir les sauvegardes"
+        },
+        {
+          "type": "related",
+          "topics": [
+            "files",
+            "projects",
+            "troubleshooting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "group": "maintenance",
+      "title": "Dépannage",
+      "summary": "Identifier l’étape en échec avant de relancer.",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Symptôme",
+            "À vérifier"
+          ],
+          "rows": [
+            [
+              "Réglages en chargement",
+              "Attendez l’état visible puis réessayez la rubrique. Consultez son erreur dans Logs ; découverte de modèles et téléchargements sont distincts."
+            ],
+            [
+              "Agent sans réponse",
+              "Connecteur actif, authentification vérifiée, modèle exact, exécutable/adresse et dernière erreur. Abonnement CLI et crédit API sont distincts."
+            ],
+            [
+              "Attente d’autorisation",
+              "Politique, demande en attente, périmètre et règles natives. Consultez les détails."
+            ],
+            [
+              "Outils MCP absents",
+              "Enregistrement, activation du projet, attribution à l’agent, serveur actif et liste d’outils de la session."
+            ],
+            [
+              "Chemin hors des dossiers",
+              "Existence, pièce jointe d’origine, dossiers de travail et lien local. Joignez/importez ou enregistrez le dossier voulu."
+            ],
+            [
+              "Modèle impossible à charger",
+              "Compatibilité moteur, mémoire réelle, couches GPU, contexte et log de chargement. Orange reste une indication."
+            ],
+            [
+              "Dictée ou synthèse absente",
+              "Autorisation périphérique, moteur/voix, téléchargement terminé, langue et activation du micro/de la lecture."
+            ],
+            [
+              "Appel réussi sans résultat final",
+              "Cherchez l’identifiant job/mission et son état final ; les requêtes de suivi ne sont pas le résultat du travail."
+            ],
+            [
+              "Tests sans enchaînement",
+              "Vérifiez chaîne/automate et exécution de pilotage active. Un pilote fini ne lance pas un lot suivant non défini."
+            ],
+            [
+              "Matériaux 3D absents",
+              "Textures intégrées et extensions GLB/glTF prises en charge. OBJ ne charge pas les MTL ; les fichiers associés peuvent manquer."
+            ],
+            [
+              "Informations tardives ignorées",
+              "Vérifiez corpus complet livré et transport avant de conclure à un échec du modèle à cette taille."
+            ],
+            [
+              "Mission interrompue/échouée",
+              "Vérifiez erreur et effets sur les fichiers. Examinez les options de reprise ; annuler ne restaure pas les fichiers."
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "text": "Préparer un diagnostic utile"
+        },
+        {
+          "type": "steps",
+          "items": [
+            "Notez version CyAI, connecteur, modèle exact, action et heure.",
+            "Conservez erreur, identifiant et état dans le log pertinent. Retirez les données privées avant partage.",
+            "Diagnostiquer avec l’IA prépare un message. Relisez et envoyez-le ; sa préparation ne relance pas silencieusement le travail."
+          ]
+        },
+        {
+          "type": "related",
+          "topics": [
+            "diagnostics",
+            "permissions",
+            "backups"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reference",
+      "group": "maintenance",
+      "title": "Raccourcis et glossaire",
+      "summary": "Repères rapides pour les actions et termes courants.",
+      "blocks": [
+        {
+          "type": "table",
+          "headers": [
+            "Action",
+            "Commande par défaut"
+          ],
+          "rows": [
+            [
+              "Envoyer",
+              "Entrée si l’envoi par Entrée est activé."
+            ],
+            [
+              "Nouvelle ligne",
+              "Maj+Entrée."
+            ],
+            [
+              "Actions de fichier",
+              "Clic droit ou menu accessible."
+            ],
+            [
+              "Caméra 3D",
+              "Glisser : rotation. Molette : zoom. Clic droit glissé : déplacement."
+            ],
+            [
+              "Fermer un aperçu",
+              "Bouton fermer ou Échap. Échap quitte aussi paramètres/bibliothèque/documentation sans dialogue ouvert."
+            ],
+            [
+              "Images du guide",
+              "Cliquez pour agrandir ; − / ＋ zooment, le pourcentage réinitialise le cadrage, Échap ferme."
+            ],
+            [
+              "Navigation du guide",
+              "Recherche dans tous les chapitres. Tab et Entrée activent les boutons. Précédent/suivant parcourent le guide complet."
+            ],
+            [
+              "Impression",
+              "Commande d’impression navigateur/système si disponible ; la feuille d’impression cible le chapitre courant."
+            ]
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Terme",
+            "Sens"
+          ],
+          "rows": [
+            [
+              "Connecteur",
+              "Adaptateur vers fournisseur, CLI natif ou moteur local."
+            ],
+            [
+              "Modèle",
+              "Modèle/variante exact choisi via ce connecteur."
+            ],
+            [
+              "Profil / affectation",
+              "Définition réutilisable / révision figée dans une équipe."
+            ],
+            [
+              "Mission / étape",
+              "Exécution enregistrée / partie de son plan."
+            ],
+            [
+              "Tâche / rapport / acceptation",
+              "Carte de travail / preuves rendues / décision explicite de revue."
+            ],
+            [
+              "Contexte / mémoire commune",
+              "Informations d’une demande / éléments stables réutilisables."
+            ],
+            [
+              "Plugin / CyTool / MCP",
+              "Intégration / application outil / protocole d’opérations et ressources."
+            ],
+            [
+              "Identifiant de job",
+              "Référence de suivi d’un travail asynchrone, pas preuve de fin."
+            ],
+            [
+              "GGUF / PBR",
+              "Format de modèle local / rendu de matériaux physiquement basé."
+            ]
+          ]
+        },
+        {
+          "type": "note",
+          "text": "Ce guide décrit les fonctions intégrées de CyAI. Modèles, serveurs et applications mises à jour séparément peuvent évoluer. Utilisez leurs réglages et capacités réelles plutôt que de supposer des fonctions identiques."
+        },
+        {
+          "type": "related",
+          "topics": [
+            "start",
+            "settings",
+            "troubleshooting"
+          ]
+        }
+      ]
+    }
+  ]
+}

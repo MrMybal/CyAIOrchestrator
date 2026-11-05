@@ -28,6 +28,8 @@ jobs:
       - name: Test interface localization and browser handlers
         run: |
           python3 -m unittest discover -s tests -p test_i18n.py -v
+          python3 -m unittest discover -s tests -p test_help.py -v
+          node tests/help.cjs
           node tests/i18n.cjs
           node tests/ui-async-regressions.cjs
           node tests/voice-settings-render.cjs

@@ -289,6 +289,7 @@ function editMemory(memory={}){
 function restoreDialog(){openDialog(ui('Restaurer une sauvegarde'),ui`<div class="fields"><label>Sauvegarde CyAI (.json)<input type="file" id="restore-file" accept="application/json,.json" required></label><p>La restauration remplace l’historique local. Une copie préalable est conservée dans le dossier de données. Les fichiers des projets et les sessions natives des fournisseurs ne sont pas restaurés.</p><label><span><input type="checkbox" required> Je confirme le remplacement des données locales.</span></label></div>`,async()=>{const file=$('restore-file').files[0];if(file.size>24000000)throw new Error(ui('Sauvegarde limitée à 24 Mo dans cette interface.'));const result=await action('restore',{backup:JSON.parse(await file.text()),acknowledged:true});state.detail=null;state.conversation=null;state.mission=null;state.missionId=null;toast(result.notice);},ui('Restaurer'));}
 async function renderPage(){
   const page=$('page');
+  if(state.view==='help'){await renderHelp();return;}
   if(state.view==='project'){await renderProjectPage();return;}
   if(state.view==='agents'){await renderAgentsPage();return;}
   if(state.view==='home'){await renderHomePage();return;}
@@ -347,7 +348,7 @@ async function refresh(force=false){
     $('notice').textContent=(err.connection?ui('Connexion au service interrompue. Votre historique reste enregistré. '):ui('Impossible d’actualiser cet écran. '))+err.message;$('notice').hidden=false;
   }finally{state.polling=false;if(state.refreshAgain){state.refreshAgain=false;setTimeout(()=>refresh(true),0);}}
 }
-(async()=>{restoreDraft();await refresh(true);if(state.data){showView(state.conversation?'chat':'project');if(state.detail?.agent_id){$('agent').value=state.detail.agent_id;$('model').value=state.detail.agent_model||'';}else $('model').value=state.data.connectors.find(c=>c.id===$('agent').value)?.model||'';renderRuntimeOptions();if(sessionStorage.getItem('cyai-return-view')==='language-settings'){sessionStorage.removeItem('cyai-return-view');state.settingsTab='appearance';showView('settings');}}setInterval(()=>refresh(),1600);})();
+(async()=>{restoreDraft();await refresh(true);if(state.data){showView(state.conversation?'chat':'project');if(state.detail?.agent_id){$('agent').value=state.detail.agent_id;$('model').value=state.detail.agent_model||'';}else $('model').value=state.data.connectors.find(c=>c.id===$('agent').value)?.model||'';renderRuntimeOptions();if(sessionStorage.getItem('cyai-return-view')==='language-settings'){sessionStorage.removeItem('cyai-return-view');state.settingsTab='appearance';showView('settings');}}if(state.data && new URLSearchParams(location.search).has('help'))openHelp(new URLSearchParams(location.search).get('help'));setInterval(()=>refresh(),1600);})();
 
 
 function renderInspector(){hydrateLocalImages();
