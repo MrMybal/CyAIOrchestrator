@@ -29,7 +29,11 @@ A demonstration workspace with sample conversations and task data.
 
 </details>
 
-## In-app documentation
+## Documentation
+
+**[Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/en/start)** · **[Français](https://mrmybal.github.io/CyAIOrchestrator/#/fr/start)**
+
+The online documentation uses the same visual CyDoc reader as the application, including navigation, search, screenshots, diagrams and language selection.
 
 Open **? Documentation** in the left rail, use Settings → Documentation, or press **F1** for help on the current panel. The bundled **CyDoc** reader opens in a separate window using local `file://` resources. It preserves the workspace and needs no server, CDN, Node.js or Internet connection for reading.
 

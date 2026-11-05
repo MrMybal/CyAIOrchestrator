@@ -1,5 +1,7 @@
 # CyDoc build dependency
 
+**[Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/en/reference-docs-user-guide)** — CyAI documentation authoring and deployment in the visual reader.
+
 CyDoc 0.1.0, MIT licence, built from https://github.com/MrMybal/CyDoc at `774f2a7eabf7dd181a98ffc5add115b580b67f42` with its documented npm ci / npm run build / npm pack workflow.
 
 Archive SHA-256: `c7a6acf0e7ff982a937312ac43fda4393fea200094e0563ca10c2221b0b10ea7`.

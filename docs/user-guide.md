@@ -58,3 +58,22 @@ node tests/ui-async-regressions.cjs
 ```
 
 Check all pages, translated anchors, source/API links, local asset decoding, search, reader language changes, keyboard and touch media controls, in-window enlargement, reading positions and old application links. `tests/documentation-browser.mjs` can run the reader integration checks against an isolated Chromium DevTools endpoint, including HTTP/HTTPS request blocking. The application native integration is tested with Windows WebView2; Linux/macOS native embedding remains unverified. The standalone exported reader is platform-neutral HTML/JavaScript.
+
+## GitHub Pages
+
+[Documentation in English](https://mrmybal.github.io/CyAIOrchestrator/#/en/start) · [Documentation en français](https://mrmybal.github.io/CyAIOrchestrator/#/fr/start).
+
+The public site uses the same CyDoc HTML, scripts, styles, image module and assets as the bundled reader. Hash-based routes and relative resources work below the GitHub Pages project path. Publishing does not change the local file reader or make it depend on the website.
+
+`.github/workflows/documentation-pages.yml` rebuilds the reader on pushes to `main` or a manual workflow dispatch. It validates content and translations, stages the generated export, uploads only `dist-docs-pages`, then deploys with GitHub's Pages actions. The repository's Pages build source must be **GitHub Actions**. The deployment job alone receives Pages write and OIDC permissions; checkout credentials are not persisted.
+
+To inspect the publication directory locally:
+
+```powershell
+python scripts/build_documentation.py --install
+python scripts/stage_documentation_pages.py
+```
+
+The staging script copies exactly the verified export resources and adds `.nojekyll`. Build provenance (`build-info.json`), application runtime files, Markdown authoring files, local databases, profiles and logs are not part of this directory. Code/reference pages already compiled into the documentation remain documentation content. Do not upload the repository root or an application data directory.
+
+The English application README links to `#/en/start`; its French link selects `#/fr/start`. The French evaluation-kit README opens its existing French reference page. Third-party vendored README files retain their upstream documentation.

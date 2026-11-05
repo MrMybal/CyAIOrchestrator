@@ -3,7 +3,7 @@
     {
       "source": "README.md",
       "id": "reference-readme",
-      "sha256": "b9a8463240d9830ba0773315f14cbeeb71388109e8dc78db67e8f2e1769b7f17",
+      "sha256": "16f69aa539ae91508a9d46fb16671715ca9cb10e57c26724b02e5d5c151841f0",
       "status": "reference",
       "originalLanguage": "en",
       "translation": "original preserved; other-language prose needs review"
@@ -211,7 +211,7 @@
     {
       "source": "docs/user-guide.md",
       "id": "reference-docs-user-guide",
-      "sha256": "e285fa52da22da989c437b09837217a522cd752850d82bfbb53ae7229d1b8f63",
+      "sha256": "30d3702970fef83344691de9da010bd27bc36e50dfc27386da61f55bd37d53e6",
       "status": "reference",
       "originalLanguage": "en",
       "translation": "original preserved; other-language prose needs review"
@@ -267,7 +267,7 @@
     {
       "source": "cyai/evaluation_kit/README.md",
       "id": "reference-cyai-evaluation-kit-readme",
-      "sha256": "1a3fac97c74c2cb850a619598c4b02cba5abc37fa5989574a57997f507dfe6b9",
+      "sha256": "5814436673bc8b6487fd3690917bd3385efd8a2f625896583bc816a38a5d30f2",
       "status": "reference",
       "originalLanguage": "fr",
       "translation": "original preserved; other-language prose needs review"

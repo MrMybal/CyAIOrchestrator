@@ -36,6 +36,7 @@ jobs:
         run: |
           python3 -m unittest discover -s tests -p test_i18n.py -v
           python3 -m unittest discover -s tests -p test_help.py -v
+          python3 -m unittest discover -s tests -p test_documentation_pages.py -v
           node tests/help.cjs
           node tests/i18n.cjs
           node tests/ui-async-regressions.cjs
