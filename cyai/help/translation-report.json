@@ -136,6 +136,12 @@
       "expectedRevision": "1"
     },
     {
+      "id": "reference-docs-release-0-2-65",
+      "title": "0.2.65 — Local CyDoc documentation",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
       "id": "reference-docs-releases",
       "title": "CyAI Orchestrator 0.2.34 — Windows",
       "locale": "fr",

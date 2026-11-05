@@ -148,6 +148,14 @@
       "source": "docs/release-0.2.64.md",
       "id": "reference-docs-release-0-2-64",
       "sha256": "b15c361531e5f1c522a44d520adbb3e162e26232a696d052b4464d635b82b191",
+      "status": "historical",
+      "originalLanguage": "en",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/release-0.2.65.md",
+      "id": "reference-docs-release-0-2-65",
+      "sha256": "c9a73014f61b8287507052f2aa7fe959266f0f43cd90cdbd5da924f1f3c492fe",
       "status": "reference",
       "originalLanguage": "en",
       "translation": "original preserved; other-language prose needs review"

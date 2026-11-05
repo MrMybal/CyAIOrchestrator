@@ -55,9 +55,10 @@ def prepare():
         # Change document links, not code examples containing Markdown.
         parts=re.split(r'(^```[^\n]*\n[\s\S]*?^```\s*$)',body,flags=re.M)
         return ''.join(part if part.startswith('```') else re.sub(r'(!?)\[([^\]]*)\]\(([^)]+)\)',link,part) for part in parts)
+    current_release='docs/release-'+json.loads((BASE/'cydoc.config.json').read_text('utf-8'))['version']+'.md'
     for index,path in enumerate(documents):
         name=relative(path);original=path.read_text('utf-8')
-        historical=name in ('docs/architecture.md','VALIDATION.md') or bool(re.search(r'(?:0\.2\.|releases|team-board|audit|cyai3|ollama-rtx)',name)) and name not in ('docs/release-0.2.64.md',)
+        historical=(name in ('docs/architecture.md','VALIDATION.md') or bool(re.search(r'(?:0\.2\.|releases|team-board|audit|cyai3|ollama-rtx)',name))) and name != current_release
         source_language='en' if name in ('README.md','docs/plugins.md','docs/localization.md','docs/user-guide.md') or '/release-' in name else 'fr'
         title=re.search(r'^# (.+)$',original,re.M);title=title[1] if title else path.stem
         body=original

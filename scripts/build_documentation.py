@@ -14,7 +14,7 @@ TEXT_SUFFIXES = {'.md','.json','.mjs','.cjs','.js','.py','.toml','.html','.css',
 
 def digest(path):
     data = path.read_bytes()
-    if path.suffix in TEXT_SUFFIXES:
+    if path.name == '.gitignore' or path.suffix in TEXT_SUFFIXES:
         data = data.decode('utf-8').replace('\r\n','\n').encode('utf-8')
     return hashlib.sha256(data).hexdigest()
 

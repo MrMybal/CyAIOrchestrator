@@ -5,6 +5,7 @@ from pathlib import Path
 import re
 import sys
 import threading
+import tempfile
 import unittest
 from types import SimpleNamespace
 from unittest.mock import Mock, patch
@@ -16,7 +17,7 @@ from cyai.server import make_server
 ROOT = Path(__file__).resolve().parents[1]
 HELP = ROOT/'cyai/help'
 sys.path.insert(0,str(ROOT/'scripts'))
-from build_documentation import verify_export
+from build_documentation import verify_export, digest
 
 class Links(HTMLParser):
     def __init__(self):
@@ -75,6 +76,15 @@ class DocumentationTests(unittest.TestCase):
             self.assertEqual({h['id'] for h in api['headings']},{'parameters','native'})
             self.assertIn('documentation_url',api['text'])
             self.assertIn('translations',{h['id'] for h in self.pages[locale,'migration-inventory']['headings']})
+    def test_source_checksums_survive_cross_platform_checkouts(self):
+        with tempfile.TemporaryDirectory() as folder:
+            for name in ('.gitignore','page.md','data.json'):
+                file=Path(folder)/name
+                file.write_bytes(b'first\r\nsecond\r\n');windows=digest(file)
+                file.write_bytes(b'first\nsecond\n');self.assertEqual(windows,digest(file),name)
+                file.write_bytes(b'first\nchanged\n');self.assertNotEqual(windows,digest(file),name)
+            file=Path(folder)/'asset.tgz';file.write_bytes(b'\x00\r\n');binary=digest(file)
+            file.write_bytes(b'\x00\n');self.assertNotEqual(binary,digest(file))
     def test_file_export_is_fresh_and_only_uses_image_module(self):
         info=verify_export(ROOT)
         self.assertEqual(info['modules'],['image'])

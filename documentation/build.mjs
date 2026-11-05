@@ -25,7 +25,7 @@ for(const name of originalGuides){const id=name.slice(0,-3);for(const locale of 
 const modules=fs.readdirSync(output).filter(name=>/^media-.*\.js$/.test(name));
 if(modules.length!==1||modules[0]!=='media-image.js')throw Error('Unexpected media dependency');
 const inputs={};
-const digest=file=>{let data=fs.readFileSync(file);if(/\.(?:md|json|mjs|cjs|js|py|toml|html|css|txt)$/.test(file))data=Buffer.from(data.toString('utf8').replaceAll('\r\n','\n'));return crypto.createHash('sha256').update(data).digest('hex');};
+const digest=file=>{let data=fs.readFileSync(file);if(path.basename(file)==='.gitignore'||/\.(?:md|json|mjs|cjs|js|py|toml|html|css|txt)$/.test(file))data=Buffer.from(data.toString('utf8').replaceAll('\r\n','\n'));return crypto.createHash('sha256').update(data).digest('hex');};
 function collect(directory){for(const entry of fs.readdirSync(directory,{withFileTypes:true})){if(['node_modules','.generated'].includes(entry.name))continue;const file=path.join(directory,entry.name);if(entry.isDirectory())collect(file);else{const relative=path.relative(root,file).replaceAll('\\','/');inputs[relative]=digest(file);}}}
 collect(base);
 const inventory=JSON.parse(fs.readFileSync(path.join(output,'migration-inventory.json'),'utf8'));

@@ -1,5 +1,5 @@
 {
-  "version": "0.2.64",
+  "version": "0.2.65",
   "cydoc": "0.1.0",
   "modules": [
     "image"
@@ -10,7 +10,7 @@
     "fr"
   ],
   "inputs": {
-    "documentation/.gitignore": "a535fbecffedd177769b2a147e70d473d1d8769f2056787bc893277c881a084e",
+    "documentation/.gitignore": "ec3ffe64cdb0cbcfc44b4d443d9aae57d69a1884b2a2fa3a82a852c44508b855",
     "documentation/assets/images/conversation-en.png": "b9ad3d0cf6f3beac21c3bbdbe978f31adace9422f81c53bbd2e98ee640a2c7b1",
     "documentation/assets/images/conversation-fr.png": "b2e210cc7e0e0ba723dadd014f4941df42d4837e004dcfd3ad328acc25c212e0",
     "documentation/assets/images/cytools-en.png": "9984755137d0fe98c464acad74463bcc1c33817ffcf25085b8a518b16c447800",
@@ -21,8 +21,8 @@
     "documentation/assets/images/reference-docs-screenshots-task-board.png": "79476f97682e0b7a289e91d6e0cb2ee053cd84c8f7c10235afbd5260c7f0bcde",
     "documentation/assets/images/task-board-en.png": "f769770d4a21c58217333e08900399b04330fe485910cb0194d2ff080a3cbe08",
     "documentation/assets/images/task-board-fr.png": "b92ec81f079d6d71ffa9f2c80679c338e77564bb62849e14fac97de9328db716",
-    "documentation/build.mjs": "12ab865080bb4b9a09ecf16ad8ef212095b4331d258200e3c3f4f6f37d48c885",
-    "documentation/cydoc.config.json": "4ffdcc757879dde418b871cfad13ecacd46e66d336d9fe263cc17d081859abcc",
+    "documentation/build.mjs": "b005cd6e303579ea0e80b798994c82478b08d7429f74c0c985edbfda8d058298",
+    "documentation/cydoc.config.json": "13fce67b897b51c88683c35d46c33a8ac668d65e153832042026e8ea60188632",
     "documentation/host/index.html": "34b9d1b73459dca775dd9860a0de0de0cf730f796df53a41e249637303a000ff",
     "documentation/host/reader.mjs": "994992af6b41c2489a670f6ceaf8a8a9281dd50f847c18797c282c74d530d9fd",
     "documentation/manual/en/agents.md": "d8c7a56b3ab8947cafe7e64e49ca79f647312ec7274bb2c64816c3603fb6591b",
@@ -79,9 +79,9 @@
     "documentation/manual/fr/troubleshooting.md": "e64c3cf723e1fd799d6031326230bb06542cdd71b7a9936bf2ded725a104f527",
     "documentation/manual/fr/viewer-3d.md": "0e4e82e698c621f7e1c7bb51257fc48d963d9ef4e7c5b441c4bf9a6037b41f71",
     "documentation/manual/fr/voice.md": "64892d45b6d727ea06f850a5810bd630684b56e2ace364132d530a4c630eeebe",
-    "documentation/package-lock.json": "69e1aa227306a74e33f57ed8881b1bc87ba259798915d4b92a821600f1b2df7d",
-    "documentation/package.json": "18ef263b85109f8892f3563f46b0ed0f21555570eddbaaad5fccf4677d347243",
-    "documentation/prepare.py": "b11bd98eba135b017c6e5f32fc51efe5a39da066fa7c4fccb4db1234e543a2be",
+    "documentation/package-lock.json": "688df86150b08efeb5ddede1d6481aff720d32c04552139f2a247867e159de08",
+    "documentation/package.json": "317ee96243c6f0f1a558170cbfdcd1cde9f9780c413e0bf69cf6da058635d3ee",
+    "documentation/prepare.py": "d5e35c4619bff1e0fd6aec992f213f4a51d1bbb4389a14a318b431cc27e397e5",
     "documentation/vendor/cydoc-0.1.0.tgz": "c7a6acf0e7ff982a937312ac43fda4393fea200094e0563ca10c2221b0b10ea7",
     "documentation/vendor/CyDoc-LICENSE.txt": "60aaa0ed2087332acbaee219c088240f5ddda7e7fe393ad5c162b8c617e62bf0",
     "documentation/vendor/README.md": "07e6ce76932cfb84e98395982ecd9e7773889483ee627144c819b6f95398d381",
@@ -104,6 +104,7 @@
     "docs/release-0.2.62.md": "876009fe07b86fd87f78b710eaa9aa98656aea160f5194665036fdd5137c9b2c",
     "docs/release-0.2.63.md": "a0153ff71ef1fc013874ddaaf8d16a5afea8583d2450f9f305fd13abeb0f0e54",
     "docs/release-0.2.64.md": "b15c361531e5f1c522a44d520adbb3e162e26232a696d052b4464d635b82b191",
+    "docs/release-0.2.65.md": "c9a73014f61b8287507052f2aa7fe959266f0f43cd90cdbd5da924f1f3c492fe",
     "docs/releases.md": "44e61192561d8af6ce5eaf8e360f01b93f3f316ac63bf445c5c35e31665883cd",
     "docs/team-board-contract.md": "dc9dec84f5022aa661c6e5a20b2a80cf5f8eb23846705db6da6fd8e47a7ef862",
     "docs/team-board-progress.md": "1bfe6fb858658018a29744e2bc2157ef5c2180f57174137db786d49bf111c15b",
@@ -129,7 +130,7 @@
     "scripts/mcp_bridge.py": "2625d7746538498493917a716a6b49bbc63d254a83f3eb49e1368ed1e34a2295",
     "cyai/web/help.js": "4de5e267d5f28a0db21fcf00a6d778a1c4f1b27dc40a83f57d061388e6958f77",
     "cyai/evaluation_kit/evalkit.py": "4bb31274e4067894c57623c9ec5d677b7790ef70daf9151b34d3460494b7d04a",
-    "pyproject.toml": "14fdb83a9037f112c96bcf54fc8d2a0d74ce099d0c2047986f1684eac6f7ee02"
+    "pyproject.toml": "dc079c5645d579180fcbd5afdb6cbb997a3215693c0ef61a5f3728f88795526b"
   },
   "outputs": {
     "assets/images/conversation-en.png": "b9ad3d0cf6f3beac21c3bbdbe978f31adace9422f81c53bbd2e98ee640a2c7b1",
@@ -145,12 +146,12 @@
     "CyAI-LICENSE.txt": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
     "cyai-reader.js": "d77447135b4eb38ad62bf4f0b48f262edcda6bdfc25ed62500d5a79498d72a0d",
     "CyDoc-LICENSE.txt": "60aaa0ed2087332acbaee219c088240f5ddda7e7fe393ad5c162b8c617e62bf0",
-    "data.js": "f0fcbb751e303c875b52f9016dd3a94fbcfccf36dd7d7ab38578978b271ec34d",
+    "data.js": "5f728d22fd928d77b207259d956e8ee2a22478b51d99ddf3dad2162bfe43cfeb",
     "index.html": "34b9d1b73459dca775dd9860a0de0de0cf730f796df53a41e249637303a000ff",
-    "manifest.json": "4c9b0122d28afc87e782fddc50b02456005300cbf8071b083d6bf8b75b0f5fef",
+    "manifest.json": "283663c2f10097b37501b2b8836d812ceebf73adeb678ac8738082123bc13760",
     "media-image.js": "9dcf9e7f750dbda70d0cf73cec66b8661036abaf17af90cd6a3b8e0c96ccc133",
-    "migration-inventory.json": "a2299e12b4d8f840719afa571f4a5882aa843d8418585dddc5f34ef7324d30ec",
-    "translation-report.json": "1c80684593324a99bf07f2c01c1523ede867b05c041d7b4399734d64f07ddd3a",
+    "migration-inventory.json": "c2a723ace415f4ee929293c4a56b501b3499119ca56da61f42ad269be50ca6d2",
+    "translation-report.json": "0514ba4b52e8c5e357b729cbed9f720bb21d5c28975fcb93c7a8e8c3e742fc83",
     "viewer.css": "036cafe9130d136f06da412d8c1055c6c18617713094464a127fc08b7edac504"
   }
 }
