@@ -31,7 +31,9 @@ A demonstration workspace with sample conversations and task data.
 
 ## In-app documentation
 
-Open **? Documentation** in the left rail or from Settings. The bundled guide works offline, follows the interface language (**English** by default, **French** available) and includes 27 chapters, localized screenshots with zoom, workflow diagrams, full-text chapter search and links to relevant settings. It covers setup, conversations, context, permissions, teams, missions, evaluations, files, 3D, plugins, MCP, local models, speech, diagnostics and backups.
+Open **? Documentation** in the left rail, use Settings → Documentation, or press **F1** for help on the current panel. The bundled **CyDoc** reader opens in a separate window using local `file://` resources. It preserves the workspace and needs no server, CDN, Node.js or Internet connection for reading.
+
+The 27 guide chapters are available in **English** (default) and **French**, with common page/section IDs, localized screenshots with zoom and in-window enlargement, static workflow diagrams and full-text search. Technical references, evaluation resources, historical notes and a bounded source index are also included. Preserved references awaiting translation are labelled with their original language. See the [documentation maintenance guide](docs/user-guide.md) for regeneration, translation tracking and platform scope.
 
 ## Windows desktop application
 

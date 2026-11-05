@@ -8,6 +8,8 @@ if (-not (Test-Path -LiteralPath '.desktop-venv\Scripts\python.exe')) {
 if ($LASTEXITCODE -ne 0) { throw 'Mise à jour de pip impossible.' }
 & .\.desktop-venv\Scripts\python.exe -m pip install -e '.[desktop,claude]' 'pyinstaller==6.22.3'
 if ($LASTEXITCODE -ne 0) { throw 'Installation des dépendances impossible.' }
+& .\.desktop-venv\Scripts\python.exe scripts/build_documentation.py --install
+if ($LASTEXITCODE -ne 0) { throw 'Documentation generation failed.' }
 & .\.desktop-venv\Scripts\python.exe -m PyInstaller --noconfirm --clean --distpath dist-next --workpath build-next packaging/CyAIOrchestrator.spec
 if ($LASTEXITCODE -ne 0) { throw "Construction de l'application impossible." }
 $shortcutPath = Join-Path $PSScriptRoot 'CyAI Orchestrator.lnk'

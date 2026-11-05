@@ -98,14 +98,6 @@ def make_server(service, port=8766, token=None):
                     if path in {'/cyai-logo.png', '/cyai-logo.ico', '/favicon.ico'}:
                         name = 'cyai-logo.png' if path.endswith('.png') else 'cyai-logo.ico'
                         return self.send(200, (webroot/name).read_bytes(), 'image/png' if name.endswith('.png') else 'image/x-icon')
-                    if path.startswith('/help/'):
-                        root=(webroot/'help').resolve()
-                        relative=unquote(path[len('/help/'):])
-                        file=(root/relative).resolve()
-                        allowed=relative in {'en.json','fr.json'} or (relative.startswith('images/') and file.suffix=='.png')
-                        if not allowed or not file.is_relative_to(root) or not file.is_file():
-                            return self.send(404,{'error':'Documentation introuvable.'})
-                        return self.send(200,file.read_bytes(),'application/json; charset=utf-8' if file.suffix=='.json' else 'image/png')
                     if path.startswith('/three/'):
                         root=(webroot/'three').resolve(); file=(root/unquote(path[len('/three/'):])).resolve()
                         if not file.is_relative_to(root) or not file.is_file() or file.suffix not in {'.js','.txt'}:return self.send(404,{'error':'Module absent.'})
@@ -128,7 +120,7 @@ def make_server(service, port=8766, token=None):
                             return self.send(404, {'error':'Fichier CyAnnota absent.'})
                         return self.send(200,file.read_bytes(),mimetypes.guess_type(file.name)[0] or 'application/octet-stream',embedded=True)
                     name = "index.html" if path == "/" else path.lstrip("/")
-                    if name not in {"index.html", "app.js", "help.js", "help.css", "project.js", "plugins.js", "workspace.js", "annotation.js", "intelligence.js", "analytics.js", "styles.css", "i18n.js", "tabs.js", "teams.js", "board.js", "methods.js", "channels.js", "method-editor.js", "method-writer.js", "method-lab.js", "team-lead.js", "spaces.js", "voice.js", "local-models.js", "media.js", "mesh-viewer.js", "cymd-editor.js"}:
+                    if name not in {"index.html", "app.js", "help.js", "project.js", "plugins.js", "workspace.js", "annotation.js", "intelligence.js", "analytics.js", "styles.css", "i18n.js", "tabs.js", "teams.js", "board.js", "methods.js", "channels.js", "method-editor.js", "method-writer.js", "method-lab.js", "team-lead.js", "spaces.js", "voice.js", "local-models.js", "media.js", "mesh-viewer.js", "cymd-editor.js"}:
                         return self.send(404, {"error": "Introuvable."})
                     file = webroot / name
                     mime = {".js": "text/javascript", ".html": "text/html", ".css": "text/css"}[file.suffix]

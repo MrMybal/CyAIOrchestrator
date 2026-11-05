@@ -3,7 +3,7 @@
 // Every channel opens an existing view; presence comes from project_channels and never says "online".
 const shell = {channels: {}, fetchedAt: {}, loading: false, profiles: [], profilesAt: 0};
 // Views that open over everything, like Discord's settings.
-const OVERLAY_VIEWS = ['settings', 'agents', 'method', 'logs', 'help'];
+const OVERLAY_VIEWS = ['settings', 'agents', 'method', 'logs'];
 L.views.home = ui('Accueil');
 L.views.help = ui('Documentation');
 const CHANNEL_ICONS = {assistant: '✦', conversation: '#', orchestrator: '◈', agent: '@', board: '▦', team: '⚑', overview: '◎', memory: '◇',
@@ -109,7 +109,7 @@ function renderShell() {
   const overlay = OVERLAY_VIEWS.includes(state.view);
   document.querySelector('.app').classList.add('shell');
   document.querySelector('.app').classList.toggle('overlay-open', overlay);
-  $('settings-close').hidden = !overlay || ['method','logs','agents','help'].includes(state.view);
+  $('settings-close').hidden = !overlay || ['method','logs','agents'].includes(state.view);
   if (!overlay) shell.lastView = state.view;
   htmlIfChanged('home-list', homeListHTML());
   const home = shellHome(), project = state.data.projects.find(p => p.id === state.project);

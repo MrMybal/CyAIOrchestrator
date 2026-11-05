@@ -6,11 +6,14 @@ sys.path.insert(0,str(root))
 from cyai import __version__
 sys.path.insert(0,str(root/'scripts'))
 from package_policy import validate_payload
+from build_documentation import verify_export
 parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--stage',type=Path,default=root/'dist-next'/'CyAIOrchestrator',help='Directory containing the staged desktop application')
 args=parser.parse_args()
 stage=args.stage.resolve();out=root/'releases';work=root/'build-release';out.mkdir(exist_ok=True);work.mkdir(exist_ok=True)
 if not (stage/'CyAIOrchestrator.exe').is_file():raise ValueError('Build desktop absent.')
+verify_export(root)
+verify_export(root, stage/'_internal/cyai/help', check_inputs=False)
 validate_payload(p.relative_to(stage).as_posix() for p in stage.rglob('*') if p.is_file())
 files={}
 with zipfile.ZipFile(work/'payload.zip','w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:

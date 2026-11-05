@@ -2387,5 +2387,8 @@
   "Chargement de la documentation…": "Loading documentation…",
   "Impossible de charger la documentation.": "Could not load documentation.",
   "Documentation invalide.": "Invalid documentation.",
-  "Documentation introuvable.": "Documentation not found."
+  "Documentation introuvable.": "Documentation not found.",
+  "Ouverture de la documentation locale…": "Opening local documentation…",
+  "Impossible d’ouvrir la documentation.": "Could not open documentation.",
+  "Aide pour cette page (F1)": "Help for this page (F1)"
 }

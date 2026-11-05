@@ -22,6 +22,20 @@ from .i18n import language, translate
 class DesktopWindows:
     def __init__(self, url):
         self.url = url
+        self._documentation = None
+
+    def open_documentation(self, route=None):
+        from .documentation import DocumentationWindows
+        if self._documentation is None:
+            def open_settings(tab):
+                import webview
+                for window in webview.windows:
+                    if str(window.original_url or '').startswith(self.url):
+                        window.evaluate_js('state.settingsTab='+json.dumps(tab)+';showView("settings")')
+                        window.show()
+                        break
+            self._documentation = DocumentationWindows(open_settings)
+        return self._documentation.open(**(route or {}))
 
     def open_window(self, conversation_id=''):
         import re
@@ -117,6 +131,9 @@ class DesktopService:
 
 
 def main():
+    if '--documentation-route' in sys.argv:
+        from .documentation import main as documentation_main
+        return documentation_main()
     parser = argparse.ArgumentParser(description="CyAI Orchestrator · application Windows")
     parser.add_argument("--config", type=Path, default=None)
     parser.add_argument("--verify-ui", type=Path, help=argparse.SUPPRESS)

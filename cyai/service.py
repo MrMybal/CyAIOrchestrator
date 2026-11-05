@@ -209,6 +209,15 @@ class Service:
         return project_id
 
     def action(self, action, data):
+        if action == 'open_documentation':
+            from .documentation import DocumentationLauncher
+            from .i18n import language
+            if not hasattr(self,'_documentation_launcher'):
+                self._documentation_launcher=DocumentationLauncher(self.store.path.parent/'documentation-control')
+            route={key:data[key] for key in ('page_id','anchor','state') if key in data}
+            route['locale']=data.get('locale',language(self.config))
+            route['theme']=data.get('theme',self.config.get('settings',{}).get('theme','dark'))
+            return self._documentation_launcher.open(**route)
         if action == 'component_state': return {'items': self.components.state()}
         if action == 'component_install': return self.components.install(data.get('id', ''))
         if action.startswith('evaluation_'):

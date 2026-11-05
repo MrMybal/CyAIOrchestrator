@@ -1,0 +1,212 @@
+{
+  "defaultLocale": "en",
+  "missing": [],
+  "outdated": [],
+  "untracked": [
+    {
+      "id": "reference-cyai-evaluation-kit-01-protocole",
+      "title": "1. Protocole d’évaluation",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-cyai-evaluation-kit-02-prompts-operateur",
+      "title": "Prompts prêts à l’emploi",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-cyai-evaluation-kit-03-rapport-et-integration",
+      "title": "Rapport et intégration ultérieure",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-cyai-evaluation-kit-04-fiche-utilisation-modele",
+      "title": "Fiche de transmission — Comment utiliser ce modèle",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-cyai-evaluation-kit-readme",
+      "title": "Méthode spéciale — Évaluation d’un agent",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-additional-connectors",
+      "title": "Connecteurs supplémentaires — 15 septembre 2026",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-architecture",
+      "title": "Architecture",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-background-evaluation-0-2-38",
+      "title": "0.2.38 — Discussion, délégation et évaluations en arrière-plan",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-connectors",
+      "title": "Ajouter un connecteur",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-cyai3-update",
+      "title": "CyAI — Projets, continuité et choix des modèles",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-cytools-memory-prism-0-2-35",
+      "title": "CyAI 0.2.35 — mémoire, CyTools et Bonsai 2",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-execution-limits-audit",
+      "title": "Audit des limites d’exécution — 14 septembre 2026",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-inference-controls-0-2-36",
+      "title": "CyAI 0.2.36 — arrêt, saisie et compteurs locaux",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-localization",
+      "title": "Interface localization",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-mcp",
+      "title": "MCP de CyAI Orchestrator",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-ollama-rtx3090",
+      "title": "Ollama sur J: avec une RTX 3090",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-piper-evaluation-0-2-37",
+      "title": "Piper et méthode d’évaluation — 0.2.37",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-plugins",
+      "title": "Plugins, CyTools and MCP",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-release-0-2-61",
+      "title": "CyAI Orchestrator 0.2.61",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-release-0-2-62",
+      "title": "CyAI Orchestrator 0.2.62",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-release-0-2-63",
+      "title": "CyAI Orchestrator 0.2.63",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-release-0-2-64",
+      "title": "0.2.64 — Local CyDoc documentation",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-releases",
+      "title": "CyAI Orchestrator 0.2.34 — Windows",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-team-board-contract",
+      "title": "Contrat d’extension — Équipes / Board",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-team-board-progress",
+      "title": "Suivi — Équipes / Board",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-team-board-specification",
+      "title": "Cahier des charges — Équipes persistantes et board de projet CyAI",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-ui-ux-audit-0-2-58",
+      "title": "Audit UI/UX CyAI 0.2.58 — 31 octobre 2026",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-ui-ux-improvements-0-2-59",
+      "title": "Améliorations UI/UX CyAI 0.2.59 — 31 octobre 2026",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-user-guide",
+      "title": "CyDoc documentation",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-voice-audit-0-2-31",
+      "title": "Audit vocal et méthode d’évaluation — CyAI 0.2.31",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-docs-voice-expressive-0-2-34",
+      "title": "Moteurs expressifs locaux — CyAI 0.2.34",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-readme",
+      "title": "CyAI Orchestrator",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "reference-validation",
+      "title": "Validation de livraison — 14 septembre 2026",
+      "locale": "fr",
+      "expectedRevision": "1"
+    },
+    {
+      "id": "api-help-links",
+      "title": "Local documentation routes",
+      "locale": "fr",
+      "expectedRevision": "37af355c8d17"
+    }
+  ],
+  "current": 32
+}

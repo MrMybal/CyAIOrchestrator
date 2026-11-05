@@ -25,6 +25,13 @@ jobs:
         env:
           GITLEAKS_BINARY: ${{ runner.temp }}/cyai-checks/tools/gitleaks
         run: python3 -m unittest discover -s tests -p test_repository_checks.py -v
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '22'
+      - name: Generate and validate local CyDoc documentation
+        run: |
+          python3 scripts/build_documentation.py --check
+          python3 scripts/build_documentation.py --install
       - name: Test interface localization and browser handlers
         run: |
           python3 -m unittest discover -s tests -p test_i18n.py -v

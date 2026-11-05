@@ -6,6 +6,8 @@ from PyInstaller.utils.hooks import collect_data_files, collect_all
 root = Path(SPECPATH).resolve().parent
 sys.path.insert(0, str(root / 'scripts'))
 from package_policy import payload_problem
+from build_documentation import verify_export
+verify_export(root)
 
 # The Python SDK is small. Its native CLI is a user-installed optional component.
 sdk_data, sdk_binaries, sdk_imports = collect_all('claude_agent_sdk')

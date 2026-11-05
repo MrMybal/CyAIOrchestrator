@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "CyAIOrchestrator"
-version = "0.2.63"
+version = "0.2.64"
 description = "Local, persistent multi-agent orchestration"
 license = "AGPL-3.0-only"
-license-files = ["LICENSE", "cyai/web/three/LICENSE.txt", "cyai/web/cymd/LICENSE.txt", "cyai/web/cyannota/LICENSE.txt", "cyai/web/cyannota/THIRD_PARTY_NOTICES.txt", "cyai/integrations/cytask/LICENSE"]
+license-files = ["LICENSE", "documentation/vendor/CyDoc-LICENSE.txt", "cyai/web/three/LICENSE.txt", "cyai/web/cymd/LICENSE.txt", "cyai/web/cyannota/LICENSE.txt", "cyai/web/cyannota/THIRD_PARTY_NOTICES.txt", "cyai/integrations/cytask/LICENSE"]
 requires-python = ">=3.11"
 dependencies = ["jsonschema>=4.23,<5"]
 
@@ -22,7 +22,7 @@ cyai-desktop = "cyai.desktop:main"
 cyai = "cyai.__main__:main"
 
 [tool.setuptools.package-data]
-cyai = ["integrations/cytask/LICENSE", "integrations/cytask/integrations/mcp/*.mjs", "integrations/cytask/integrations/mcp/*.md", "integrations/cytask/packages/sdk-js/src/*.mjs", "integrations/cytask/packages/sdk-js/*.md", "integrations/cytask/*.json", "piper_catalog.json", "locales/*.json", "web/*", "web/help/*.json", "web/help/images/*.png", "web/three/*", "web/cymd/*", "web/cymd/assets/*", "web/cyannota/*", "web/cyannota/assets/*", "web/cyannota/ffmpeg/*.js", "web/cyannota/ffmpeg/*.json", "plugin_bridge.mjs", "voice_workers/*", "evaluation_kit/*"]
+cyai = ["integrations/cytask/LICENSE", "integrations/cytask/integrations/mcp/*.mjs", "integrations/cytask/integrations/mcp/*.md", "integrations/cytask/packages/sdk-js/src/*.mjs", "integrations/cytask/packages/sdk-js/*.md", "integrations/cytask/*.json", "piper_catalog.json", "locales/*.json", "web/*", "help/*", "help/assets/*", "help/assets/images/*", "web/three/*", "web/cymd/*", "web/cymd/assets/*", "web/cyannota/*", "web/cyannota/assets/*", "web/cyannota/ffmpeg/*.js", "web/cyannota/ffmpeg/*.json", "plugin_bridge.mjs", "voice_workers/*", "evaluation_kit/*"]
 
 [tool.setuptools.packages.find]
 include = ["cyai*"]

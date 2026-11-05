@@ -1,0 +1,313 @@
+{
+  "documents": [
+    {
+      "source": "README.md",
+      "id": "reference-readme",
+      "sha256": "b9a8463240d9830ba0773315f14cbeeb71388109e8dc78db67e8f2e1769b7f17",
+      "status": "reference",
+      "originalLanguage": "en",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "VALIDATION.md",
+      "id": "reference-validation",
+      "sha256": "c61de75bb968cd26f0d181966b63f5c84022d018a3da1a3b994ebfcec275b0be",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/additional-connectors.md",
+      "id": "reference-docs-additional-connectors",
+      "sha256": "03567d6b27424199fb20511201f844c2269279c430b78c95a8485e68f8d5d432",
+      "status": "reference",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/architecture.md",
+      "id": "reference-docs-architecture",
+      "sha256": "7496187cf346a28de5996199334b4af2be8b284e8af38f63cbcc6086abe53880",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/background-evaluation-0.2.38.md",
+      "id": "reference-docs-background-evaluation-0-2-38",
+      "sha256": "4fdc3bbddd71a49865cd2e0f15386a042cf4d9e39832c754e6b32b729ce9b1b6",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/connectors.md",
+      "id": "reference-docs-connectors",
+      "sha256": "69ace79668b6fcf1a2a4f37f6bbb404344cb46c5b3b4092e2e9b2314c9a3074a",
+      "status": "reference",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/cyai3-update.md",
+      "id": "reference-docs-cyai3-update",
+      "sha256": "30688e50496425a8bf56dc79c3b7447a253578a719efae5b9076e7e771fa1162",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/cytools-memory-prism-0.2.35.md",
+      "id": "reference-docs-cytools-memory-prism-0-2-35",
+      "sha256": "274867ed383f2a3e59f01a025cadfd91cadc2c1150997f68d1d30ae135f111d6",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/execution-limits-audit.md",
+      "id": "reference-docs-execution-limits-audit",
+      "sha256": "9c9489c12d21d231cbc2fd62a68a2388d03339a4ab7f78c94a0ea0c8281dd6cf",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/inference-controls-0.2.36.md",
+      "id": "reference-docs-inference-controls-0-2-36",
+      "sha256": "df4e1c7807428f5bd54aa7e84a81f1a042878558d6ef4d9591fdda0674d8acf0",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/localization.md",
+      "id": "reference-docs-localization",
+      "sha256": "febc7c3bf21c512784d23a644672ff3d8956dae8ef37daf26e446604150c0fdb",
+      "status": "reference",
+      "originalLanguage": "en",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/MCP.md",
+      "id": "reference-docs-mcp",
+      "sha256": "05851661917c162e35d0f638208ef3100b4649a5ea3e5040c830c38512b3666d",
+      "status": "reference",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/ollama-rtx3090.md",
+      "id": "reference-docs-ollama-rtx3090",
+      "sha256": "565a1e1b02cd7a8f4ed38acbf8301c8990a7d8345eb9e90e637a899e5469841f",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/piper-evaluation-0.2.37.md",
+      "id": "reference-docs-piper-evaluation-0-2-37",
+      "sha256": "833b23d445a5a813c7689b5c1928f922f2fc9b5aa285177708976d633a2e8f41",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/plugins.md",
+      "id": "reference-docs-plugins",
+      "sha256": "6b714ab3664b94218d49355a6a07d95141dc480313a3e15075b246ef953e097f",
+      "status": "reference",
+      "originalLanguage": "en",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/release-0.2.61.md",
+      "id": "reference-docs-release-0-2-61",
+      "sha256": "8dd63e5d16b1ef406b6d303a75ca8135a104ab3bb5ed18f68f0c65dedb8e532f",
+      "status": "historical",
+      "originalLanguage": "en",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/release-0.2.62.md",
+      "id": "reference-docs-release-0-2-62",
+      "sha256": "876009fe07b86fd87f78b710eaa9aa98656aea160f5194665036fdd5137c9b2c",
+      "status": "historical",
+      "originalLanguage": "en",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/release-0.2.63.md",
+      "id": "reference-docs-release-0-2-63",
+      "sha256": "a0153ff71ef1fc013874ddaaf8d16a5afea8583d2450f9f305fd13abeb0f0e54",
+      "status": "historical",
+      "originalLanguage": "en",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/release-0.2.64.md",
+      "id": "reference-docs-release-0-2-64",
+      "sha256": "b15c361531e5f1c522a44d520adbb3e162e26232a696d052b4464d635b82b191",
+      "status": "reference",
+      "originalLanguage": "en",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/releases.md",
+      "id": "reference-docs-releases",
+      "sha256": "44e61192561d8af6ce5eaf8e360f01b93f3f316ac63bf445c5c35e31665883cd",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/team-board-contract.md",
+      "id": "reference-docs-team-board-contract",
+      "sha256": "dc9dec84f5022aa661c6e5a20b2a80cf5f8eb23846705db6da6fd8e47a7ef862",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/team-board-progress.md",
+      "id": "reference-docs-team-board-progress",
+      "sha256": "1bfe6fb858658018a29744e2bc2157ef5c2180f57174137db786d49bf111c15b",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/team-board-specification.md",
+      "id": "reference-docs-team-board-specification",
+      "sha256": "814cb69f77c891956e45a965f2acb9d81a1caf6d443ec4d5e49410d16ad03c53",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/ui-ux-audit-0.2.58.md",
+      "id": "reference-docs-ui-ux-audit-0-2-58",
+      "sha256": "c2d7c3012fabb8b9b86199acdfb2d9d8f1a294b28220c9fd7c6c7c1555cd8fae",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/ui-ux-improvements-0.2.59.md",
+      "id": "reference-docs-ui-ux-improvements-0-2-59",
+      "sha256": "e3d33d2edc919d403ed1bccf0d572ac90c662515051ddc8d620690cf430baa45",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/user-guide.md",
+      "id": "reference-docs-user-guide",
+      "sha256": "e285fa52da22da989c437b09837217a522cd752850d82bfbb53ae7229d1b8f63",
+      "status": "reference",
+      "originalLanguage": "en",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/voice-audit-0.2.31.md",
+      "id": "reference-docs-voice-audit-0-2-31",
+      "sha256": "344b63129e4ad492d13ec96ee96352cb6a87dac7ec32628fb1f781823f37b0e2",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "docs/voice-expressive-0.2.34.md",
+      "id": "reference-docs-voice-expressive-0-2-34",
+      "sha256": "e8c5ee717037984f1dc6a536baaa71f4536a743a8fe5cbd3b4efd103ef0578d4",
+      "status": "historical",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "cyai/evaluation_kit/01-PROTOCOLE.md",
+      "id": "reference-cyai-evaluation-kit-01-protocole",
+      "sha256": "f10182c83344b5a67c220d4937302a4f7a1aab847afbcfb53dd94ff5c703f8e7",
+      "status": "reference",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "cyai/evaluation_kit/02-PROMPTS-OPERATEUR.md",
+      "id": "reference-cyai-evaluation-kit-02-prompts-operateur",
+      "sha256": "343e1e10ab04fec1140281ac6aacd37a91d6bb43b3c125d38fb4f92bfc17e501",
+      "status": "reference",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "cyai/evaluation_kit/03-RAPPORT-ET-INTEGRATION.md",
+      "id": "reference-cyai-evaluation-kit-03-rapport-et-integration",
+      "sha256": "b22a13027d55542e798a9543d4e37f73aae3546f023d15801d20035e1470c908",
+      "status": "reference",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "cyai/evaluation_kit/04-FICHE-UTILISATION-MODELE.md",
+      "id": "reference-cyai-evaluation-kit-04-fiche-utilisation-modele",
+      "sha256": "759aef34f0f354800370578a5c89bc09c98775ba26f82dee81cc535717418382",
+      "status": "reference",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "cyai/evaluation_kit/README.md",
+      "id": "reference-cyai-evaluation-kit-readme",
+      "sha256": "1a3fac97c74c2cb850a619598c4b02cba5abc37fa5989574a57997f507dfe6b9",
+      "status": "reference",
+      "originalLanguage": "fr",
+      "translation": "original preserved; other-language prose needs review"
+    },
+    {
+      "source": "config.example.json",
+      "id": "resource-config-example-json",
+      "sha256": "d27ae6b86fcf52864ac77c3a49c9cdf68625b678b30e5c23d4a2e012387c8da5",
+      "status": "resource"
+    },
+    {
+      "source": "cyai/evaluation_kit/exercises.json",
+      "id": "resource-cyai-evaluation-kit-exercises-json",
+      "sha256": "36f22b06ec307298aa7a85a5e65d85421784964bead03c16b2980e3cf98eed7b",
+      "status": "resource"
+    },
+    {
+      "source": "cyai/evaluation_kit/references.json",
+      "id": "resource-cyai-evaluation-kit-references-json",
+      "sha256": "efeaf40352ebdb214eeb9c0507ce22c642c3e7cac09321582c65462d77a2a0e3",
+      "status": "resource"
+    },
+    {
+      "source": "cyai/evaluation_kit/report-template.json",
+      "id": "resource-cyai-evaluation-kit-report-template-json",
+      "sha256": "f42ac00d6f937a5621bbaed97696785c7fb522830d1a33ab07fb1a355c76b2f5",
+      "status": "resource"
+    }
+  ],
+  "sourceFiles": [
+    "cyai/documentation.py",
+    "cyai/context.py",
+    "cyai/connectors.py",
+    "cyai/store.py",
+    "scripts/mcp_bridge.py",
+    "cyai/web/help.js",
+    "cyai/evaluation_kit/evalkit.py"
+  ],
+  "literalReferences": [
+    {
+      "source": "README.md",
+      "target": "LICENSE",
+      "resolution": "Preserved as a literal repository path"
+    },
+    {
+      "source": "docs/ui-ux-improvements-0.2.59.md",
+      "target": "../test-results/audit059-pending-send.jpg",
+      "resolution": "Preserved as a literal repository path"
+    }
+  ]
+}

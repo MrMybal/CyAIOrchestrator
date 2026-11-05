@@ -1,35 +1,28 @@
 const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');
 const source=fs.readFileSync('cyai/web/help.js','utf8');
-const docs=JSON.parse(fs.readFileSync('cyai/web/help/en.json','utf8'));
-const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return {promise,resolve,reject};};
-function fixture(fetch){
- const page={innerHTML:'',querySelector:()=>null};
- const state={view:'help',navigationVersion:1,data:{version:'test'}};
- const context=vm.createContext({console,fetch,state,CYAI_LOCALE:'en',document:{addEventListener(){},getElementById(){return null;}},$:()=>page,ui:s=>s,esc:v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),htmlIfChanged:(_,html)=>{page.innerHTML=html;},rememberDraft(){},showView(){}});
- vm.runInContext(source,context);return {context,page,state,run:s=>vm.runInContext(s,context)};
+function fixture(native=false){
+ const listeners={},calls=[],errors=[];
+ const state={view:'chat',settingsTab:'models',data:{settings:{theme:'dark'}}};
+ let drafts=0;
+ const context=vm.createContext({console,state,CYAI_LOCALE:'fr',window:{pywebview:native?{api:{open_documentation:async route=>{calls.push(route);return {opened:true};}}}:null},document:{addEventListener:(event,fn)=>listeners[event]=fn,querySelector:()=>null},ui:v=>v,esc:v=>v,toast(){},rememberDraft(){drafts++;},action:async(name,route)=>{calls.push({name,...route});return {opened:true};},openDialog:(...args)=>errors.push(args),URLSearchParams});
+ vm.runInContext(source,context);
+ return {context,state,calls,listeners,errors,get drafts(){return drafts;},run:s=>vm.runInContext(s,context)};
 }
 (async()=>{
- const f=fixture(()=>{});f.context.doc=docs;
- assert(f.run('helpSearch(doc,"KV").some(c=>c.id==="local-models")'));
- const fr=JSON.parse(fs.readFileSync('cyai/web/help/fr.json','utf8'));f.context.fr=fr;
- assert(f.run('helpSearch(fr,"memoire").some(c=>c.id==="context")'));
- assert.equal(f.run('helpSearch(doc,"definitely-no-such-topic").length'),0);
- for(const name of ['../config.png','a/b.png','" onerror="bad.png','image.svg']){f.context.name=name;assert.equal(f.run('helpAsset(name)'),'');}
- assert.equal(f.run('helpAsset("conversation-en.png")'),'/help/images/conversation-en.png');
- f.context.block={type:'paragraph',text:'<script>bad()</script>'};
- assert.equal(f.run('helpBlock(block,0,doc.chapters[0],doc)'),'<p>&lt;script&gt;bad()&lt;/script&gt;</p>');
- const diagram=f.run('helpDiagram(doc.chapters.find(c=>c.id==="orchestration").blocks.find(b=>b.type==="diagram"),"test")');
- assert.equal((diagram.match(/<rect /g)||[]).length,6);assert(diagram.includes('aria-labelledby="test-title test-desc"'));
- const response=deferred();let calls=0;const late=fixture(()=>{calls++;return response.promise;});
- const first=late.run('renderHelp()');const second=late.run('renderHelp()');
- late.state.view='settings';late.state.navigationVersion++;
- late.page.innerHTML='Current settings';response.resolve({ok:true,json:async()=>docs});
- await Promise.all([first,second]);assert.equal(calls,1);assert.equal(late.page.innerHTML,'Current settings');
- const error=deferred();const staleError=fixture(()=>error.promise);const loading=staleError.run('renderHelp()');
- staleError.state.view='chat';staleError.state.navigationVersion++;staleError.page.innerHTML='Current chat';error.reject(Error('offline failure'));
- await loading;assert.equal(staleError.page.innerHTML,'Current chat');
- let attempts=0;const retry=fixture(async()=>{if(!attempts++)throw Error('temporary failure');return {ok:true,json:async()=>docs};});
- await retry.run('renderHelp()');assert(retry.page.innerHTML.includes('data-help-retry'));
- await retry.run('renderHelp()');assert.equal(attempts,2);assert(retry.page.innerHTML.includes('help-layout'));
- console.log('PASS: full-text/accent search, asset validation, escaped content, accessible diagram, shared load, stale success/error isolation and retry.');
+ for(const native of [false,true]){
+  const f=fixture(native);await f.run('openHelp("start","help-part-1","conversation",{zoom:1.5})');
+  const route=f.calls[0];assert.equal(route.page_id,'start');assert.equal(route.locale,'fr');assert.equal(route.anchor,'help-part-1');assert.equal(route.state.media,'conversation');assert.equal(route.state.zoom,1.5);assert.equal(f.drafts,1);assert.equal(f.state.view,'chat');
+  if(!native)assert.equal(route.name,'open_documentation');
+ }
+ const f=fixture();await f.run('openLegacyHelp(new URLSearchParams("help=start&media=conversation&zoom=2"),"#help-part-1")');
+ assert.equal(f.calls[0].anchor,'help-part-1');assert.equal(f.calls[0].state.zoom,'2');
+ for(const [view,tab,expected] of [['settings','voice','voice'],['settings','local','local-models'],['logs','','diagnostics'],['agents','','agents'],['method','','methods'],['space','','spaces'],['project','board','board'],['project','media','files'],['missions','','orchestration'],['home','','start']]){
+  f.state.view=view;f.state.settingsTab=tab;f.state.projectTab=tab;assert.equal(f.run('contextHelpTopic()'),expected);
+ }
+ let prevented=false;f.state.view='settings';f.state.settingsTab='mcp';f.listeners.keydown({key:'F1',preventDefault(){prevented=true;}});await Promise.resolve();assert(prevented);assert.equal(f.calls.at(-1).page_id,'mcp');
+ const failure=fixture();failure.context.action=async()=>{throw Error('Unavailable');};await failure.run('openHelp()');assert.equal(failure.errors.length,1);assert(failure.errors[0][1].includes('data-context-help'));
+ const app=fs.readFileSync('cyai/web/app.js','utf8'),shell=fs.readFileSync('cyai/web/channels.js','utf8');
+ assert(/if\s*\(view\s*===\s*'help'\)\s*\{\s*openHelp\(\);\s*return;\s*\}/.test(app));
+ assert(app.includes('openLegacyHelp(query,location.hash)'));assert.equal((app.match(/openLegacyHelp\(/g)||[]).length,1);assert(!shell.match(/OVERLAY_VIEWS\s*=.*'help'/));
+ console.log('PASS: native/browser help actions, workspace and draft preservation, F1 context, legacy section/media routes, retry and rail integration.');
 })().catch(error=>{console.error(error);process.exitCode=1;});

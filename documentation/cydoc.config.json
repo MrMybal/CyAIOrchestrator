@@ -1,0 +1,15 @@
+{
+  "name": "CyAI Orchestrator",
+  "version": "0.2.64",
+  "defaultLocale": "en",
+  "locales": [{"code":"en","label":"English"},{"code":"fr","label":"Français"}],
+  "homePage": "start",
+  "content": ".generated/manual",
+  "assets": "assets",
+  "out": ".generated/export",
+  "modules": ["image"],
+  "sources": [".generated/sources"],
+  "sourceIndex": {"enabled":true,"includeDirs":[".generated/sources"]},
+  "translationReport": true,
+  "aliases": {"overview":"start","quickstart":"start","user-guide":"start","api-links":"reference-docs-mcp"}
+}
