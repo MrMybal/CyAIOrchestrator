@@ -1,0 +1,91 @@
+{
+  "name": "CyAI Orchestrator",
+  "version": "0.2.66",
+  "defaultLocale": "en",
+  "locales": [
+    {
+      "code": "en",
+      "label": "English"
+    },
+    {
+      "code": "fr",
+      "label": "Français"
+    }
+  ],
+  "homePage": "start",
+  "content": "manual",
+  "assets": "assets",
+  "out": "../Documentation",
+  "modules": [
+    "image"
+  ],
+  "aliases": {
+    "migration-inventory": "start",
+    "reference-cyai-evaluation-kit-01-protocole": "start",
+    "reference-cyai-evaluation-kit-02-prompts-operateur": "start",
+    "reference-cyai-evaluation-kit-03-rapport-et-integration": "start",
+    "reference-cyai-evaluation-kit-04-fiche-utilisation-modele": "start",
+    "reference-cyai-evaluation-kit-readme": "background",
+    "reference-docs-additional-connectors": "start",
+    "reference-docs-architecture": "start",
+    "reference-docs-background-evaluation-0-2-38": "start",
+    "reference-docs-connectors": "start",
+    "reference-docs-cyai3-update": "start",
+    "reference-docs-cytools-memory-prism-0-2-35": "start",
+    "reference-docs-execution-limits-audit": "start",
+    "reference-docs-inference-controls-0-2-36": "start",
+    "reference-docs-localization": "start",
+    "reference-docs-mcp": "api-integration",
+    "reference-docs-ollama-rtx3090": "start",
+    "reference-docs-piper-evaluation-0-2-37": "start",
+    "reference-docs-plugins": "start",
+    "reference-docs-release-0-2-61": "start",
+    "reference-docs-release-0-2-62": "start",
+    "reference-docs-release-0-2-63": "start",
+    "reference-docs-release-0-2-64": "start",
+    "reference-docs-release-0-2-65": "start",
+    "reference-docs-releases": "start",
+    "reference-docs-team-board-contract": "start",
+    "reference-docs-team-board-progress": "start",
+    "reference-docs-team-board-specification": "start",
+    "reference-docs-ui-ux-audit-0-2-58": "start",
+    "reference-docs-ui-ux-improvements-0-2-59": "start",
+    "reference-docs-user-guide": "start",
+    "reference-docs-voice-audit-0-2-31": "start",
+    "reference-docs-voice-expressive-0-2-34": "start",
+    "reference-readme": "start",
+    "reference-validation": "start",
+    "resource-config-example-json": "start",
+    "resource-cyai-evaluation-kit-exercises-json": "start",
+    "resource-cyai-evaluation-kit-references-json": "start",
+    "resource-cyai-evaluation-kit-report-template-json": "start",
+    "api-help-links": "api-integration",
+    "source-generated-sources-cyai-connectors-py": "start",
+    "source-generated-sources-cyai-context-py": "start",
+    "source-generated-sources-cyai-documentation-py": "start",
+    "source-generated-sources-cyai-evaluation-kit-evalkit-py": "start",
+    "source-generated-sources-cyai-store-py": "start",
+    "source-generated-sources-cyai-web-help-js": "start",
+    "source-generated-sources-scripts-mcp-bridge-py": "start",
+    "translation-report": "start",
+    "overview": "start",
+    "quickstart": "start",
+    "user-guide": "start",
+    "api-links": "api-integration"
+  },
+  "logo": "assets/images/logo.png",
+  "apiImports": [
+    {
+      "format": "cydoc",
+      "path": "api/en.json",
+      "prefix": "api",
+      "locale": "en"
+    },
+    {
+      "format": "cydoc",
+      "path": "api/fr.json",
+      "prefix": "api",
+      "locale": "fr"
+    }
+  ]
+}

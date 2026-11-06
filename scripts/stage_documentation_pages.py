@@ -4,13 +4,14 @@ from pathlib import Path
 import shutil
 from build_documentation import ROOT, verify_export
 
-READER_FILES = {'index.html','data.js','cyai-reader.js','viewer.css','media-image.js','manifest.json','CyDoc-LICENSE.txt','CyAI-LICENSE.txt'}
+READER_FILES = {'Documentation.html','DocAI.md','DocData/data.js','DocData/viewer.js','DocData/cyai-host.js','DocData/viewer.css','DocData/media-image.js','DocData/manifest.json','DocData/CyDoc-LICENSE.txt','DocData/CyAI-LICENSE.txt'}
 
 def stage_pages(root=ROOT, output=None):
     root = Path(root).resolve()
-    source = root/'cyai/help'
+    source = root/'Documentation'
     info = verify_export(root)
     names = set(info['outputs'])
+    compatibility = {'index.html','DocData/pages-entry.js'}
     if not READER_FILES <= names:
         raise ValueError('The complete CyDoc reader is required for Pages.')
     output_path = Path(output or root/'dist-docs-pages')
@@ -21,7 +22,7 @@ def stage_pages(root=ROOT, output=None):
         raise ValueError('Pages output must be a separate generated directory inside the repository.')
     if target.exists():
         existing = {p.relative_to(target).as_posix() for p in target.rglob('*') if p.is_file()}
-        if existing - names - {'.nojekyll'} or any(p.is_symlink() for p in target.rglob('*')):
+        if existing - names - compatibility - {'.nojekyll'} or any(p.is_symlink() for p in target.rglob('*')):
             raise ValueError('Unexpected files in the Pages stage; refusing to remove or publish them.')
         # The resolved, repository-contained generated directory has been checked above.
         shutil.rmtree(target)
@@ -33,9 +34,12 @@ def stage_pages(root=ROOT, output=None):
         destination = target/name
         destination.parent.mkdir(parents=True,exist_ok=True)
         shutil.copyfile(file,destination)
+    # Keep existing README base URLs and fragments pointing at the real reader.
+    for name in compatibility:
+        shutil.copyfile(root/'.CyDocBuild/host'/Path(name).name,target/name)
     (target/'.nojekyll').write_text('',encoding='utf-8')
     actual = {p.relative_to(target).as_posix() for p in target.rglob('*') if p.is_file()}
-    if actual != names | {'.nojekyll'}:
+    if actual != names | compatibility | {'.nojekyll'}:
         raise ValueError('The Pages stage differs from the generated CyDoc export.')
     return target
 

@@ -1,0 +1,100 @@
+{
+  "symbols": [
+    {
+      "key": "url",
+      "name": "cyai.documentation.documentation_url",
+      "kind": "function",
+      "language": "python",
+      "signature": "documentation_url(page_id='start', locale='en', anchor='', state=None, theme='dark')",
+      "description": "Construisez une URL file encodée vers le manuel livré. Une page inconnue revient à Bien démarrer. Aucun appel réseau ni fenêtre WebView n’est lancé.",
+      "parameters": [
+        {
+          "name": "page_id",
+          "type": "str",
+          "default": "'start'",
+          "description": "Identifiant stable de page ou alias configuré."
+        },
+        {
+          "name": "locale",
+          "type": "str",
+          "default": "'en'",
+          "description": "Langue demandée ; une langue non prise en charge utilise l’anglais."
+        },
+        {
+          "name": "anchor",
+          "type": "str",
+          "default": "''",
+          "description": "Ancre explicite de section ou de média. Une ancre invalide lève ValueError."
+        },
+        {
+          "name": "state",
+          "type": "dict | None",
+          "default": "None",
+          "description": "État facultatif du média, dont son identifiant media. Les médias inconnus sont refusés."
+        },
+        {
+          "name": "theme",
+          "type": "str",
+          "default": "'dark'",
+          "description": "Thème de l’application ; dark correspond au thème midnight du lecteur."
+        }
+      ],
+      "returnType": "str",
+      "returns": "Une URL file absolue vers Documentation/Documentation.html avec fragment encodé.",
+      "references": [
+        {
+          "key": "route",
+          "name": "canonical_route"
+        }
+      ]
+    },
+    {
+      "key": "route",
+      "name": "cyai.documentation.canonical_route",
+      "kind": "function",
+      "language": "python",
+      "signature": "canonical_route(page_id='start', locale='en', anchor='', state=None, theme='dark')",
+      "description": "Validez une adresse avec le manifeste livré. Les alias sont résolus, la langue normalisée et les ancres ou médias inconnus refusés.",
+      "parameters": [
+        {
+          "name": "page_id",
+          "type": "str",
+          "default": "'start'",
+          "description": "Identifiant stable de page ou alias configuré."
+        },
+        {
+          "name": "locale",
+          "type": "str",
+          "default": "'en'",
+          "description": "Langue demandée ; une langue non prise en charge utilise l’anglais."
+        },
+        {
+          "name": "anchor",
+          "type": "str",
+          "default": "''",
+          "description": "Ancre explicite de section ou de média. Une ancre invalide lève ValueError."
+        },
+        {
+          "name": "state",
+          "type": "dict | None",
+          "default": "None",
+          "description": "État facultatif du média, dont son identifiant media. Les médias inconnus sont refusés."
+        },
+        {
+          "name": "theme",
+          "type": "str",
+          "default": "'dark'",
+          "description": "Thème de l’application ; dark correspond au thème midnight du lecteur."
+        }
+      ],
+      "returnType": "dict",
+      "returns": "Un dictionnaire contenant pageId, locale, anchor, state et le thème normalisé.",
+      "references": [
+        {
+          "key": "url",
+          "name": "documentation_url"
+        }
+      ]
+    }
+  ]
+}

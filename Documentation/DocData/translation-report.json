@@ -1,0 +1,20 @@
+{
+  "defaultLocale": "en",
+  "missing": [],
+  "outdated": [],
+  "untracked": [
+    {
+      "id": "api-cyai-documentation-documentation-url-url",
+      "title": "cyai.documentation.documentation_url",
+      "locale": "fr",
+      "expectedRevision": "dc126e7c0569"
+    },
+    {
+      "id": "api-cyai-documentation-canonical-route-route",
+      "title": "cyai.documentation.canonical_route",
+      "locale": "fr",
+      "expectedRevision": "65371590705f"
+    }
+  ],
+  "current": 28
+}

@@ -50,10 +50,17 @@ SETTINGS_TABS = {'models', 'local', 'voice', 'downloads', 'connectors', 'appeara
 THEMES = {'dark': 'midnight', 'light': 'light', 'nord': 'nord', 'midnight': 'midnight', 'paper': 'paper', 'contrast': 'contrast'}
 
 def help_root():
-    return Path(__file__).resolve().parent / 'help'
+    if getattr(sys, 'frozen', False):
+        candidates = [Path(sys._MEIPASS) / 'Documentation']
+    else:
+        candidates = [Path(__file__).resolve().parents[1] / 'Documentation', Path(sys.prefix) / 'Documentation']
+    for candidate in candidates:
+        if (candidate / 'Documentation.html').is_file():
+            return candidate.resolve()
+    raise FileNotFoundError('The bundled Documentation/Documentation.html reader is missing.')
 
 def canonical_route(page_id='start', locale='en', anchor='', state=None, theme='dark'):
-    manifest = json.loads((help_root()/'manifest.json').read_text('utf-8'))
+    manifest = json.loads((help_root()/'DocData/manifest.json').read_text('utf-8'))
     locale = locale if locale in {item['code'] for item in manifest['locales']} else manifest['defaultLocale']
     page_id = str(page_id or 'start')
     if '#' in page_id and not anchor:
@@ -81,7 +88,7 @@ def canonical_route(page_id='start', locale='en', anchor='', state=None, theme='
 
 def documentation_url(page_id='start', locale='en', anchor='', state=None, theme='dark'):
     route=canonical_route(page_id,locale,anchor,state,theme)
-    base=(help_root()/'index.html').resolve().as_uri()
+    base=(help_root()/'Documentation.html').resolve().as_uri()
     address=base+'#/'+quote(route['locale'],safe='')+'/'+quote(route['pageId'],safe='')
     if route['anchor']:address+='/'+quote(route['anchor'],safe='')
     # .NET Uri treats an outer file query as part of its filename. Keep theme in the fragment.

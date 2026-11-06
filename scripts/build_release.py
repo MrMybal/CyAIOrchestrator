@@ -13,7 +13,7 @@ args=parser.parse_args()
 stage=args.stage.resolve();out=root/'releases';work=root/'build-release';out.mkdir(exist_ok=True);work.mkdir(exist_ok=True)
 if not (stage/'CyAIOrchestrator.exe').is_file():raise ValueError('Build desktop absent.')
 verify_export(root)
-verify_export(root, stage/'_internal/cyai/help', check_inputs=False)
+verify_export(root, stage/'_internal/Documentation', check_inputs=False)
 validate_payload(p.relative_to(stage).as_posix() for p in stage.rglob('*') if p.is_file())
 files={}
 with zipfile.ZipFile(work/'payload.zip','w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:

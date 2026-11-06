@@ -44,3 +44,13 @@ class RepositoryCheckTests(unittest.TestCase):
             count=scan(executable,ROOT,root,root/'findings.json')
             self.assertEqual(count,1)
             self.assertEqual(json.loads((root/'findings.json').read_text())[0]['RuleID'],'generic-api-key')
+
+    def test_build_fingerprint_exception_does_not_hide_credentials(self):
+        executable=Path(os.environ.get('GITLEAKS_BINARY',str(ROOT/'test-results/security-tools/gitleaks.exe')))
+        if not executable.is_file():self.skipTest('Gitleaks executable not provided')
+        with tempfile.TemporaryDirectory() as temporary:
+            root=Path(temporary);file=root/'Documentation/DocData/build-info.json';file.parent.mkdir(parents=True)
+            file.write_text(json.dumps({'.CyDocBuild/manual/en/api-integration.md':secrets.token_hex(32),'api_key':secrets.token_urlsafe(32)},indent=2))
+            count=scan(executable,ROOT,root,root/'findings.json')
+            self.assertEqual(count,1)
+            self.assertEqual(json.loads((root/'findings.json').read_text())[0]['RuleID'],'generic-api-key')

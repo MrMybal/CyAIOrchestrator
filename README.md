@@ -33,11 +33,11 @@ A demonstration workspace with sample conversations and task data.
 
 **[Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/en/start)** · **[Français](https://mrmybal.github.io/CyAIOrchestrator/#/fr/start)**
 
-The online documentation uses the same visual CyDoc reader as the application, including navigation, search, screenshots, diagrams and language selection.
+The online documentation uses the same visual CyDoc reader as the application, including navigation, search, screenshots, diagrams and language selection. The bundled manual also works independently without an Internet connection.
 
 Open **? Documentation** in the left rail, use Settings → Documentation, or press **F1** for help on the current panel. The bundled **CyDoc** reader opens in a separate window using local `file://` resources. It preserves the workspace and needs no server, CDN, Node.js or Internet connection for reading.
 
-The 27 guide chapters are available in **English** (default) and **French**, with common page/section IDs, localized screenshots with zoom and in-window enlargement, static workflow diagrams and full-text search. Technical references, evaluation resources, historical notes and a bounded source index are also included. Preserved references awaiting translation are labelled with their original language. See the [documentation maintenance guide](docs/user-guide.md) for regeneration, translation tracking and platform scope.
+The user guides and public integration API are available in **English** (default) and **French**, with common page/section IDs, localized screenshots, in-window zoom, workflow diagrams, a topic tree and full-text search. Open `Documentation/Documentation.html` directly to read the bundled manual. Authoring and maintenance notes are kept in [the documentation workspace](.CyDocBuild/internal/README.md), outside the reader.
 
 ## Windows desktop application
 

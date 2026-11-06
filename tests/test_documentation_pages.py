@@ -15,19 +15,19 @@ class PagesTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='pages-stage-',dir=parent) as temporary:
             target=Path(temporary)/'site'
             stage_pages(ROOT,target)
-            info=json.loads((ROOT/'cyai/help/build-info.json').read_text('utf-8'))
-            expected=set(info['outputs'])|{'.nojekyll'}
+            info=json.loads((ROOT/'Documentation/DocData/build-info.json').read_text('utf-8'))
+            expected=set(info['outputs'])|{'.nojekyll','index.html','DocData/pages-entry.js'}
             self.assertEqual({p.relative_to(target).as_posix() for p in target.rglob('*') if p.is_file()},expected)
             self.assertFalse((target/'build-info.json').exists())
             for name in info['outputs']:
-                self.assertEqual((target/name).read_bytes(),(ROOT/'cyai/help'/name).read_bytes(),name)
-            for name in ('index.html','data.js','cyai-reader.js','viewer.css','media-image.js'):
+                self.assertEqual((target/name).read_bytes(),(ROOT/'Documentation'/name).read_bytes(),name)
+            for name in ('Documentation.html','DocData/data.js','DocData/viewer.js','DocData/viewer.css','DocData/media-image.js'):
                 self.assertTrue((target/name).is_file())
             (target/'local.sqlite3').write_text('disposable test fixture','utf-8')
             with self.assertRaises(ValueError):stage_pages(ROOT,target)
             self.assertTrue((target/'local.sqlite3').is_file())
     def test_readme_links_select_the_right_reader_language(self):
-        for name,route in [('README.md','en/start'),('cyai/evaluation_kit/README.md','fr/reference-cyai-evaluation-kit-readme'),('documentation/vendor/README.md','en/reference-docs-user-guide')]:
+        for name,route in [('README.md','en/start'),('cyai/evaluation_kit/README.md','fr/background')]:
             self.assertIn('[Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/'+route+')',(ROOT/name).read_text('utf-8'))
         workflow=(ROOT/'.github/workflows/documentation-pages.yml').read_text('utf-8-sig')
         self.assertIn('path: dist-docs-pages',workflow)

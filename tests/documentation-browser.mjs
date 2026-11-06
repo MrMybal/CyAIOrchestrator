@@ -13,10 +13,11 @@ async function until(expression){const end=Date.now()+25000;while(Date.now()<end
 async function screenshot(name){await evaluate('document.fonts.ready');await delay(350);const shot=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(folder+'/'+name+'.png',Buffer.from(shot.data,'base64'));}
 const keep=setInterval(()=>{},1000);
 try{
- await send('Runtime.enable');await send('Page.enable');await send('Network.enable');
+ await send('Runtime.enable');await send('Page.enable');await send('Network.enable');await send('Page.bringToFront');
+ await send('Emulation.setFocusEmulationEnabled',{enabled:true});
  await send('Network.setBlockedURLs',{urls:['http://*','https://*']});
  await send('Emulation.setDeviceMetricsOverride',{width:1500,height:1000,deviceScaleFactor:1,mobile:false});
- const base=pathToFileURL(path.resolve('cyai/help/index.html')).href;
+ const base=pathToFileURL(path.resolve('Documentation/Documentation.html')).href;
  await send('Page.navigate',{url:base+'#/en/start?theme=midnight'});
  await until('!!globalThis.CYAI_HELP && !!document.querySelector("#main-content h1")');
  assert.equal(await evaluate('location.protocol'),'file:');
@@ -26,7 +27,7 @@ try{
  const pages=await evaluate('CYDOC_DATA.pages.map(p=>({id:p.id,locale:p.locale}))');
  for(const page of pages){
   await evaluate('CYAI_HELP.navigate('+JSON.stringify({locale:page.locale,pageId:page.id})+')');
-  await until('location.hash.includes('+JSON.stringify('/'+page.locale+'/'+page.id)+') && document.querySelector("#breadcrumb").textContent==='+JSON.stringify(JSON.parse(fs.readFileSync('cyai/help/manifest.json','utf8')).pages.find(p=>p.id===page.id&&p.locale===page.locale).title));
+  await until('location.hash.includes('+JSON.stringify('/'+page.locale+'/'+page.id)+') && document.querySelector("#breadcrumb").textContent==='+JSON.stringify(JSON.parse(fs.readFileSync('Documentation/DocData/manifest.json','utf8')).pages.find(p=>p.id===page.id&&p.locale===page.locale).title));
  }
  await evaluate('CYAI_HELP.navigate({locale:"fr",pageId:"orchestration"})');
  await until('document.documentElement.lang==="fr" && document.querySelector("#main-content svg")');
@@ -78,16 +79,51 @@ try{
  assert.equal(await evaluate('location.hash'),'#/en/start');
  await evaluate('delete globalThis.pywebview;document.querySelector("a[href*=app-settings]").click()');
  await until('location.hash.includes("/en/connectors?")');
+ // Stock-reader navigation, header search, tooltips and theme controls.
+ await evaluate('CYAI_HELP.navigate({locale:"en",pageId:"start"})');
+ await until('document.documentElement.lang==="en" && document.querySelector("#breadcrumb")?.textContent==="Start here" && !!document.querySelector("[data-header-search]")');
+ assert.equal(await evaluate('getComputedStyle(document.querySelector(".sidebar")).width'),'330px');
+ assert.equal(await evaluate('document.querySelectorAll(".mit-tag,.offline-card,.local-card").length'),0);
+ assert(await evaluate('!!document.querySelector("[data-page=chat]")?.closest("[data-nav-key]")'));
+ await delay(300);
+ await evaluate('document.querySelector(".locale-control select").focus();document.querySelector("[data-page=start]").focus()');
+ await until('!document.querySelector(".reader-tooltip").hidden');
+ assert.equal(await evaluate('document.querySelector(".reader-tooltip strong").textContent'),'Start here');
+ assert(await evaluate('document.querySelector(".reader-tooltip-description").textContent.includes("workspace")'));
+ await evaluate('document.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape",bubbles:true}))');
+ await evaluate('(()=>{const i=document.querySelector("[data-header-search]");i.focus();i.value="VRAM";i.dispatchEvent(new Event("input",{bubbles:true}));})()');
+ await until('!!document.querySelector(".search-popover[open] .search-result")');
+ assert(await evaluate('[...document.querySelectorAll(".search-result")].every(a=>!a.textContent.includes("migration-inventory"))'));
+ await evaluate('document.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape",bubbles:true}))');
+ for(const theme of ['light','dark','midnight','nord','paper','contrast']){
+  await evaluate('document.querySelector("[data-set-theme='+theme+']").click()');
+  assert.equal(await evaluate('document.querySelector("#app").dataset.theme'),theme);
+ }
+ await evaluate('document.querySelector("[data-set-theme=midnight]").click()');
  // Initial direct stale links and unsupported locales fall back safely.
  await send('Page.navigate',{url:'about:blank'});
  await until('location.href==="about:blank"');
  await send('Page.navigate',{url:base+'#/zz/obsolete-page'});
  await until('!!globalThis.CYAI_HELP && document.documentElement.lang==="en" && location.hash==="#/en/start"');
+ const longName='CyAI Orchestrator — A deliberately long application name for multilingual workspace documentation';
+ const init=await send('Page.addScriptToEvaluateOnNewDocument',{source:'Object.defineProperty(globalThis,"CYDOC_DATA",{configurable:true,set(value){value.name='+JSON.stringify(longName)+';Object.defineProperty(globalThis,"CYDOC_DATA",{configurable:true,writable:true,value});}});'});
+ await send('Page.navigate',{url:'about:blank'});await until('location.href==="about:blank"');
+ await send('Page.navigate',{url:base+'#/fr/start'});
+ await until('document.querySelector(".brand-name")?.textContent==='+JSON.stringify(longName));
+ await send('Page.removeScriptToEvaluateOnNewDocument',{identifier:init.identifier});
+ await evaluate('document.querySelector(".brand").focus()');
+ await until('!document.querySelector(".reader-tooltip").hidden');
+ assert.equal(await evaluate('document.querySelector(".reader-tooltip strong").textContent'),longName);
+ const brandBox=await evaluate('(()=>{const a=document.querySelector(".brand-name").getBoundingClientRect(),b=document.querySelector(".sidebar").getBoundingClientRect();return {right:a.right,sidebar:b.right};})()');
+ assert(brandBox.right<=brandBox.sidebar);
+ await screenshot('long-name');
+ await evaluate('document.dispatchEvent(new KeyboardEvent("keydown",{key:"Escape",bubbles:true}))');
  await evaluate('CYAI_HELP.navigate({locale:"fr",pageId:"start"})');
  await until('document.querySelector(".cy-image img")?.naturalWidth>0');
  await send('Emulation.setDeviceMetricsOverride',{width:480,height:860,deviceScaleFactor:1,mobile:true});
  await send('Emulation.setTouchEmulationEnabled',{enabled:true,maxTouchPoints:2});
- await evaluate('document.querySelector(".cy-image .media-stage").scrollIntoView({block:"center"})');
+ await evaluate('document.querySelector(".cy-image .media-stage").scrollIntoView({block:"center",behavior:"instant"})');
+ await delay(450);
  const touch=await evaluate('(()=>{const b=document.querySelector(".cy-image .media-stage").getBoundingClientRect();return {x:b.x+b.width/2,y:b.y+b.height/2};})()');
  const beforePan=await evaluate('document.querySelector(".cy-image img").style.transform');
  await send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{...touch,id:1}]});
@@ -101,7 +137,7 @@ try{
  await evaluate('scrollTo(0,0)');
  await screenshot('mobile-fr');
  assert((await evaluate('document.documentElement.scrollWidth'))<=480);
- fs.writeFileSync(folder+'/report.json',JSON.stringify({pages:pages.length,errors,remoteHttpBlocked:true,requests:requests.filter(r=>!r.includes('kaspersky-labs.com')),checks:['all pages','locale switch','anchors','media state','zoom','in-window expansion','keyboard','reading positions','search','settings bridge','fallback','mobile','emulated touch pan and pinch']},null,2));
+ fs.writeFileSync(folder+'/report.json',JSON.stringify({pages:pages.length,errors,remoteHttpBlocked:true,requests:requests.filter(r=>!r.includes('kaspersky-labs.com')),checks:['all pages','topic tree','330px sidebar','header search','full tooltips','six themes','long application name','locale switch','anchors','media state','zoom','in-window expansion','keyboard','reading positions','search','settings bridge','fallback','mobile','emulated touch pan and pinch']},null,2));
  console.log('PASS file://: '+pages.length+' pages, language/anchors/media, keyboard, zoom, enlargement, reading positions, search, settings, fallback and mobile; remote HTTP blocked.');
  if(errors.length)throw Error(errors.join('\n'));
-}catch(error){console.error(await evaluate('JSON.stringify({url:location.href,scroll:scrollY,height:document.documentElement.scrollHeight,focus:document.activeElement?.outerHTML.slice(0,200)})'));await screenshot('failure');throw error;}finally{clearInterval(keep);ws.close();}
+}catch(error){console.error('Browser errors:',JSON.stringify(errors));console.error(await evaluate('JSON.stringify({url:location.href,scroll:scrollY,height:document.documentElement.scrollHeight,focus:document.activeElement?.outerHTML.slice(0,200),tooltips:[...document.querySelectorAll(".reader-tooltip")].map(x=>x.outerHTML)})'));await screenshot('failure');throw error;}finally{clearInterval(keep);ws.close();}

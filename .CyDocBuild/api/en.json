@@ -1,0 +1,100 @@
+{
+  "symbols": [
+    {
+      "key": "url",
+      "name": "cyai.documentation.documentation_url",
+      "kind": "function",
+      "language": "python",
+      "signature": "documentation_url(page_id='start', locale='en', anchor='', state=None, theme='dark')",
+      "description": "Build an encoded file URL to the bundled manual. Unknown pages return to Start here. No network request or WebView is started.",
+      "parameters": [
+        {
+          "name": "page_id",
+          "type": "str",
+          "default": "'start'",
+          "description": "Stable page ID or a configured alias."
+        },
+        {
+          "name": "locale",
+          "type": "str",
+          "default": "'en'",
+          "description": "Requested locale; unsupported languages use English."
+        },
+        {
+          "name": "anchor",
+          "type": "str",
+          "default": "''",
+          "description": "Explicit heading or media anchor. Invalid anchors raise ValueError."
+        },
+        {
+          "name": "state",
+          "type": "dict | None",
+          "default": "None",
+          "description": "Optional media state, including the media ID. Unknown media IDs are rejected."
+        },
+        {
+          "name": "theme",
+          "type": "str",
+          "default": "'dark'",
+          "description": "Host theme; dark maps to the midnight reader theme."
+        }
+      ],
+      "returnType": "str",
+      "returns": "An absolute file URL to Documentation/Documentation.html with an encoded fragment.",
+      "references": [
+        {
+          "key": "route",
+          "name": "canonical_route"
+        }
+      ]
+    },
+    {
+      "key": "route",
+      "name": "cyai.documentation.canonical_route",
+      "kind": "function",
+      "language": "python",
+      "signature": "canonical_route(page_id='start', locale='en', anchor='', state=None, theme='dark')",
+      "description": "Validate a route against the bundled manifest. Resolve aliases, normalize locale, and reject invalid explicit anchors and media IDs.",
+      "parameters": [
+        {
+          "name": "page_id",
+          "type": "str",
+          "default": "'start'",
+          "description": "Stable page ID or a configured alias."
+        },
+        {
+          "name": "locale",
+          "type": "str",
+          "default": "'en'",
+          "description": "Requested locale; unsupported languages use English."
+        },
+        {
+          "name": "anchor",
+          "type": "str",
+          "default": "''",
+          "description": "Explicit heading or media anchor. Invalid anchors raise ValueError."
+        },
+        {
+          "name": "state",
+          "type": "dict | None",
+          "default": "None",
+          "description": "Optional media state, including the media ID. Unknown media IDs are rejected."
+        },
+        {
+          "name": "theme",
+          "type": "str",
+          "default": "'dark'",
+          "description": "Host theme; dark maps to the midnight reader theme."
+        }
+      ],
+      "returnType": "dict",
+      "returns": "A dictionary containing pageId, locale, anchor, state and normalized theme.",
+      "references": [
+        {
+          "key": "url",
+          "name": "documentation_url"
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Méthode spéciale — Évaluation d’un agent
 
-**[Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/fr/reference-cyai-evaluation-kit-readme)** — ouvrir ce guide dans le lecteur CyDoc en français.
+**[Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/fr/background)** — ouvrir ce guide dans le lecteur CyDoc en français.
 
 Version 0.1 · 19 septembre 2026 · Kit autonome, sans modification de CyAI.
 

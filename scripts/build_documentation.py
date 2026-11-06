@@ -20,13 +20,13 @@ def digest(path):
 
 def verify_export(root=ROOT, export=None, check_inputs=True):
     root = Path(root).resolve()
-    export = Path(export or root/'cyai/help').resolve()
-    info = json.loads((export/'build-info.json').read_text('utf-8'))
-    config = json.loads((root/'documentation/cydoc.config.json').read_text('utf-8'))
+    export = Path(export or root/'Documentation').resolve()
+    info = json.loads((export/'DocData/build-info.json').read_text('utf-8'))
+    config = json.loads((root/'.CyDocBuild/cydoc.config.json').read_text('utf-8'))
     if config['version'] != tomllib.loads((root/'pyproject.toml').read_text('utf-8'))['project']['version'] or info['version'] != config['version'] or info['modules'] != ['image']:
         raise ValueError('Documentation version or modules differ; regenerate the export.')
-    if not check_inputs and export != (root/'cyai/help').resolve():
-        current = json.loads((root/'cyai/help/build-info.json').read_text('utf-8'))
+    if not check_inputs and export != (root/'Documentation').resolve():
+        current = json.loads((root/'Documentation/DocData/build-info.json').read_text('utf-8'))
         if info['outputs'] != current['outputs']:
             raise ValueError('The staged documentation differs from the current application export.')
     for group, base in [('outputs',export)] + ([('inputs',root)] if check_inputs else []):
@@ -37,11 +37,10 @@ def verify_export(root=ROOT, export=None, check_inputs=True):
             if not file.is_relative_to(base) or not file.is_file() or digest(file) != expected:
                 raise ValueError('Stale or missing documentation '+group+': '+name+'. Run python scripts/build_documentation.py --install')
     actual = {p.relative_to(export).as_posix() for p in export.rglob('*') if p.is_file()}
-    if actual != set(info['outputs']) | {'build-info.json'}:
+    if actual != set(info['outputs']) | {'DocData/build-info.json'}:
         raise ValueError('Unexpected or missing files in the documentation export.')
     if check_inputs:
-        candidates = {p.relative_to(root).as_posix() for p in (root/'documentation').rglob('*') if p.is_file() and not {'node_modules','.generated'} & set(p.relative_to(root/'documentation').parts)}
-        candidates |= {p.relative_to(root).as_posix() for folder in (root/'docs',root/'cyai/evaluation_kit') for p in folder.glob('*.md')}
+        candidates = {p.relative_to(root).as_posix() for p in (root/'.CyDocBuild').rglob('*') if p.is_file() and not {'node_modules','.generated','internal'} & set(p.relative_to(root/'.CyDocBuild').parts)}
         # New authoring files must not be silently omitted from the freshness check.
         if not candidates <= set(info['inputs']):
             raise ValueError('New documentation sources are not exported yet.')
@@ -58,8 +57,8 @@ def main():
             parser.error('Node.js 22+ and npm are needed to regenerate documentation; reading needs neither.')
         env = {**os.environ,'CYAI_BUILD_PYTHON':sys.executable}
         if args.install:
-            subprocess.run([npm,'ci','--prefix',str(ROOT/'documentation')],cwd=ROOT,env=env,check=True)
-        subprocess.run([npm,'run','build','--prefix',str(ROOT/'documentation')],cwd=ROOT,env=env,check=True)
+            subprocess.run([npm,'ci','--prefix',str(ROOT/'.CyDocBuild')],cwd=ROOT,env=env,check=True)
+        subprocess.run([npm,'run','build','--prefix',str(ROOT/'.CyDocBuild')],cwd=ROOT,env=env,check=True)
     info = verify_export()
     print('CyDoc export verified:', info['version'], '| image | en/fr | local file reader')
 
