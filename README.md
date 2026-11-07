@@ -1,73 +1,98 @@
-<p align="center">
-  <img src="cyai/web/cyai-logo.png" alt="CyAI Orchestrator logo" width="160">
-</p>
+<table width="100%">
+  <tr>
+    <td width="300" align="left" valign="top">
+      <a href="https://mrmybal.github.io/CyAIOrchestrator/Documentation.html#/en/start">Documentation</a><br>
+      <a href="https://github.com/MrMybal/CyAIOrchestrator">Repository</a><br>
+      <a href="https://github.com/MrMybal/CyAIOrchestrator/issues">Issue tracker</a><br><br>
+      <sub>README</sub><br>
+      <a href="README.md">English</a> · <a href="README.fr.md">Français</a>
+    </td>
+    <td width="400" align="center" valign="middle">
+      <img src="cyai/web/cyai-logo.png" alt="CyAI Orchestrator logo" width="128">
+    </td>
+    <td width="300" align="right" valign="top">
+      <p><sub>Application license</sub><br><a href="LICENSE"><strong>AGPL-3.0-only</strong></a></p>
+      <p><sub>Version</sub><br><a href="docs/release-0.2.66.md"><strong>0.2.66</strong></a><br><strong>Alpha</strong></p>
+      <p><a href="https://github.com/MrMybal/CyAIOrchestrator/releases/download/v0.2.66/CyAIOrchestrator-Setup-0.2.66.exe"><strong>Download</strong></a><br><sub>Windows x64 · installer</sub></p>
+    </td>
+  </tr>
+</table>
 
-# CyAI Orchestrator
+<h1 align="center">CyAI Orchestrator</h1>
 
-A local Windows application for working with AI agents, conversations and background missions in one project workspace. CyAI combines a desktop interface, persistent SQLite history, provider connectors, local models and an MCP server.
+A local Windows workspace for people working with AI agents on project files. Bring conversations, reusable agents, shared context, task boards and background missions together, using provider connectors or local models.
 
-The interface starts in **English**. **French** is also available under **Settings → Appearance → Interface language**. The choice is saved on this computer and applies to the web interface and Windows notification-area menu. Changing it preserves conversation drafts and does not stop background tasks. Model responses, user documents and project names keep their original language.
+> **Alpha · 0.2.66**
+>
+> Intended for testing and feedback. Features may be incomplete and workflows may change before a stable release. Read the [version notes and documented limitations](docs/release-0.2.66.md), or [report an issue](https://github.com/MrMybal/CyAIOrchestrator/issues).
 
-## Screenshots
+[![Project conversation with an AI response, team members and the message composer](Documentation/DocData/assets/images/conversation-en.png)](Documentation/DocData/assets/images/conversation-en.png)
 
-A demonstration workspace with sample conversations and task data.
+## Work in one project workspace
 
-**Project conversations and team members**
+Add an existing project folder, connect an AI provider or load a local model, then work from a conversation. Projects group their assistant, conversations, shared memory, skills, team, media and enabled plugins. The interface starts in **English**; **French** is available under **Settings → Appearance → Interface language**. Switching languages preserves drafts and does not stop background work. User documents, model responses and project names retain their original language.
 
-![CyAI Orchestrator conversation with project channels, an AI response, team members and the message composer](docs/screenshots/conversation.png)
+Use an orchestrator conversation to prepare a dependency graph of tasks, review its instructions and assignments, then approve the plan. Independent branches can run concurrently; dependent tasks wait for successful prerequisites. The agent library stores reusable profiles and revisions, while the task board records assignments, reports, reviews and acceptance. Background evaluation batches use isolated workspaces without creating a visible conversation for every candidate. The integrated local inference engine handles one model request at a time.
 
 <details>
-<summary>Task board and CyTools catalogue</summary>
+<summary>See the task board and CyTools catalogue</summary>
 
-**Task assignments and review**
+**Assignments and review**
 
-![Project task board with assigned work, progress columns and a card awaiting review](docs/screenshots/task-board.png)
+[![Project task board with assigned work, progress columns and a card awaiting review](Documentation/DocData/assets/images/task-board-en.png)](Documentation/DocData/assets/images/task-board-en.png)
 
-**Official CyTools catalogue**
+**Tools installed separately**
 
-![CyTools settings with AudioStudio, AudioLibrary, AIChat, PersonaRP, Storyboard and MeshStudio](docs/screenshots/cytools.png)
+[![Official CyTools catalogue showing AudioStudio, AudioLibrary, AIChat, PersonaRP, Storyboard and MeshStudio](Documentation/DocData/assets/images/cytools-en.png)](Documentation/DocData/assets/images/cytools-en.png)
 
 </details>
 
-## Documentation
+## Features
 
-**[Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/en/start)** · **[Français](https://mrmybal.github.io/CyAIOrchestrator/#/fr/start)**
+- **Conversations and files:** send text or attachments alone, queue messages during a response, or use **Send now** to interrupt and send immediately. Open images and videos in the app, and inspect supported 3D files with backgrounds, lighting presets and PBR materials. File menus offer external opening, File Explorer and path copying.
+- **Provider connections:** integrations include Codex, Claude Code, OpenCode, Anthropic API, OpenRouter, Ollama and the integrated local engine. Installations, authentication and available capabilities depend on each connector. Usage, context capacity and subscription quota appear when the connector supplies them.
+- **Local models and voice:** download or import GGUF models, configure their context and engine, and install optional dictation or speech engines such as Whisper, Phonon or Piper. Engines, model weights and hardware requirements are separate from the desktop installer.
+- **Persistent context:** SQLite stores conversation history and mission events. Shared memory and skills provide explicit project context. Search, archives, branching, export and application backups are available; project files and provider-native sessions need their own backups.
+- **Plugins and CyTools:** configure extensions globally and enable them per project. Only enabled plugins with a project view become tabs. CyTools have a separate catalogue. Embedded CyAnnota and CyMD editors, CyAICodex and CyTask integrations extend the workspace; see the [plugin reference](docs/plugins.md).
+- **MCP and diagnostics:** register local MCP servers, expose them to selected projects or agents, and generate configuration for CyAI's own scoped MCP bridge. **Logs** groups the journal, raw events, MCP operations, connector status and available CPU, RAM, GPU and VRAM history.
+- **Local bilingual help:** press **F1**, select **? Documentation** in the left rail, or open **Settings → Documentation**. The CyDoc reader opens in its own window with search, screenshots, diagrams, themes and in-window image zoom. Its complete English and French editions work offline; the [online manual](https://mrmybal.github.io/CyAIOrchestrator/Documentation.html#/en/start) uses the same reader.
 
-The online documentation uses the same visual CyDoc reader as the application, including navigation, search, screenshots, diagrams and language selection. The bundled manual also works independently without an Internet connection.
+---
 
-Open **? Documentation** in the left rail, use Settings → Documentation, or press **F1** for help on the current panel. The bundled **CyDoc** reader opens in a separate window using local `file://` resources. It preserves the workspace and needs no server, CDN, Node.js or Internet connection for reading.
+## Installation
 
-The user guides and public integration API are available in **English** (default) and **French**, with common page/section IDs, localized screenshots, in-window zoom, workflow diagrams, a topic tree and full-text search. Open `Documentation/Documentation.html` directly to read the bundled manual. Authoring and maintenance notes are kept in [the documentation workspace](.CyDocBuild/internal/README.md), outside the reader.
+The published desktop installer is for **Windows x64**. It includes the application and its Python runtime. [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section) must be available; the installer executable is not digitally signed. There is no published Linux or macOS installer for this release.
 
-## Windows desktop application
+1. [Download CyAI Orchestrator 0.2.66](https://github.com/MrMybal/CyAIOrchestrator/releases/download/v0.2.66/CyAIOrchestrator-Setup-0.2.66.exe). The [release page](https://github.com/MrMybal/CyAIOrchestrator/releases/tag/v0.2.66) also provides the SHA-256 checksum.
+2. Run the installer for your Windows account, then start **CyAI Orchestrator** from its shortcut. Updates retain the existing configuration and previous installed version. Application data is stored separately from program files.
+3. Open **Settings → Connectors** to configure a provider, or **Settings → Local models** to download or import a model. Native agents require their own CLI and authentication; API providers require credentials and API credit. A ChatGPT or Claude app subscription does not automatically include API credit.
+4. Add an existing project folder and start a conversation. Set the interface language under **Settings → Appearance** if needed.
 
-Build the desktop application with PowerShell:
+Large weights and optional engines are downloaded explicitly through **Local models**, **Voice** or **Downloads**. The native Claude Code CLI and CyAnnota's optional FFmpeg component are separate downloads. External CyTools manage their own engines and models. Selecting a catalogue item does not itself start a download; no single GPU or VRAM requirement covers every model.
+
+Closing the window hides the app in the Windows notification area. Double-click its icon to reopen it; **Quit** stops the service started by that instance. A separately started service remains independent. Stopping an agent does not undo file changes it has already made. Portable application backups exclude credentials, project working files and native provider sessions: back up project folders separately.
+
+## Source, build and required libraries
+
+<details>
+<summary>Build on Windows or run from source</summary>
+
+Use **Python 3.11+**, **Git**, PowerShell, and **Node.js 22+ with npm** for documentation generation. The desktop build creates its own `.desktop-venv`, installs the Python dependencies, generates the local manual and packages with PyInstaller. The local service uses `jsonschema`; the desktop uses `pywebview`. Node.js is not required to read the generated manual or run the core desktop app; the optional CyTask MCP bridge requires Node.js 22+.
 
 ```powershell
+git clone https://github.com/MrMybal/CyAIOrchestrator.git
+cd CyAIOrchestrator
 .\Build-Desktop.ps1
+.\dist-next\CyAIOrchestrator\CyAIOrchestrator.exe
 ```
 
-The application is created at `dist-next/CyAIOrchestrator/CyAIOrchestrator.exe`. Keep the complete directory, including `_internal`. Microsoft Edge WebView2 is required on Windows. The executable is not signed.
-
-Start it with `Start-CyAI-Desktop.ps1`, or run the executable directly. To select an existing configuration:
+Keep the complete `dist-next/CyAIOrchestrator` directory, including `_internal`. To produce an installer after building:
 
 ```powershell
-.\dist-next\CyAIOrchestrator\CyAIOrchestrator.exe --config C:\Projects\CyAIOrchestrator\config.json
+.\.desktop-venv\Scripts\python.exe scripts/build_release.py
 ```
 
-Application data is stored separately from the program files. Closing the desktop window hides it in the Windows notification area; double-click the icon to reopen it. **Quit** stops the service started by this application, with confirmation if missions are active. A service started separately remains independent.
-
-To produce the installer after building:
-
-```powershell
-python scripts/build_release.py
-```
-
-Installer outputs under `releases/` are release assets and are excluded from source control.
-
-## Run from source
-
-Requires Python 3.11 or later. From the repository root:
+To run from source instead:
 
 ```powershell
 python -m venv .venv
@@ -75,107 +100,56 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m cyai.desktop
 ```
 
-To run just the local service and browser interface:
+The `claude` extra installs the small Python SDK, not the separately downloaded native CLI. To run only the local service and browser interface, use `.\.venv\Scripts\python.exe -m cyai`. The default address is `http://127.0.0.1:8766`; stop it with **Ctrl+C**. Closing its browser tab does not stop missions.
+
+Register folders through the interface. Use `config.example.json` only as a starting point when no configuration exists. An existing configuration can be selected with `--config C:\Projects\CyAIOrchestrator\config.json`. Credentials belong in dedicated connector fields, not project files. See [connectors](docs/connectors.md), [localization](docs/localization.md) and [architecture](docs/architecture.md) for contributor details.
+
+To regenerate the bundled manual:
 
 ```powershell
-.\.venv\Scripts\python.exe -m cyai
+python scripts/build_documentation.py --install
+python scripts/build_documentation.py --check
 ```
 
-The default address is **http://127.0.0.1:8766**. Use `python -m cyai serve --no-browser` for manual browser launch. `Start-CyAI.ps1` uses `.venv` when present and otherwise the Python on `PATH`. Stop the service with `Ctrl+C`; closing its browser tab does not stop missions.
+Distribute the entire `Documentation/` directory. Open `Documentation/Documentation.html` directly via `file://`; reading needs no server, CDN or Internet connection. The authoring workspace is `.CyDocBuild/` and is not part of the reader.
 
-## Models and optional downloads
+</details>
 
-The desktop package includes the interface, Python and connector adapters. Large optional components are downloaded explicitly through **Settings → Local models**, **Voice** or **Downloads**, and stored in the user's data directory.
-
-- **GGUF models:** download from Hugging Face or import an existing model. Configure the engine, GPU layers, threads and context size. The integrated engine uses llama.cpp; Ollama is also available as a separate connector.
-- **Speech:** install the transcription engine, voice engine and models you need. Available integrations include Whisper, Phonon, Piper and other optional local engines. Hardware and language support depend on the selected engine.
-- **Claude Code:** reuse an installed native CLI or download it from its official source under **Downloads → On-demand components**. The Python SDK is included in the desktop package; the large native CLI executable is downloaded separately. Sign in under **Connectors**.
-- **CyAnnota video:** download the optional FFmpeg component from the same panel. Image and 3D features do not require it. Once downloaded, the codec loads from the local cache.
-
-Installation and download buttons show queued/running operations and progress. Selecting a catalogue item does not itself download a model.
-
-## Projects and conversations
-
-Add a project by choosing an existing folder. Each project groups conversations, its assistant, shared memory, skills, team, media and enabled plugins. Independent direct messages have their own workspace and attachments.
-
-Choose an agent and model in the composer. By default, **Enter** sends and **Shift+Enter** adds a new line; change this under **Settings → Context & AI**. You can send attachments without accompanying text.
-
-While a response is running, new messages can wait in a queue. **Send now** interrupts the current response to send the queued message. **Stop** cancels the active response. Cancellation does not undo file changes already made by an agent.
-
-Images and videos open in the application with a larger preview. Supported 3D formats open in the integrated viewer with camera controls, backgrounds, lighting presets and supported PBR materials. File context menus offer external opening, File Explorer and link copying. Unsupported formats can be opened with Windows.
-
-The composer displays usage supplied by the connector. Context capacity and subscription quota are shown when available; an unknown limit is not presented as a measured one. Local-model controls also show configured context and available resource measurements.
-
-## Orchestration and background work
-
-An orchestrator conversation turns a goal into a dependency graph of tasks. Review the instructions, agent assignments, models and checks, then approve the plan. Independent branches may run concurrently; dependent tasks wait for successful prerequisites. The local inference engine runs one model request at a time.
-
-Background evaluation batches use isolated workspaces without adding a visible conversation for every candidate. Progress remains available from the controlling conversation and logs. Background-work cards can be hidden.
-
-The agent library stores reusable profiles and revisions. Project teams pin profile revisions and can define managers, leads, members and consultants. The task board records assignments, reports, reviews and acceptance decisions. A completed run or submitted report does not by itself prove that the requested work is correct.
-
-## Provider connections
-
-Configure and enable providers in **Settings → Connectors**. Available integrations include Codex, Claude Code, OpenCode, Anthropic API, OpenRouter, Ollama, the integrated local engine and additional native CLI adapters.
-
-Native agents require their own installed CLI and authentication. API integrations require an API key and a supported model. **A ChatGPT or Claude app subscription does not automatically provide API credit.** Provider features vary; the interface distinguishes detected installations from verified connections.
-
-Windows DPAPI stores supported credentials for the current Windows user. Enter keys in the connector's dedicated field. Do not put credentials in a project folder, committed configuration or documentation.
-
-Permissions can be configured globally or per conversation. Automatic approval applies to supported tool requests within the configured scope; orchestration plans still require a launch decision. Unsupported native requests are reported. Review provider-specific limitations in [docs/connectors.md](docs/connectors.md).
-
-## Memory, history and backups
-
-Conversation messages, mission events, context references and session mappings persist in SQLite. Shared memory and skills provide explicit project context. Native agents retain their own provider-side sessions; changing the selected context can require a fresh session.
-
-Search includes archived conversations. You can rename, archive, branch and export conversations. Branching copies message history, not project files, and does not revert filesystem changes.
-
-Export or restore application backups in **Settings → Backup**. Portable backups do not include credentials, project working files or provider-native session storage. Back up project folders separately. For a complete local data-folder copy, stop the service first; DPAPI credentials remain tied to the Windows account.
-
-## Plugins, CyTools and MCP
-
-Configure plugins under **Settings → Plugins** and enable them per project. Only enabled plugins declaring a project view appear in project tabs. Standalone CyTools are listed separately under **Settings → CyTools**. The official catalogue now covers [AudioStudio](https://github.com/MrMybal/CyTools_AudioStudio), [AudioLibrary](https://github.com/MrMybal/CyTools_AudioLibrary), [AIChat](https://github.com/MrMybal/CyTools_AIChat), [PersonaRP](https://github.com/MrMybal/CyTools_PersonaRP), [Storyboard](https://github.com/MrMybal/CyTools_Storyboard) and [MeshStudio](https://github.com/MrMybal/CyTools_MeshStudio). Check their GitHub releases, then download and connect a verified Windows portable package, or add an already installed folder. Engines and model weights remain separate downloads managed by each tool. Previous registrations are preserved in a collapsed compatibility section.
-
-The integrated [CyAnnota](https://github.com/MrMybal/CyAnnota) 0.4.4 and [CyMD](https://github.com/MrMybal/CyMD) 0.1.4 editors inherit the interface language and are supplied with their source archives and licence notices. [CyAICodex](https://github.com/MrMybal/CyAICodex) connects its current skills and image library through MCP. [CyTask](https://github.com/MrMybal/CyTask) connects projects, tasks, agents and durable calls through its bundled MCP bridge (requires Node.js 22 or later); enter the server URL and a CyTask agent or API token in its configuration. Tokens are stored in the Windows vault. Standalone Windows applications can be downloaded separately from their plugin cards. External plugins may manage their own interface language. See [docs/plugins.md](docs/plugins.md).
-
-Register local MCP servers such as Blender under **Settings → MCP**, then expose them to the relevant projects or agents. A registered configuration identifies the server; a working connection still depends on the server and its software being available.
-
-CyAI also exposes an MCP stdio bridge to its running local service. Generate client configuration under **Settings → MCP**, or adapt this command:
-
-```powershell
-codex mcp add cyai -- C:\Projects\CyAIOrchestrator\.venv\Scripts\python.exe C:\Projects\CyAIOrchestrator\scripts\mcp_bridge.py --project PROJECT_ID
-```
-
-The service must already be running. Each project ID scopes the client; read and write access follow the generated configuration. Launch tools return mission identifiers so clients can follow long-running work asynchronously.
-
-## Configuration and diagnostics
-
-Project folders can be registered through the interface without manually editing JSON. `config.example.json` is an optional starting point; copy it only if a configuration does not already exist.
-
-Key settings include `port`, `data_dir`, `allowed_roots`, `context_chars`, provider connector settings and `settings.language` (`en` or `fr`, default `en`). The service binds to loopback. Manually edited settings may require a restart.
-
-**Logs** contains the application journal, raw JSON, MCP operations, connector status and resource history. Available CPU, RAM, GPU and VRAM measurements appear over time; unavailable measurements remain marked as such.
-
-## Development checks
-
-```powershell
-python -m unittest discover -s tests -v
-node tests/i18n.cjs
-node tests/help.cjs
-node tests/ui-async-regressions.cjs
-python scripts/check_repository.py --download-gitleaks
-```
-
-Repository-check reports are written under ignored `test-results/repository-check`. GitHub Actions runs repository checks on pushes and pull requests. Provider smoke scripts under `scripts/` use real connections and may consume quota; run them deliberately.
-
-The shared translation catalogue is `cyai/locales/en.json`; French source messages are stable keys. Use `ui('…')` or tagged `ui` templates for application-owned interface text. Template values stay opaque and are inserted after translation. Add an English entry for each new source message, preserve numbered placeholders, and keep user content outside translation calls. See [docs/localization.md](docs/localization.md).
-
-Architecture and implementation details: [docs/architecture.md](docs/architecture.md), [docs/connectors.md](docs/connectors.md) and [VALIDATION.md](VALIDATION.md).
+---
 
 ## License
 
 Copyright (C) 2026 MrMybal.
 
-CyAI Orchestrator is free software licensed under the **GNU Affero General Public License, version 3 only** (`AGPL-3.0-only`). You may redistribute and modify it under those terms. It is provided without warranty; see [LICENSE](LICENSE) for the complete terms.
+CyAI Orchestrator is licensed under the **[GNU Affero General Public License, version 3 only](LICENSE)** (`AGPL-3.0-only`). You may redistribute and modify it under those terms. It is provided without warranty. Third-party components and separately downloaded tools or models retain their own terms.
 
-Third-party libraries, bundled plugins and downloadable models retain their respective licenses and notices.
+### Main third-party components
+
+| Library · source | License · terms | Use / scope |
+| --- | --- | --- |
+| [CPython](https://github.com/python/cpython) | [PSF license and component notices](https://github.com/python/cpython/blob/3.11/LICENSE) | Python runtime included in the Windows package; Python 3.11+ for source builds. |
+| [jsonschema](https://github.com/python-jsonschema/jsonschema) | [MIT](https://github.com/python-jsonschema/jsonschema/blob/main/COPYING) | Local service: configuration and structured-data validation. |
+| [pywebview](https://github.com/r0x0r/pywebview) | [BSD-3-Clause](https://github.com/r0x0r/pywebview/blob/master/LICENSE) | Desktop window and native bridge. |
+| [pythonnet](https://github.com/pythonnet/pythonnet) | [MIT](https://github.com/pythonnet/pythonnet/blob/master/LICENSE) | Windows .NET bridge used by pywebview. |
+| [Microsoft WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) | [Microsoft runtime terms and component notices](https://developer.microsoft.com/en-us/microsoft-edge/webview2/#download-section) | Separately installed Windows web runtime; terms shown with the runtime download. |
+| [Claude Agent SDK for Python](https://github.com/anthropics/claude-agent-sdk-python) | [MIT](https://github.com/anthropics/claude-agent-sdk-python/blob/main/LICENSE) | Optional provider adapter. The native Claude Code CLI has separate terms and authentication. |
+| [Three.js](https://github.com/mrdoob/three.js) | [MIT notice](cyai/web/three/LICENSE.txt) | Application's 3D viewer, r180; not a documentation dependency. |
+| [CyAnnota](https://github.com/MrMybal/CyAnnota) | [AGPL-3.0-only](cyai/web/cyannota/LICENSE.txt) · [component notices](cyai/web/cyannota/THIRD_PARTY_NOTICES.md) | Embedded image and 3D editor, 0.4.4. Its web bundle includes MIT components such as React, Next.js, Three.js and JSZip (MIT option). |
+| [FFmpeg WebAssembly](https://github.com/ffmpegwasm/ffmpeg.wasm) | [CyAnnota component notices](cyai/web/cyannota/THIRD_PARTY_NOTICES.md): core GPL-2.0-or-later; wrapper MIT | Optional CyAnnota video codec, downloaded on demand; not included in the installer. |
+| [CyMD](https://github.com/MrMybal/CyMD) | [AGPL-3.0-only](cyai/web/cymd/LICENSE.txt) | Embedded document editor, 0.1.4, with its source archive and notices. |
+| [CyTask SDK / MCP](https://github.com/MrMybal/CyTask) | [AGPL-3.0-only](cyai/integrations/cytask/LICENSE) | Bundled integration; optional MCP bridge needs Node.js 22+. |
+| [CyDoc](https://github.com/MrMybal/CyDoc) | [MIT notice](Documentation/DocData/CyDoc-LICENSE.txt) | Local manual generator and distributed reader. Only the image media module is enabled. |
+| [Marked](https://github.com/markedjs/marked) | [MIT](https://github.com/markedjs/marked/blob/master/LICENSE) | Documentation Markdown compilation. |
+| [PrismJS](https://github.com/PrismJS/prism) | [MIT](https://github.com/PrismJS/prism/blob/master/LICENSE) | Documentation code highlighting. |
+| [esbuild](https://github.com/evanw/esbuild) | [MIT](https://github.com/evanw/esbuild/blob/main/LICENSE.md) | Documentation build tool; not required to read the export. |
+| [Node.js](https://github.com/nodejs/node) | [MIT and third-party notices](https://github.com/nodejs/node/blob/main/LICENSE) | Documentation build and optional CyTask bridge; separate installation. |
+| [PyInstaller](https://github.com/pyinstaller/pyinstaller) | [GPL-2.0-or-later with bootloader exception](https://github.com/pyinstaller/pyinstaller/blob/v6.22.3/COPYING.txt) | Windows packaging tool, 6.22.3; the exception permits distributing the packaged app under its own license. |
+
+This table indexes the main components and their scope; it does not replace the complete transitive notices. Retain the license texts, component notices and editor source archives supplied with the application. Check the terms of optional engines, models and external tools before installing them.
+
+## References and links
+
+- [Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/en/start) — the published HTML reader, also bundled for offline use.
+- [French README](README.fr.md) · [Version notes](docs/release-0.2.66.md)
+- [Source repository](https://github.com/MrMybal/CyAIOrchestrator) · [Releases](https://github.com/MrMybal/CyAIOrchestrator/releases) · [Issue tracker](https://github.com/MrMybal/CyAIOrchestrator/issues)
+- [Connector reference](docs/connectors.md) · [Plugin reference](docs/plugins.md) · [Localization guide](docs/localization.md)
