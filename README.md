@@ -113,6 +113,15 @@ python scripts/build_documentation.py --check
 
 Distribute the entire `Documentation/` directory. Open `Documentation/Documentation.html` directly via `file://`; reading needs no server, CDN or Internet connection. The authoring workspace is `.CyDocBuild/` and is not part of the reader.
 
+To build and preview the standalone bilingual showcase (Node.js 22+):
+
+```powershell
+node website/build.mjs
+node website/preview.mjs
+```
+
+The output is `dist/website/index.html`, with the complete local manual. See the [showcase build guide](website/README.md) for capture sources and preview commands.
+
 </details>
 
 ---

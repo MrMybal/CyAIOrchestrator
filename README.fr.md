@@ -113,6 +113,15 @@ python scripts/build_documentation.py --check
 
 Distribuez tout le dossier `Documentation/`. Ouvrez directement `Documentation/Documentation.html` par `file://` ; la lecture ne nécessite ni serveur, ni CDN, ni connexion Internet. L'espace de rédaction `.CyDocBuild/` ne fait pas partie du lecteur.
 
+Pour générer et prévisualiser la vitrine bilingue autonome (Node.js 22+) :
+
+```powershell
+node website/build.mjs
+node website/preview.mjs
+```
+
+L'export est `dist/website/index.html`, avec le manuel local complet. Consultez le [guide de génération de la vitrine](website/README.md) pour les sources des captures et les commandes d'aperçu (guide technique en anglais).
+
 </details>
 
 ---

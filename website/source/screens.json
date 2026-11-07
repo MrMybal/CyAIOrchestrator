@@ -1,0 +1,68 @@
+{
+  "conversation": {
+    "alt": "conversation.alt",
+    "caption": "conversation.caption",
+    "doc": "chat",
+    "width": 1600,
+    "height": 1000,
+    "files": {
+      "en": "Documentation/DocData/assets/images/conversation-en.png",
+      "fr": "Documentation/DocData/assets/images/conversation-fr.png"
+    }
+  },
+  "board": {
+    "alt": "board.alt",
+    "caption": "board.caption",
+    "doc": "board",
+    "width": 1600,
+    "height": 1000,
+    "files": {
+      "en": "Documentation/DocData/assets/images/task-board-en.png",
+      "fr": "Documentation/DocData/assets/images/task-board-fr.png"
+    }
+  },
+  "profiles": {
+    "alt": "profiles.alt",
+    "caption": "profiles.caption",
+    "doc": "agents",
+    "width": 1280,
+    "height": 720,
+    "files": {
+      "en": "website/assets/screenshots/agents-en.jpg",
+      "fr": "website/assets/screenshots/agents-fr.jpg"
+    }
+  },
+  "connectors": {
+    "alt": "connectors.alt",
+    "caption": "connectors.caption",
+    "doc": "connectors",
+    "width": 1280,
+    "height": 720,
+    "files": {
+      "en": "website/assets/screenshots/connectors-en.jpg",
+      "fr": "website/assets/screenshots/connectors-fr.jpg"
+    }
+  },
+  "cytools": {
+    "alt": "cytools.alt",
+    "caption": "cytools.caption",
+    "doc": "extensions",
+    "width": 1600,
+    "height": 1000,
+    "files": {
+      "en": "Documentation/DocData/assets/images/cytools-en.png",
+      "fr": "Documentation/DocData/assets/images/cytools-fr.png"
+    }
+  },
+  "manual": {
+    "alt": "manual.alt",
+    "caption": "manual.caption",
+    "doc": "start",
+    "width": 1265,
+    "height": 712,
+    "files": {
+      "en": "website/assets/screenshots/manual-en.jpg",
+      "fr": "website/assets/screenshots/manual-fr.jpg"
+    }
+  }
+}

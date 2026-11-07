@@ -1,0 +1,7 @@
+{
+  "stage": "Alpha",
+  "repository": "https://github.com/MrMybal/CyAIOrchestrator",
+  "release": "https://github.com/MrMybal/CyAIOrchestrator/releases/tag/v{version}",
+  "download": "https://github.com/MrMybal/CyAIOrchestrator/releases/download/v{version}/CyAIOrchestrator-Setup-{version}.exe",
+  "license": "AGPL-3.0-only"
+}

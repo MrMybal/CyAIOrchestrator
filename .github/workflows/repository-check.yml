@@ -42,3 +42,7 @@ jobs:
           node tests/ui-async-regressions.cjs
           node tests/voice-settings-render.cjs
           node tests/optional-components-ui.cjs
+      - name: Build and test the standalone showcase
+        run: |
+          node website/build.mjs
+          python3 -m unittest discover -s tests -p test_showcase.py -v
