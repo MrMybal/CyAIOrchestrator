@@ -48,7 +48,7 @@ class RepositoryCheckTests(unittest.TestCase):
     def test_build_fingerprint_exception_does_not_hide_credentials(self):
         executable=Path(os.environ.get('GITLEAKS_BINARY',str(ROOT/'test-results/security-tools/gitleaks.exe')))
         if not executable.is_file():self.skipTest('Gitleaks executable not provided')
-        for location,expected in [('Documentation/DocData/build-info.json',1),('dist/website/manual/DocData/build-info.json',1),('unrelated/DocData/build-info.json',2)]:
+        for location,expected in [('Documentation/DocData/build-info.json',1),('dist/website/manual/DocData/build-info.json',1),('dist-docs-pages/manual/DocData/build-info.json',1),('unrelated/DocData/build-info.json',2)]:
             with self.subTest(location=location),tempfile.TemporaryDirectory() as temporary:
                 root=Path(temporary);file=root/location;file.parent.mkdir(parents=True)
                 file.write_text(json.dumps({'.CyDocBuild/manual/en/api-integration.md':secrets.token_hex(32),'api_key':secrets.token_urlsafe(32)},indent=2))

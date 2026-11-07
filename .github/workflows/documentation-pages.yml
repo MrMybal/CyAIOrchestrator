@@ -1,4 +1,4 @@
-name: Publish documentation
+name: Publish showcase and documentation
 on:
   push:
     branches: [main]
@@ -25,12 +25,16 @@ jobs:
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - name: Generate the existing CyDoc reader
         run: python3 scripts/build_documentation.py --install
+      - name: Build and test the bilingual showcase
+        run: |
+          node website/build.mjs
+          python3 -m unittest discover -s tests -p test_showcase.py -v
       - name: Validate documentation and publication contents
         run: |
           python3 -m unittest discover -s tests -p test_help.py -v
           python3 -m unittest discover -s tests -p test_documentation_pages.py -v
           python3 scripts/stage_documentation_pages.py
-      - name: Upload only the documentation export
+      - name: Upload only the generated showcase and reader
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
           path: dist-docs-pages
@@ -44,6 +48,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy the HTML reader
+      - name: Deploy the showcase and HTML reader
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

@@ -1,3 +1,7 @@
+/* Preserve documentation links shared before the showcase occupied the site root. */
+if (location.hash.startsWith('#/')) {
+ location.replace('./manual/Documentation.html'+location.search+location.hash);
+} else {
 /* Classic script; all copy and asset URLs are bundled by build.mjs. */
 const viewer=document.querySelector('#image-viewer');
 const image=document.querySelector('#viewer-image');
@@ -96,3 +100,5 @@ window.addEventListener('scroll',queueChapter,{passive:true});
 window.addEventListener('resize',()=>{queueChapter();fitPicture();if(innerWidth>900)closeMenu();});
 window.addEventListener('popstate',()=>{setLanguage(localeFromUrl(),{normalize:true});});
 setLanguage(localeFromUrl(),{normalize:true});queueChapter();
+
+}

@@ -1,6 +1,6 @@
 # CyAI Orchestrator showcase
 
-Maintained static showcase sources. The generated site is separate from the desktop application and the existing documentation publication. English is the default; use `?lang=fr` for French. No framework, npm dependency, Git metadata or remote API is required to build this site.
+Maintained static showcase sources. The generated site is separate from the desktop application and contains a copy of its complete documentation reader. English is the default; use `?lang=fr` for French. No framework, npm dependency, Git metadata or remote API is required to build this site.
 
 ## Build and preview
 
@@ -71,4 +71,19 @@ The showcase and its new sources use the application's AGPL-3.0-only license. Th
 
 ## Publication
 
-Building and previewing do not push, create releases, modify repository settings or deploy. The existing GitHub Pages workflow continues publishing the documentation artifact. Publishing this showcase requires a separate authorized integration of its generated artifact; preserve existing reader URLs and deep links when doing so.
+The `Publish showcase and documentation` GitHub Actions workflow rebuilds the current CyDoc reader, builds and tests this showcase, then stages only the generated public files in `dist-docs-pages/`. Pushes to `main` and manual workflow dispatches deploy that directory to GitHub Pages. Ordinary building and previewing do not publish or create application releases.
+
+- English showcase: <https://mrmybal.github.io/CyAIOrchestrator/?lang=en>
+- French showcase: <https://mrmybal.github.io/CyAIOrchestrator/?lang=fr>
+- Reader: `manual/Documentation.html#/en/start` or `#/fr/start`.
+
+Existing `Documentation.html#/…` URLs retain the original reader and resources at the site root. Legacy root `#/…` URLs open the copied reader under `manual/`, preserving the query and route. Showcase section hashes such as `#workspace` continue to select showcase sections.
+
+To reproduce the Pages artifact locally, after building the application manual:
+
+```powershell
+python scripts/stage_documentation_pages.py
+python -m unittest discover -s tests -p test_documentation_pages.py -v
+```
+
+The staging command rebuilds the showcase, verifies every copied resource, and refuses to replace modified files or directories containing unexpected data. Its output is a generated artifact; keep application state, capture originals and verification reports outside it. The desktop application's offline reader remains unchanged.

@@ -1,6 +1,7 @@
 <table width="100%">
   <tr>
     <td width="300" align="left" valign="top">
+      <a href="https://mrmybal.github.io/CyAIOrchestrator/?lang=en">Showcase</a><br>
       <a href="https://mrmybal.github.io/CyAIOrchestrator/Documentation.html#/en/start">Documentation</a><br>
       <a href="https://github.com/MrMybal/CyAIOrchestrator">Repository</a><br>
       <a href="https://github.com/MrMybal/CyAIOrchestrator/issues">Issue tracker</a><br><br>
@@ -158,6 +159,7 @@ This table indexes the main components and their scope; it does not replace the 
 
 ## References and links
 
+- [Showcase](https://mrmybal.github.io/CyAIOrchestrator/?lang=en) — screenshots, workflows and the complete bilingual manual.
 - [Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/en/start) — the published HTML reader, also bundled for offline use.
 - [French README](README.fr.md) · [Version notes](docs/release-0.2.66.md)
 - [Source repository](https://github.com/MrMybal/CyAIOrchestrator) · [Releases](https://github.com/MrMybal/CyAIOrchestrator/releases) · [Issue tracker](https://github.com/MrMybal/CyAIOrchestrator/issues)

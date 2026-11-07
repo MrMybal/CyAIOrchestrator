@@ -1,6 +1,7 @@
 <table width="100%">
   <tr>
     <td width="300" align="left" valign="top">
+      <a href="https://mrmybal.github.io/CyAIOrchestrator/?lang=fr">Présentation</a><br>
       <a href="https://mrmybal.github.io/CyAIOrchestrator/Documentation.html#/fr/start">Documentation</a><br>
       <a href="https://github.com/MrMybal/CyAIOrchestrator">Dépôt</a><br>
       <a href="https://github.com/MrMybal/CyAIOrchestrator/issues">Suivi des problèmes</a><br><br>
@@ -158,6 +159,7 @@ Ce tableau répertorie les principaux composants et leur portée ; il ne remplac
 
 ## Références et liens
 
+- [Présentation](https://mrmybal.github.io/CyAIOrchestrator/?lang=fr) — captures, parcours et manuel bilingue complet.
 - [Documentation](https://mrmybal.github.io/CyAIOrchestrator/#/fr/start) — le lecteur HTML publié, également embarqué pour une utilisation hors ligne.
 - [English README](README.md) · [Notes de version](docs/release-0.2.66.fr.md)
 - [Dépôt des sources](https://github.com/MrMybal/CyAIOrchestrator) · [Versions publiées](https://github.com/MrMybal/CyAIOrchestrator/releases) · [Suivi des problèmes](https://github.com/MrMybal/CyAIOrchestrator/issues)
